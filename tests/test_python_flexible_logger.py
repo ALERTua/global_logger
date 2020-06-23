@@ -3,9 +3,9 @@
 
 """Tests for `python_flexible_logger` package."""
 
-
 import unittest
 
+# noinspection PyUnresolvedReferences
 from python_flexible_logger import python_flexible_logger
 
 
