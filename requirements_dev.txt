@@ -1,3 +1,4 @@
+setuptools
 pip
 bump2version==0.5.11
 wheel
