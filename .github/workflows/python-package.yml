@@ -60,14 +60,12 @@ jobs:
         pip install setuptools wheel twine
 
     - name: Build and publish
+      if: matrix.python-version == '3.7'
+      with:
+        python_version: '3.7.0'
+      env:
+        TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+        TWINE_PASSWORD: ${{ secrets.PYPI_TEST_PASSWORD }}
       run: |
         python setup.py sdist bdist_wheel
-
-    - name: Publish a Python distribution to PyPI Dev
-      if: matrix.python-version == '3.7'
-      uses: pypa/gh-action-pypi-publish@master
-      with:
-        user: ${{ secrets.PYPI_USERNAME }}
-        password: ${{ secrets.PYPI_TEST_PASSWORD }}
-        repository_url: https://test.pypi.org/legacy/
-        skip_existing: true
+        twine upload --repository testpypi dist/*
