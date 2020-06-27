@@ -140,7 +140,7 @@ class Log(object):
                     sysver=sys.version, platf=platform.architecture(), winver=sys.getwindowsversion(),
                     user=os.environ['USERNAME'], comp=os.environ['COMPUTERNAME'])
                 self.debug(_env_dump_str)
-            except:
+            except:  # noqa
                 pass
 
     def __str__(self):
@@ -209,7 +209,7 @@ class Log(object):
         if len(log_files) > Log.MAX_LOG_FILES:
             try:
                 [_file.unlink() for _file in log_files[Log.MAX_LOG_FILES:]]
-            except:
+            except:  # noqa
                 pass
 
     def green(self, *message, **kwargs):
