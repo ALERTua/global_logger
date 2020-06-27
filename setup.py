@@ -14,11 +14,15 @@ with open('HISTORY.rst') as history_file:
 
 cur_file_dir_path = os.path.dirname(os.path.abspath(__file__))
 
-# noinspection PyTypeChecker
-# install_reqs = parse_requirements(os.path.join(cur_file_dir_path, 'global_logger/requirements.txt'), session='hack')
-# reqs = [r.requirement for r in install_reqs]
-
 requirements = [
+    "pendulum",
+    "pathlib",
+    "colorama",
+    "colorlog",
+    "future",
+]
+setup_requirements = []
+test_requirements = [
     "setuptools",
     "pip",
     "wheel",
@@ -36,13 +40,11 @@ requirements = [
     "zipp",
     "pytest",
 ]
-setup_requirements = requirements
-test_requirements = requirements
 
 setup(
     author="Alexey Rubasheff",
     author_email='alexey.rubasheff@gmail.com',
-    python_requires='>=3.7',
+    python_requires='>=2.7',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',
@@ -69,6 +71,6 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/alertua/global_logger',
-    version='0.2.0',
+    version='0.2.2',
     zip_safe=False,
 )

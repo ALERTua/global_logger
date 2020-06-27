@@ -26,6 +26,7 @@ Global Logger
 Features
 --------
 
+Python2 files have to have 'from __future__ import print_function, unicode_literals' at the top
 * TODO
 
 Credits

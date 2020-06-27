@@ -1,13 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""Tests for `global_logger` package."""
+from __future__ import print_function, unicode_literals
 import pytest
-
-from global_logger import Log
 
 
 @pytest.fixture
 def log():
+    from global_logger import Log
     return Log.get_logger()
 
 

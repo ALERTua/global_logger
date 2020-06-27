@@ -1,17 +1,6 @@
-setuptools
-pip
-wheel
-watchdog
-flake8
-tox
-coverage
-Sphinx
-twine
-pendulum==2.0.3  # fixed version
+pendulum
 pathlib
 colorama
 colorlog
 future
-zipp
-pytest==4.6;python_version<"3.4"
-pytest;python_version>"3.4"
+win-unicode-console

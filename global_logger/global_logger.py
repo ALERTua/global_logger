@@ -10,16 +10,17 @@ import re
 import sys
 import time
 import traceback
+from pathlib import Path
+from typing import List
 
 import pendulum
 from colorama import Fore
 from colorlog import ColoredFormatter, default_log_colors
-from pathlib import Path
-from typing import List
 
 if sys.version_info[0] < 3:
     pass
 else:
+    # noinspection PyShadowingBuiltins
     buffer = memoryview
 
 
@@ -119,6 +120,7 @@ class Log(object):
                 new_log_file = True
 
         formatter = logging.Formatter(Log.LOGGER_MESSAGE_FORMAT, datefmt=Log.LOGGER_DATE_FORMAT_FULL)
+        # noinspection PyTypeChecker
         color_formatter = ColoredFormatter(fmt=Log.LOGGER_COLORED_MESSAGE_FORMAT, datefmt=Log.LOGGER_DATE_FORMAT,
                                            reset=True, log_colors=default_log_colors)
 
@@ -236,9 +238,10 @@ class Log(object):
             timestamp = '' if end == '' else '%s ' % time.strftime(str("%H:%M:%S"))
 
             if Log.logs_dir:
+                if sys.version_info[0] < 3:
+                    msg = unicode(msg)  # noqa
                 _timestamped_message = '%s%s' % (timestamp, msg)
                 _cleared_timestamped_message = clear_message(_timestamped_message)
-
                 self.file_printer(_cleared_timestamped_message)
 
             # todo: emit to custom handlers
