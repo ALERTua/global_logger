@@ -3,6 +3,22 @@
   <component name="JsonSchemaMappingsProjectConfiguration">
     <state>
       <map>
+        <entry key="github-action">
+          <value>
+            <SchemaInfo>
+              <option name="name" value="github-action" />
+              <option name="relativePathToSchema" value="https://json.schemastore.org/github-action" />
+              <option name="applicationDefined" value="true" />
+              <option name="patterns">
+                <list>
+                  <Item>
+                    <option name="path" value=".github/workflows/python-package.yml" />
+                  </Item>
+                </list>
+              </option>
+            </SchemaInfo>
+          </value>
+        </entry>
         <entry key="github-workflow">
           <value>
             <SchemaInfo>
