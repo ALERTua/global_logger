@@ -6,9 +6,6 @@ Global Logger
 .. image:: https://img.shields.io/pypi/v/global_logger.svg
         :target: https://pypi.python.org/pypi/global_logger
 
-.. image:: https://img.shields.io/travis/alertua/global_logger.svg
-        :target: https://travis-ci.com/alertua/global_logger
-
 .. image:: https://readthedocs.org/projects/global-logger/badge/?version=latest
         :target: https://global-logger.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
