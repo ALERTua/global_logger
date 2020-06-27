@@ -55,9 +55,15 @@ jobs:
       run: |
         tox
 
-    - name: Deploy
+    - name: Install Deployment Requirements
       if: matrix.python-version == '3.7'
       run: |
         pip install setuptools wheel twine
-        python setup.py sdist bdist_wheel
-        twine upload --repository testpypi dist/*
+
+    - name: Publish package to TestPyPI
+      if: matrix.python-version == '3.7'
+      uses: pypa/gh-action-pypi-publish@master
+      with:
+        user: '${{ secrets.PYPI_USERNAME }}'
+        password: '${{ secrets.PYPI_TEST_PASSWORD }}'
+        repository_url: 'https://test.pypi.org/legacy/'
