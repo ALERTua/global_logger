@@ -10,6 +10,9 @@ Global Logger
         :target: https://global-logger.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
+.. image:: https://github.com/ALERTua/global_logger/workflows/Python%20Package/badge.svg?branch=master
+        :target: https://github.com/ALERTua/global_logger/actions?query=workflow%3A%22Python+Package%22
+
 
 
 
