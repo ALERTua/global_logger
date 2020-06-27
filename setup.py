@@ -32,7 +32,8 @@ test_requirements = [
     "coverage",
     "Sphinx",
     "twine",
-    "pendulum==2.0.3",  # fixed version
+    "pendulum==2.0.3; python_version < '3'",  # fixed version
+    "pendulum; python_version >= '3'",  # fixed version
     "pathlib",
     "colorama",
     "colorlog",
@@ -71,6 +72,6 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/alertua/global_logger',
-    version='0.2.2',
+    version='0.2.4',
     zip_safe=False,
 )
