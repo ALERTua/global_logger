@@ -13,4 +13,5 @@ colorama
 colorlog
 future
 zipp
-pytest
+pytest==4.6;python_version<"3.4"
+pytest;python_version>"3.4"
