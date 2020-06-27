@@ -26,7 +26,7 @@ jobs:
 
     env:
       TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
-      TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+      TWINE_PASSWORD: ${{ secrets.PYPI_TEST_PASSWORD }}
       PYTHONWARNINGS: 'ignore:DEPRECATION::pip._internal.cli.base_command'
 
     steps:
@@ -55,17 +55,9 @@ jobs:
       run: |
         tox
 
-    - name: Install dependencies for deployment
+    - name: Deploy
+      if: matrix.python-version == '3.7'
       run: |
         pip install setuptools wheel twine
-
-    - name: Build and publish
-      if: matrix.python-version == '3.7'
-      with:
-        python_version: '3.7.0'
-      env:
-        TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
-        TWINE_PASSWORD: ${{ secrets.PYPI_TEST_PASSWORD }}
-      run: |
         python setup.py sdist bdist_wheel
         twine upload --repository testpypi dist/*
