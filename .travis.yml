@@ -11,7 +11,7 @@ python:
   - 2.7
 
 # Command to install dependencies, e.g. pip install -r requirements.txt
-install: pip install tox-travis
+install: pip install tox-travis -r requirements-tests.txt
 
 # Command to run tests, e.g. python setup.py test
 script:
