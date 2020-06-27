@@ -27,4 +27,4 @@ deploy:
   on:
     tags: true
     repo: alertua/global_logger
-    python: 3.8
+    python: 3.7
