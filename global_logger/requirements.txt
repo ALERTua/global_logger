@@ -1,4 +1,4 @@
-pendulum
+pendulum==2.0.3  # this freezed version is only for travis
 pathlib
 colorama
 colorlog

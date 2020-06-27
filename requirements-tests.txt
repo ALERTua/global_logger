@@ -1,5 +1,4 @@
 -r global_logger/requirements.txt
-pendulum==2.0.3
 tox
 flake8
 pytest
