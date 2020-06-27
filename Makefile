@@ -48,7 +48,7 @@ clean-test: ## remove test and coverage artifacts
 	rm -fr .pytest_cache
 
 lint: ## check style with flake8
-	flake8 python_flexible_logger tests
+	flake8 global_logger tests
 
 test: ## run tests quickly with the default Python
 	python setup.py test
@@ -57,15 +57,15 @@ test-all: ## run tests on every Python version with tox
 	tox
 
 coverage: ## check code coverage quickly with the default Python
-	coverage run --source python_flexible_logger setup.py test
+	coverage run --source global_logger setup.py test
 	coverage report -m
 	coverage html
 	$(BROWSER) htmlcov/index.html
 
 docs: ## generate Sphinx HTML documentation, including API docs
-	rm -f docs/python_flexible_logger.rst
+	rm -f docs/global_logger.rst
 	rm -f docs/modules.rst
-	sphinx-apidoc -o docs/ python_flexible_logger
+	sphinx-apidoc -o docs/ global_logger
 	$(MAKE) -C docs clean
 	$(MAKE) -C docs html
 	$(BROWSER) docs/_build/html/index.html

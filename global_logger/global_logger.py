@@ -10,15 +10,15 @@ import re
 import sys
 import time
 import traceback
-from pathlib import Path
-from typing import List
 
 import pendulum
 from colorama import Fore
 from colorlog import ColoredFormatter, default_log_colors
+from pathlib import Path
+from typing import List
 
 if sys.version_info[0] < 3:
-    from past.builtins import basestring as str
+    pass
 else:
     buffer = memoryview
 
@@ -65,6 +65,7 @@ class Log(object):
     loggers = {}
     auto_added_handlers = []  # type: List[logging.Handler]
     log_session_filename = None
+    logs_dir = DEFAULT_LOGS_DIR
 
     @staticmethod
     def set_global_log_level(level):
@@ -75,9 +76,8 @@ class Log(object):
         for handler in Log.auto_added_handlers:
             handler.level = level
 
-    def __init__(self, name, level=GLOBAL_LOG_LEVEL, logs_dir=DEFAULT_LOGS_DIR, file_logging=False,
-                 dump_initial_data=False, max_log_files=MAX_LOG_FILES, message_format=LOGGER_MESSAGE_FORMAT,
-                 date_format_full=LOGGER_DATE_FORMAT_FULL, date_format=LOGGER_DATE_FORMAT):
+    def __init__(self, name, level=None, logs_dir=None, dump_initial_data=False, max_log_files=None,
+                 message_format=None, date_format_full=None, date_format=None):
         level = level or Log.GLOBAL_LOG_LEVEL
 
         verbose = os.getenv('LOG_VERBOSE', False)
@@ -85,11 +85,12 @@ class Log(object):
             level = logging.DEBUG
 
         self.name = name
-        self.message_format = message_format or Log.LOGGER_MESSAGE_FORMAT
-        self.date_format_full = date_format_full or Log.LOGGER_DATE_FORMAT_FULL
-        self.date_format = date_format or Log.LOGGER_DATE_FORMAT
-        self.max_log_files = max_log_files or Log.MAX_LOG_FILES
-        self.file_logging = file_logging
+        Log.LOGGER_MESSAGE_FORMAT = message_format or Log.LOGGER_MESSAGE_FORMAT
+        Log.LOGGER_DATE_FORMAT_FULL = date_format_full or Log.LOGGER_DATE_FORMAT_FULL
+        Log.LOGGER_DATE_FORMAT = date_format or Log.LOGGER_DATE_FORMAT
+        Log.MAX_LOG_FILES = max_log_files or Log.MAX_LOG_FILES
+        Log.logs_dir = logs_dir or Log.logs_dir or Log.DEFAULT_LOGS_DIR
+
         self.dump_initial_data = dump_initial_data
         self.log = logging.getLogger(self.name)
         self.log.propagate = False  # this fixes a recursion if other modules also use logging
@@ -102,20 +103,19 @@ class Log(object):
         self.exception = self.log.exception
 
         new_log_file = False
-        if self.file_logging:
-            self.logs_dir = Path(logs_dir) if logs_dir else Log.DEFAULT_LOGS_DIR
-            if not (self.logs_dir.exists() and self.logs_dir.is_dir()):
-                self.logs_dir.mkdir()
+        if Log.logs_dir:
+            Log.logs_dir = Path(Log.logs_dir)
+            if not (Log.logs_dir.exists() and Log.logs_dir.is_dir()):
+                Log.logs_dir.mkdir()
 
             if Log.log_session_filename is None:
                 Log.log_session_filename = "%s.log" % pendulum.now().strftime('%Y-%m-%d_%H-%M-%S')
                 self.clean_logs_folder()
                 new_log_file = True
 
-        formatter = logging.Formatter(self.message_format, datefmt=self.date_format_full)
-        color_formatter = ColoredFormatter(fmt=Log.LOGGER_COLORED_MESSAGE_FORMAT,
-                                           datefmt=self.date_format, reset=True,
-                                           log_colors=default_log_colors)
+        formatter = logging.Formatter(Log.LOGGER_MESSAGE_FORMAT, datefmt=Log.LOGGER_DATE_FORMAT_FULL)
+        color_formatter = ColoredFormatter(fmt=Log.LOGGER_COLORED_MESSAGE_FORMAT, datefmt=Log.LOGGER_DATE_FORMAT,
+                                           reset=True, log_colors=default_log_colors)
 
         self.stdout_handler = logging.StreamHandler(sys.stdout)
         self.stdout_handler.addFilter(InfoFilter())
@@ -126,15 +126,15 @@ class Log(object):
         self.log.addHandler(self.stderr_handler)
         self.stderr_handler.setFormatter(color_formatter)
 
-        if self.file_logging:
-            self.log_file_full_path = self.logs_dir / Log.log_session_filename
+        if Log.logs_dir:
+            self.log_file_full_path = Log.logs_dir / Log.log_session_filename
             self.filehandler = logging.FileHandler(str(self.log_file_full_path))
             self.filehandler.setFormatter(formatter)
             self.log.addHandler(self.filehandler)
 
         self.level = level
         Log.loggers[self.name] = self
-        if self.file_logging and self.dump_initial_data and new_log_file:
+        if Log.logs_dir and self.dump_initial_data and new_log_file:
             try:
                 _env_dump_str = "Python {sysver} @ {platf}\n{user}@{comp} @ {winver}".format(
                     sysver=sys.version, platf=platform.architecture(), winver=sys.getwindowsversion(),
@@ -167,15 +167,12 @@ class Log(object):
             self.set_global_log_level(logging.INFO)
 
     @classmethod
-    def get_logger(cls, name=None, level=GLOBAL_LOG_LEVEL, logs_dir=DEFAULT_LOGS_DIR, file_logging=False,
-                   dump_initial_data=False, max_log_files=MAX_LOG_FILES, message_format=LOGGER_MESSAGE_FORMAT,
-                   date_format_full=LOGGER_DATE_FORMAT_FULL, date_format=LOGGER_DATE_FORMAT):
+    def get_logger(cls, name=None, level=None, logs_dir=None, dump_initial_data=False, max_log_files=None,
+                   message_format=None, date_format_full=None, date_format=None):
         name = name or get_prev_function_name()
-        output = Log.loggers.get(name)
-        output = output or cls(name, level=level, logs_dir=logs_dir, file_logging=file_logging,
-                               dump_initial_data=dump_initial_data, max_log_files=max_log_files,
-                               message_format=message_format, date_format_full=date_format_full,
-                               date_format=date_format)
+        output = Log.loggers.get(name) or cls(name, level=level, logs_dir=logs_dir, dump_initial_data=dump_initial_data,
+                                              max_log_files=max_log_files, message_format=message_format,
+                                              date_format_full=date_format_full, date_format=date_format)
         Log.add_autoadded_handlers()
         return output
 
@@ -195,23 +192,23 @@ class Log(object):
     def level(self, value):
         Log.GLOBAL_LOG_LEVEL = value
         self.log.setLevel(logging.DEBUG)
-        if self.file_logging:
+        if Log.logs_dir:
             self.filehandler.setLevel(logging.DEBUG)
         self.stdout_handler.setLevel(value)
         self.stderr_handler.setLevel(logging.WARNING)
 
     @property
     def log_files(self):
-        output = sorted(list(self.logs_dir.glob('*.log')), key=lambda f: f.stat().st_ctime,
+        output = sorted(list(Log.logs_dir.glob('*.log')), key=lambda f: f.stat().st_ctime,
                         reverse=True)
         return output
 
     def clean_logs_folder(self):
-        log_files = sorted(list(self.logs_dir.glob('*.log')), key=lambda f: f.stat().st_ctime,
+        log_files = sorted(list(Log.logs_dir.glob('*.log')), key=lambda f: f.stat().st_ctime,
                            reverse=True)
-        if len(log_files) > self.max_log_files:
+        if len(log_files) > Log.MAX_LOG_FILES:
             try:
-                [_file.unlink() for _file in log_files[self.max_log_files:]]
+                [_file.unlink() for _file in log_files[Log.MAX_LOG_FILES:]]
             except:
                 pass
 
@@ -233,7 +230,7 @@ class Log(object):
         for msg in message:
             timestamp = '' if end == '' else '%s ' % time.strftime(str("%H:%M:%S"))
 
-            if self.file_logging:
+            if Log.logs_dir:
                 _timestamped_message = '%s%s' % (timestamp, msg)
                 _cleared_timestamped_message = clear_message(_timestamped_message)
 
@@ -255,7 +252,7 @@ class Log(object):
             print(_colored_msg, end=print_end)
 
     def file_printer(self, message):
-        if not self.file_logging:
+        if not Log.logs_dir:
             return
 
         if not message.endswith('\n'):

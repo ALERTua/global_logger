@@ -1,1 +1,1 @@
-"""Unit test package for python_flexible_logger."""
+"""Unit test package for global_logger."""

@@ -1,4 +1,4 @@
-Welcome to Python Flexible Logger's documentation!
+Welcome to Global Logger's documentation!
 ======================================
 
 .. toctree::

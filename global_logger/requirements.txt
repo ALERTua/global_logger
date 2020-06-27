@@ -1,0 +1,16 @@
+setuptools
+pip
+wheel
+watchdog
+flake8
+tox
+coverage
+Sphinx
+twine
+pendulum==2.0.3  # fixed version
+pathlib
+colorama
+colorlog
+future
+zipp
+pytest

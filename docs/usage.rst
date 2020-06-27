@@ -2,6 +2,6 @@
 Usage
 =====
 
-To use Python Flexible Logger in a project::
+To use Global Logger in a project::
 
-    import python_flexible_logger
+    import global_logger

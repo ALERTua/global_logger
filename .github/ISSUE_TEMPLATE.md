@@ -1,4 +1,4 @@
-* Python Flexible Logger version:
+* Global Logger version:
 * Python version:
 * Operating System:
 

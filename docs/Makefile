@@ -4,7 +4,7 @@
 # You can set these variables from the command line.
 SPHINXOPTS    =
 SPHINXBUILD   = python -msphinx
-SPHINXPROJ    = python_flexible_logger
+SPHINXPROJ    = global_logger
 SOURCEDIR     = .
 BUILDDIR      = _build
 

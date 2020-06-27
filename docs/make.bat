@@ -9,7 +9,7 @@ if "%SPHINXBUILD%" == "" (
 )
 set SOURCEDIR=.
 set BUILDDIR=_build
-set SPHINXPROJ=python_flexible_logger
+set SPHINXPROJ=global_logger
 
 if "%1" == "" goto help
 
