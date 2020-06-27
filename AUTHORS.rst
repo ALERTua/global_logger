@@ -2,7 +2,7 @@
 Credits
 =======
 
-Development Lead
+Developer
 ----------------
 
 * Alexey Rubasheff <alexey.rubasheff@gmail.com>
