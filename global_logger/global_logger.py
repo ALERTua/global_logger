@@ -109,7 +109,12 @@ class Log(object):
                 Log.logs_dir.mkdir()
 
             if Log.log_session_filename is None:
-                Log.log_session_filename = "%s.log" % pendulum.now().strftime('%Y-%m-%d_%H-%M-%S')
+                from pendulum.tz.zoneinfo.exceptions import InvalidZoneinfoFile
+                try:
+                    now = pendulum.now()
+                except InvalidZoneinfoFile:
+                    now = pendulum.now(pendulum.UTC)  # travis-ci precaution
+                Log.log_session_filename = "%s.log" % now.strftime('%Y-%m-%d_%H-%M-%S')
                 self.clean_logs_folder()
                 new_log_file = True
 
