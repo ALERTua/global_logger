@@ -2,8 +2,8 @@
 
 """The setup script."""
 import os
+
 # noinspection PyProtectedMember,PyCompatibility
-from pip._internal.req import parse_requirements
 from setuptools import setup, find_packages
 
 with open('README.rst') as readme_file:
@@ -15,10 +15,27 @@ with open('HISTORY.rst') as history_file:
 cur_file_dir_path = os.path.dirname(os.path.abspath(__file__))
 
 # noinspection PyTypeChecker
-install_reqs = parse_requirements(os.path.join(cur_file_dir_path, 'global_logger/requirements.txt'), session='hack')
-reqs = [r.requirement for r in install_reqs]
+# install_reqs = parse_requirements(os.path.join(cur_file_dir_path, 'global_logger/requirements.txt'), session='hack')
+# reqs = [r.requirement for r in install_reqs]
 
-requirements = reqs
+requirements = [
+    "setuptools",
+    "pip",
+    "wheel",
+    "watchdog",
+    "flake8",
+    "tox",
+    "coverage",
+    "Sphinx",
+    "twine",
+    "pendulum==2.0.3",  # fixed version
+    "pathlib",
+    "colorama",
+    "colorlog",
+    "future",
+    "zipp",
+    "pytest",
+]
 setup_requirements = requirements
 test_requirements = requirements
 
