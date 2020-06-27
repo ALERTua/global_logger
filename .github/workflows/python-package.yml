@@ -24,6 +24,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
+      env:
+        PYTHONWARNINGS: ignore:DEPRECATION::pip._internal.cli.base_command
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
@@ -44,5 +46,7 @@ jobs:
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with tox
+      env:
+        PYTHONWARNINGS: ignore:DEPRECATION::pip._internal.cli.base_command
       run: |
         tox
