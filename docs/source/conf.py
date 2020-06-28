@@ -17,9 +17,12 @@
 # relative to the documentation root, use os.path.abspath to make it
 # absolute, like shown here.
 #
-import os
 import sys
-sys.path.insert(0, os.path.abspath('..'))
+from pathlib import Path
+_root_path = Path(__file__).parent.parent.parent
+_source_path = _root_path / 'global_logger'
+sys.path.append(str(_root_path))
+sys.path.append(str(_source_path))
 
 import global_logger
 

@@ -1,6 +1,6 @@
 
 @echo off
-call ..\constants.cmd
+call constants.cmd
 
 call %VENV_PIP% install sphinx sphinx-rtd-theme
 call %~dp0_sphinx-apidoc.cmd

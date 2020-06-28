@@ -2,7 +2,7 @@
 @ECHO OFF
 
 pushd %~dp0
-call ..\constants.cmd
+call constants.cmd
 
 REM Command file for Sphinx documentation
 
@@ -11,6 +11,7 @@ if "%SPHINXBUILD%" == "" (
 )
 set SOURCEDIR=source
 set BUILDDIR=build
+set SPHINXPROJ=global_logger
 
 if "%1" == "" goto help
 
