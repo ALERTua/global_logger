@@ -2,7 +2,7 @@
 @ECHO OFF
 
 pushd %~dp0
-call constants.cmd
+call %~dp0constants.cmd
 
 REM Command file for Sphinx documentation
 
