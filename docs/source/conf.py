@@ -21,12 +21,12 @@ import sys
 
 from pathlib import Path
 
-import global_logger
-
 _root_path = Path(__file__).parent.parent.parent
 _source_path = _root_path / 'global_logger'
 sys.path.append(str(_root_path))
 sys.path.append(str(_source_path))
+
+import global_logger  # noqa
 
 # -- General configuration ---------------------------------------------
 
