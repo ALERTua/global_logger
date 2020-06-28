@@ -31,11 +31,9 @@ log.green('green text', clear=False)
 log.yellow('yellow text', end='\t\t\t\t')
 log.red('red text')
 
-
 # create and/or reuses a global logger, choosing its name dynamicaly
 # with screen and .log files output at the relative folder 'logs' and the default logging level INFO
 log = Log.get_logger(logs_dir='logs')
-
 
 # force ALL loggers to lower their logging level to WARNING
 # Note: file output will always remain on logging level DEBUG
@@ -50,4 +48,3 @@ def func(number, other_number):
 
 func(1, 2)
 # 2020-06-28 14:30:55.194 322:source.examples DEBUG  source.examples.func[('number', 1), ('other_number', 2)]
-

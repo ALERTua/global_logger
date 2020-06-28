@@ -18,13 +18,15 @@
 # absolute, like shown here.
 #
 import sys
+
 from pathlib import Path
+
+import global_logger
+
 _root_path = Path(__file__).parent.parent.parent
 _source_path = _root_path / 'global_logger'
 sys.path.append(str(_root_path))
 sys.path.append(str(_source_path))
-
-import global_logger
 
 # -- General configuration ---------------------------------------------
 
@@ -83,7 +85,6 @@ pygments_style = 'sphinx'
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = False
 
-
 # -- Options for HTML output -------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
@@ -102,12 +103,10 @@ html_theme = 'sphinx_rtd_theme'
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
-
 # -- Options for HTMLHelp output ---------------------------------------
 
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'global_logger_doc'
-
 
 # -- Options for LaTeX output ------------------------------------------
 
@@ -138,7 +137,6 @@ latex_documents = [
      'Alexey Rubasheff', 'manual'),
 ]
 
-
 # -- Options for manual page output ------------------------------------
 
 # One entry per manual page. List of tuples
@@ -148,7 +146,6 @@ man_pages = [
      'Global Logger Documentation',
      [author], 1)
 ]
-
 
 # -- Options for Texinfo output ----------------------------------------
 
@@ -163,6 +160,3 @@ texinfo_documents = [
      'One line description of project.',
      'Miscellaneous'),
 ]
-
-
-

@@ -10,13 +10,13 @@ import re
 import sys
 import time
 import traceback
-from pathlib import Path
-from typing import List, TYPE_CHECKING
 
 import pendulum
 from colorama import Fore
 from colorama.ansi import AnsiFore
 from colorlog import ColoredFormatter, default_log_colors
+from pathlib import Path
+from typing import List, TYPE_CHECKING
 
 if TYPE_CHECKING:
     pass
@@ -143,7 +143,7 @@ class Log(object):
 
         if Log.logs_dir:
             self.log_file_full_path = Log.logs_dir / Log.log_session_filename
-            self._filehandler = logging.FileHandler(str(self.log_file_full_path))
+            self._filehandler = logging.FileHandler(str(self.log_file_full_path), encoding='UTF-8')
             self._filehandler.setFormatter(formatter)
             self.logger.addHandler(self._filehandler)
 
@@ -263,7 +263,7 @@ class Log(object):
         """
 
         :param message:
-        :type message: object
+        :type message: str or list of str
         :param end:
         :type end: str
         :param color:
@@ -280,15 +280,13 @@ class Log(object):
             timestamp = '' if end == '' else '%s ' % time.strftime(str("%H:%M:%S"))
 
             if Log.logs_dir:
-                if PYTHON2:
-                    msg = unicode(msg)  # noqa
                 _timestamped_message = '%s%s' % (timestamp, msg)
                 _cleared_timestamped_message = clear_message(_timestamped_message)
                 self._file_printer(_cleared_timestamped_message)
 
             # todo: emit to custom handlers
             for handler in Log.auto_added_handlers:
-                handler.emit(msg.encode('UTF-8'))
+                handler.emit(msg)
 
             _cleared_message = msg
             if clear is True and isinstance(msg, (str, buffer)):
@@ -302,17 +300,16 @@ class Log(object):
 
             print(_colored_msg, end=print_end)
 
-    def _file_printer(self, message):
+    def _file_printer(self, msg):
         if not Log.logs_dir:
             return
 
-        if not message.endswith('\n'):
-            message += '\n'
+        if not msg.endswith('\n'):
+            msg += '\n'
 
-        if PYTHON2:
-            encoded_message = message.encode('UTF-8')
-            message = str(encoded_message)
-        self._filehandler.stream.write(message)
+        # if not PYTHON2 and isinstance(msg, str):
+        #     msg = msg.encode('UTF-8')
+        self._filehandler.stream.write(msg)
         self._filehandler.flush()
 
     def trace(self):
@@ -325,21 +322,45 @@ class Log(object):
         _params = [(i, values[i]) for i in args if 'self' not in i]
         self.debug("%s.%s.%s%s" % (file_dir, file_name, func_name, _params))
 
+    # @staticmethod
+    # def _string_magic(msg):
+    #     # if not PYTHON2 and isinstance(msg, str):
+    #     #     return msg.encode('UTF-8')
+    #
+    #     return msg
+    #
+    # def debug(self, msg, *args, **kwargs):
+    #     msg = self._string_magic(msg)
+    #     return self.logger.debug(msg, *args, **kwargs)
+    #
+    # def info(self, msg, *args, **kwargs):
+    #     return self.logger.info(self._string_magic(msg), *args, **kwargs)
+    #
+    # def warning(self, msg, *args, **kwargs):
+    #     return self.logger.warning(self._string_magic(msg), *args, **kwargs)
+    #
+    # def error(self, msg, *args, **kwargs):
+    #     return self.logger.error(self._string_magic(msg), *args, **kwargs)
+    #
+    # def critical(self, msg, *args, **kwargs):
+    #     return self.logger.critical(self._string_magic(msg), *args, **kwargs)
+    #
+    # def exception(self, msg, *args, exc_info=True, **kwargs):
+    #     return self.logger.info(self._string_magic(msg), *args, exc_info=exc_info, **kwargs)
+
+
+def __func():
+    log.trace()
+    log.debug('func called')
+
 
 if __name__ == '__main__':
     log = Log.get_logger()
-
-
-    def func():
-        log.trace()
-        log.debug('func called')
-
-
     log.debug('test debug абракадабра')
     log.info('test info абракадабра')
     log.error('test error абракадабра')
     log.printer('test filehandler message абракадабра')
     log.warning('test warning абракадабра')
     log.green('test green абракадабра')
-    func()
+    __func()
     print("")
