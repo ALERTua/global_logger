@@ -29,12 +29,3 @@ Features
 
 * Python 2 and 3 compatible
 * Warning! Python2 files have to have 'from __future__ import print_function, unicode_literals' at the top
-
-
-Examples
---------
-
-
-.. literalinclude:: examples.py
-   :language: python
-
