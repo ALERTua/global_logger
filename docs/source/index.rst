@@ -1,5 +1,5 @@
 Welcome to Global Logger's documentation!
-======================================
+=========================================
 
 .. toctree::
    :maxdepth: 2

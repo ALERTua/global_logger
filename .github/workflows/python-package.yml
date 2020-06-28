@@ -57,7 +57,7 @@ jobs:
         python -m pip install tox
         tox -e py,flake8,pytest
 
-    - name: Build and publish
+    - name: Build and Publish to TestPyPi
       if: matrix.python-version == '3.7'
       env:
         TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}

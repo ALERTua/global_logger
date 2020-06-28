@@ -109,7 +109,7 @@ Tips
 To run a subset of tests::
 
 
-    $ python -m unittest tests.test_global_logger
+    $ python -m pytest tests.test_global_logger
 
 Deploying
 ---------

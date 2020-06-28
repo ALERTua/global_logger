@@ -18,6 +18,7 @@ Global Logger
 
 Global Logger
 
+Based on Python built-in logger, expands it and provides global logger to your system.
 
 * Free software: MIT license
 * Documentation: https://global-logger.readthedocs.io.
@@ -26,13 +27,14 @@ Global Logger
 Features
 --------
 
-Python2 files have to have 'from __future__ import print_function, unicode_literals' at the top
-* TODO
+* Python 2 and 3 compatible
+* Warning! Python2 files have to have 'from __future__ import print_function, unicode_literals' at the top
 
-Credits
--------
 
-This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
+Examples
+--------
 
-.. _Cookiecutter: https://github.com/audreyr/cookiecutter
-.. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
+
+.. literalinclude:: examples.py
+   :language: python
+
