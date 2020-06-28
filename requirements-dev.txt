@@ -3,3 +3,5 @@ tox
 flake8
 pytest
 bumpversion
+Sphinx
+sphinx_rtd_theme
