@@ -22,7 +22,9 @@ Global Logger
 Based on Python built-in logger, expands it, and provides a global logger to your system.
 
 * Free software: MIT license
-* Documentation: https://alertua.github.io/global_logger.
+* Documentation:
+    * https://alertua.github.io/global_logger
+    * https://global-logger.readthedocs.io / https://global-logger.rtfd.io
 
 
 Features
