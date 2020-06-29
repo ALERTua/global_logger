@@ -1,9 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-# from __future__ import print_function, unicode_literals
-# Python2 files have to have this import
-
 from global_logger import Log
 
 # create and/or reuse a global logger, choosing its name dynamicaly
