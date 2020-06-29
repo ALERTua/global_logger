@@ -6,9 +6,10 @@ Global Logger
 .. image:: https://img.shields.io/pypi/v/global_logger.svg
         :target: https://pypi.python.org/pypi/global_logger
 
-.. image:: https://readthedocs.org/projects/global-logger/badge/?version=latest
-        :target: https://global-logger.readthedocs.io/en/latest/?badge=latest
-        :alt: Documentation Status
+..
+  .. image:: https://readthedocs.org/projects/global-logger/badge/?version=latest
+          :target: https://global-logger.readthedocs.io/en/latest/?badge=latest
+          :alt: Documentation Status
 
 .. image:: https://github.com/ALERTua/global_logger/workflows/Python%20Package/badge.svg?branch=master
         :target: https://github.com/ALERTua/global_logger/actions?query=workflow%3A%22Python+Package%22
@@ -21,7 +22,7 @@ Global Logger
 Based on Python built-in logger, expands it and provides global logger to your system.
 
 * Free software: MIT license
-* Documentation: https://global-logger.readthedocs.io.
+* Documentation: https://alertua.github.io/global_logger.
 
 
 Features
