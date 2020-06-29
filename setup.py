@@ -59,10 +59,9 @@ setup(
         # 'Programming Language :: Python :: 3.8',
         # 'Programming Language :: Python :: 3.9',
     ],
-    description="""Based on Python built-in logger, expands it, and provides a global logger to your system.
-* Easy on-screen logging setup without pain for Python newcomers
-* Easy .log files output setup without pain for Python newcomers
-* Python 2 and 3 compatible""",
+    description="Based on Python built-in logger, expands it, and provides a global logger to your system. "
+                "Easy on-screen and/or .log files output setup without pain for Python newcomers. "
+                "Python 2 and 3 compatible",
     install_requires=requirements,
     license="MIT license",
     long_description='%s\n\n%s' % (readme, history),
