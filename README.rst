@@ -19,7 +19,7 @@ Global Logger
 
 Global Logger
 
-Based on Python built-in logger, expands it and provides global logger to your system.
+Based on Python built-in logger, expands it, and provides a global logger to your system.
 
 * Free software: MIT license
 * Documentation: https://alertua.github.io/global_logger.
@@ -28,5 +28,6 @@ Based on Python built-in logger, expands it and provides global logger to your s
 Features
 --------
 
+* Easy on-screen logging setup without pain for Python newcomers
+* Easy .log files output setup without pain for Python newcomers
 * Python 2 and 3 compatible
-* Warning! Python2 files have to have 'from __future__ import print_function, unicode_literals' at the top

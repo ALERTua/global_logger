@@ -3,10 +3,11 @@ History
 =======
 
 
-0.3.0 (2020-06-29)
+0.3.1 (2020-06-29)
 ------------------
 
 * Github Pages setup
+* Documentation update
 
 
 0.2.11 (2020-06-28)

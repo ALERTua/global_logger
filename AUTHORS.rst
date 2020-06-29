@@ -3,7 +3,7 @@ Credits
 =======
 
 Developer
-----------------
+---------
 
 * Alexey Rubasheff <alexey.rubasheff@gmail.com>
 

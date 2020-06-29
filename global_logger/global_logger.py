@@ -10,7 +10,7 @@ import re
 import sys
 import time
 import traceback
-
+import atexit
 import pendulum
 from colorama import Fore
 from colorama.ansi import AnsiFore
@@ -78,6 +78,12 @@ class Log(object):
 
     @staticmethod
     def set_global_log_level(level):
+        """
+        Global Logging Level Setter Method.
+        Sets Logging Level for all loggers of this type
+        :type level: int
+        :param level: Global Logging Level to set.
+        """
         print("Changing global logger level to %s" % level)
         Log.GLOBAL_LOG_LEVEL = level
         for logger in Log.loggers.values():
@@ -86,7 +92,10 @@ class Log(object):
             handler.level = level
 
     def __init__(self, name, level=None, logs_dir=None, dump_initial_data=False, max_log_files=None,
-                 message_format=None, date_format_full=None, date_format=None):
+                 message_format=None, date_format_full=None, date_format=None, direct=True):
+        if direct:
+            raise ValueError("You should create Global Logger via Log.get_logger() method.")
+
         level = level or Log.GLOBAL_LOG_LEVEL
 
         verbose = os.getenv('LOG_VERBOSE', False)
@@ -158,6 +167,8 @@ class Log(object):
             except:  # noqa
                 pass
 
+        atexit.register(self._clean)
+
     def __str__(self):
         return self.name
 
@@ -166,6 +177,21 @@ class Log(object):
 
     def __eq__(self, other):
         return self.name == other.name
+
+    def __del__(self):
+        self._clean()
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self._clean()
+
+    def _clean(self):
+        if not hasattr(self, '_filehandler'):
+            return
+
+        if self._filehandler:
+            self._filehandler.flush()
+            self._filehandler.close()
+            self._filehandler = None
 
     @property
     def verbose(self):
@@ -192,7 +218,7 @@ class Log(object):
         :param level: Logging level for the current instance.
         :type level: int
         :param logs_dir: Path where the .log files would be created, if provided.
-        :type logs_dir: Path or str
+        :type logs_dir: Path or str or None
         :param dump_initial_data: Whether to fill the newly created .log file with initial user data.
         :type dump_initial_data: bool
         :param max_log_files: Maximum .log files to store.
@@ -209,7 +235,7 @@ class Log(object):
         name = name or get_prev_function_name()
         output = Log.loggers.get(name) or cls(name, level=level, logs_dir=logs_dir, dump_initial_data=dump_initial_data,
                                               max_log_files=max_log_files, message_format=message_format,
-                                              date_format_full=date_format_full, date_format=date_format)
+                                              date_format_full=date_format_full, date_format=date_format, direct=False)
         Log._add_autoadded_handlers()
         return output
 
@@ -222,11 +248,21 @@ class Log(object):
 
     @property
     def level(self):
+        """
+        Returns current on-screen logging output level.
+        File output is always DEBUG.
+        :return: int or None
+        """
         if hasattr(self, 'stdout_handler'):
             return self._stdout_handler.level
 
     @level.setter
     def level(self, value):
+        """
+        Sets level for the current logger instance on-screen logging.
+        File output is always DEBUG.
+        :param value:
+        """
         Log.GLOBAL_LOG_LEVEL = value
         self.logger.setLevel(logging.DEBUG)
         if Log.logs_dir:
@@ -262,13 +298,13 @@ class Log(object):
     def printer(self, *message, **kwargs):
         """
 
-        :param message:
+        :param message: a message to print: as a string or as a list of strings
         :type message: str or list of str
-        :param end:
+        :param end: line ending symbol, defaults to \n
         :type end: str
-        :param color:
+        :param color: message color to use
         :type color: AnsiFore
-        :param clear:
+        :param clear: Whether to clear message string from ANSI symbols, defaults to True
         :type clear: bool
         """
         default_end = '\n'
@@ -286,6 +322,7 @@ class Log(object):
 
             # todo: emit to custom handlers
             for handler in Log.auto_added_handlers:
+                # noinspection PyTypeChecker
                 handler.emit(msg)
 
             _cleared_message = msg
@@ -307,8 +344,6 @@ class Log(object):
         if not msg.endswith('\n'):
             msg += '\n'
 
-        # if not PYTHON2 and isinstance(msg, str):
-        #     msg = msg.encode('UTF-8')
         self._filehandler.stream.write(msg)
         self._filehandler.flush()
 
@@ -320,38 +355,13 @@ class Log(object):
         func_name = traceback.extract_stack(None, 2)[0][2]
         args, _, _, values = inspect.getargvalues(frame)
         _params = [(i, values[i]) for i in args if 'self' not in i]
+        # todo: trace args and kwargs
         self.debug("%s.%s.%s%s" % (file_dir, file_name, func_name, _params))
 
-    # @staticmethod
-    # def _string_magic(msg):
-    #     # if not PYTHON2 and isinstance(msg, str):
-    #     #     return msg.encode('UTF-8')
-    #
-    #     return msg
-    #
-    # def debug(self, msg, *args, **kwargs):
-    #     msg = self._string_magic(msg)
-    #     return self.logger.debug(msg, *args, **kwargs)
-    #
-    # def info(self, msg, *args, **kwargs):
-    #     return self.logger.info(self._string_magic(msg), *args, **kwargs)
-    #
-    # def warning(self, msg, *args, **kwargs):
-    #     return self.logger.warning(self._string_magic(msg), *args, **kwargs)
-    #
-    # def error(self, msg, *args, **kwargs):
-    #     return self.logger.error(self._string_magic(msg), *args, **kwargs)
-    #
-    # def critical(self, msg, *args, **kwargs):
-    #     return self.logger.critical(self._string_magic(msg), *args, **kwargs)
-    #
-    # def exception(self, msg, *args, exc_info=True, **kwargs):
-    #     return self.logger.info(self._string_magic(msg), *args, exc_info=exc_info, **kwargs)
 
-
-def __func():
+def __func(arg, *args, **kwargs):
     log.trace()
-    log.debug('func called')
+    log.debug('__func called')
 
 
 if __name__ == '__main__':
@@ -362,5 +372,5 @@ if __name__ == '__main__':
     log.printer('test filehandler message абракадабра')
     log.warning('test warning абракадабра')
     log.green('test green абракадабра')
-    __func()
+    __func('argument', 'arg', 'arg1', named_arg='test')
     print("")
