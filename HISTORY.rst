@@ -3,11 +3,12 @@ History
 =======
 
 
-0.3.3 (2020-06-29)
+0.3.4 (2020-06-29)
 ------------------
 
-* Github Pages setup
 * Documentation update
+* Github Pages setup
+* ReadTheDocs documentation setup
 
 
 0.2.11 (2020-06-28)
