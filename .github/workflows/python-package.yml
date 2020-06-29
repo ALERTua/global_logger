@@ -5,6 +5,8 @@ name: Package and PyPi Upload
 
 on:
     push:
+        branches:
+            - master
         tags:
             - v*
 

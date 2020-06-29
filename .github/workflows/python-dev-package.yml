@@ -10,7 +10,7 @@ on:
             - develop
         # - release/*
         tags-ignore:
-            - v*
+            - *
     pull_request:
         branches:
             - master
