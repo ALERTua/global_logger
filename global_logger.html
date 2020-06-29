@@ -193,7 +193,7 @@ yes. If deemed appropriate, the record may be modified in-place.</p>
 
 <dl class="py class">
 <dt id="global_logger.global_logger.Log">
-<em class="property">class </em><code class="sig-prename descclassname">global_logger.global_logger.</code><code class="sig-name descname">Log</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">level</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">logs_dir</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dump_initial_data</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">max_log_files</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">message_format</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">date_format_full</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">date_format</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/global_logger/global_logger.html#Log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#global_logger.global_logger.Log" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">global_logger.global_logger.</code><code class="sig-name descname">Log</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">level</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">logs_dir</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dump_initial_data</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">max_log_files</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">message_format</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">date_format_full</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">date_format</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">direct</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/global_logger/global_logger.html#Log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#global_logger.global_logger.Log" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py attribute">
 <dt id="global_logger.global_logger.Log.DEFAULT_LOGS_DIR">
@@ -254,7 +254,7 @@ yes. If deemed appropriate, the record may be modified in-place.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> (<em>str</em>) – a unique logger name that is re-/used if already exists, defaults to the function path.</p></li>
 <li><p><strong>level</strong> (<em>int</em>) – Logging level for the current instance.</p></li>
-<li><p><strong>logs_dir</strong> (<em>Path</em><em> or </em><em>str</em>) – Path where the .log files would be created, if provided.</p></li>
+<li><p><strong>logs_dir</strong> (<em>Path</em><em> or </em><em>str</em><em> or </em><em>None</em>) – Path where the .log files would be created, if provided.</p></li>
 <li><p><strong>dump_initial_data</strong> (<em>bool</em>) – Whether to fill the newly created .log file with initial user data.</p></li>
 <li><p><strong>max_log_files</strong> (<em>int</em>) – Maximum .log files to store.</p></li>
 <li><p><strong>message_format</strong> (<em>str</em>) – Logging message format.</p></li>
@@ -279,7 +279,10 @@ yes. If deemed appropriate, the record may be modified in-place.</p>
 <dl class="py method">
 <dt id="global_logger.global_logger.Log.level">
 <em class="property">property </em><code class="sig-name descname">level</code><a class="headerlink" href="#global_logger.global_logger.Log.level" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Returns current on-screen logging output level.
+File output is always DEBUG.
+:return: int or None</p>
+</dd></dl>
 
 <dl class="py attribute">
 <dt id="global_logger.global_logger.Log.log_session_filename">
@@ -302,10 +305,10 @@ yes. If deemed appropriate, the record may be modified in-place.</p>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>message</strong> (<em>str</em><em> or </em><em>list of str</em>) – </p></li>
-<li><p><strong>end</strong> (<em>str</em>) – </p></li>
-<li><p><strong>color</strong> (<em>AnsiFore</em>) – </p></li>
-<li><p><strong>clear</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>message</strong> (<em>str</em><em> or </em><em>list of str</em>) – a message to print: as a string or as a list of strings</p></li>
+<li><p><strong>end</strong> (<em>str</em>) – line ending symbol, defaults to</p></li>
+<li><p><strong>color</strong> (<em>AnsiFore</em>) – message color to use</p></li>
+<li><p><strong>clear</strong> (<em>bool</em>) – Whether to clear message string from ANSI symbols, defaults to True</p></li>
 </ul>
 </dd>
 </dl>
@@ -319,7 +322,11 @@ yes. If deemed appropriate, the record may be modified in-place.</p>
 <dl class="py method">
 <dt id="global_logger.global_logger.Log.set_global_log_level">
 <em class="property">static </em><code class="sig-name descname">set_global_log_level</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">level</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/global_logger/global_logger.html#Log.set_global_log_level"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#global_logger.global_logger.Log.set_global_log_level" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Global Logging Level Setter Method.
+Sets Logging Level for all loggers of this type
+:type level: int
+:param level: Global Logging Level to set.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="global_logger.global_logger.Log.trace">

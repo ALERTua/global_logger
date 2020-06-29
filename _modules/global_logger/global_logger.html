@@ -169,7 +169,7 @@
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">traceback</span>
-
+<span class="kn">import</span> <span class="nn">atexit</span>
 <span class="kn">import</span> <span class="nn">pendulum</span>
 <span class="kn">from</span> <span class="nn">colorama</span> <span class="kn">import</span> <span class="n">Fore</span>
 <span class="kn">from</span> <span class="nn">colorama.ansi</span> <span class="kn">import</span> <span class="n">AnsiFore</span>
@@ -237,6 +237,12 @@
 
 <div class="viewcode-block" id="Log.set_global_log_level"><a class="viewcode-back" href="../../global_logger.html#global_logger.global_logger.Log.set_global_log_level">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">set_global_log_level</span><span class="p">(</span><span class="n">level</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Global Logging Level Setter Method.</span>
+<span class="sd">        Sets Logging Level for all loggers of this type</span>
+<span class="sd">        :type level: int</span>
+<span class="sd">        :param level: Global Logging Level to set.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Changing global logger level to </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">level</span><span class="p">)</span>
         <span class="n">Log</span><span class="o">.</span><span class="n">GLOBAL_LOG_LEVEL</span> <span class="o">=</span> <span class="n">level</span>
         <span class="k">for</span> <span class="n">logger</span> <span class="ow">in</span> <span class="n">Log</span><span class="o">.</span><span class="n">loggers</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
@@ -245,7 +251,10 @@
             <span class="n">handler</span><span class="o">.</span><span class="n">level</span> <span class="o">=</span> <span class="n">level</span></div>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">logs_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dump_initial_data</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">max_log_files</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">message_format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">date_format_full</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">date_format</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                 <span class="n">message_format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">date_format_full</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">date_format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">direct</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">direct</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;You should create Global Logger via Log.get_logger() method.&quot;</span><span class="p">)</span>
+
         <span class="n">level</span> <span class="o">=</span> <span class="n">level</span> <span class="ow">or</span> <span class="n">Log</span><span class="o">.</span><span class="n">GLOBAL_LOG_LEVEL</span>
 
         <span class="n">verbose</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;LOG_VERBOSE&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
@@ -317,6 +326,8 @@
             <span class="k">except</span><span class="p">:</span>  <span class="c1"># noqa</span>
                 <span class="k">pass</span>
 
+        <span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_clean</span><span class="p">)</span>
+
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
 
@@ -325,6 +336,21 @@
 
     <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">name</span>
+
+    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_clean</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_clean</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_clean</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_filehandler&#39;</span><span class="p">):</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filehandler</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_filehandler</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_filehandler</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_filehandler</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">verbose</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -351,7 +377,7 @@
 <span class="sd">        :param level: Logging level for the current instance.</span>
 <span class="sd">        :type level: int</span>
 <span class="sd">        :param logs_dir: Path where the .log files would be created, if provided.</span>
-<span class="sd">        :type logs_dir: Path or str</span>
+<span class="sd">        :type logs_dir: Path or str or None</span>
 <span class="sd">        :param dump_initial_data: Whether to fill the newly created .log file with initial user data.</span>
 <span class="sd">        :type dump_initial_data: bool</span>
 <span class="sd">        :param max_log_files: Maximum .log files to store.</span>
@@ -368,7 +394,7 @@
         <span class="n">name</span> <span class="o">=</span> <span class="n">name</span> <span class="ow">or</span> <span class="n">get_prev_function_name</span><span class="p">()</span>
         <span class="n">output</span> <span class="o">=</span> <span class="n">Log</span><span class="o">.</span><span class="n">loggers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">level</span><span class="p">,</span> <span class="n">logs_dir</span><span class="o">=</span><span class="n">logs_dir</span><span class="p">,</span> <span class="n">dump_initial_data</span><span class="o">=</span><span class="n">dump_initial_data</span><span class="p">,</span>
                                               <span class="n">max_log_files</span><span class="o">=</span><span class="n">max_log_files</span><span class="p">,</span> <span class="n">message_format</span><span class="o">=</span><span class="n">message_format</span><span class="p">,</span>
-                                              <span class="n">date_format_full</span><span class="o">=</span><span class="n">date_format_full</span><span class="p">,</span> <span class="n">date_format</span><span class="o">=</span><span class="n">date_format</span><span class="p">)</span>
+                                              <span class="n">date_format_full</span><span class="o">=</span><span class="n">date_format_full</span><span class="p">,</span> <span class="n">date_format</span><span class="o">=</span><span class="n">date_format</span><span class="p">,</span> <span class="n">direct</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="n">Log</span><span class="o">.</span><span class="n">_add_autoadded_handlers</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">output</span></div>
 
@@ -381,11 +407,21 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">level</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns current on-screen logging output level.</span>
+<span class="sd">        File output is always DEBUG.</span>
+<span class="sd">        :return: int or None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;stdout_handler&#39;</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stdout_handler</span><span class="o">.</span><span class="n">level</span>
 
     <span class="nd">@level</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">level</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets level for the current logger instance on-screen logging.</span>
+<span class="sd">        File output is always DEBUG.</span>
+<span class="sd">        :param value:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">Log</span><span class="o">.</span><span class="n">GLOBAL_LOG_LEVEL</span> <span class="o">=</span> <span class="n">value</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">Log</span><span class="o">.</span><span class="n">logs_dir</span><span class="p">:</span>
@@ -421,13 +457,13 @@
 <div class="viewcode-block" id="Log.printer"><a class="viewcode-back" href="../../global_logger.html#global_logger.global_logger.Log.printer">[docs]</a>    <span class="k">def</span> <span class="nf">printer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">message</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="sd">        :param message:</span>
+<span class="sd">        :param message: a message to print: as a string or as a list of strings</span>
 <span class="sd">        :type message: str or list of str</span>
-<span class="sd">        :param end:</span>
+<span class="sd">        :param end: line ending symbol, defaults to \n</span>
 <span class="sd">        :type end: str</span>
-<span class="sd">        :param color:</span>
+<span class="sd">        :param color: message color to use</span>
 <span class="sd">        :type color: AnsiFore</span>
-<span class="sd">        :param clear:</span>
+<span class="sd">        :param clear: Whether to clear message string from ANSI symbols, defaults to True</span>
 <span class="sd">        :type clear: bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">default_end</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
@@ -445,6 +481,7 @@
 
             <span class="c1"># todo: emit to custom handlers</span>
             <span class="k">for</span> <span class="n">handler</span> <span class="ow">in</span> <span class="n">Log</span><span class="o">.</span><span class="n">auto_added_handlers</span><span class="p">:</span>
+                <span class="c1"># noinspection PyTypeChecker</span>
                 <span class="n">handler</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
             <span class="n">_cleared_message</span> <span class="o">=</span> <span class="n">msg</span>
@@ -466,8 +503,6 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">msg</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">):</span>
             <span class="n">msg</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
 
-        <span class="c1"># if not PYTHON2 and isinstance(msg, str):</span>
-        <span class="c1">#     msg = msg.encode(&#39;UTF-8&#39;)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_filehandler</span><span class="o">.</span><span class="n">stream</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_filehandler</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
 
@@ -479,38 +514,13 @@
         <span class="n">func_name</span> <span class="o">=</span> <span class="n">traceback</span><span class="o">.</span><span class="n">extract_stack</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">2</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
         <span class="n">args</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getargvalues</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
         <span class="n">_params</span> <span class="o">=</span> <span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">args</span> <span class="k">if</span> <span class="s1">&#39;self&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">i</span><span class="p">]</span>
+        <span class="c1"># todo: trace args and kwargs</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">.</span><span class="si">%s</span><span class="s2">.</span><span class="si">%s%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">file_dir</span><span class="p">,</span> <span class="n">file_name</span><span class="p">,</span> <span class="n">func_name</span><span class="p">,</span> <span class="n">_params</span><span class="p">))</span></div></div>
 
-    <span class="c1"># @staticmethod</span>
-    <span class="c1"># def _string_magic(msg):</span>
-    <span class="c1">#     # if not PYTHON2 and isinstance(msg, str):</span>
-    <span class="c1">#     #     return msg.encode(&#39;UTF-8&#39;)</span>
-    <span class="c1">#</span>
-    <span class="c1">#     return msg</span>
-    <span class="c1">#</span>
-    <span class="c1"># def debug(self, msg, *args, **kwargs):</span>
-    <span class="c1">#     msg = self._string_magic(msg)</span>
-    <span class="c1">#     return self.logger.debug(msg, *args, **kwargs)</span>
-    <span class="c1">#</span>
-    <span class="c1"># def info(self, msg, *args, **kwargs):</span>
-    <span class="c1">#     return self.logger.info(self._string_magic(msg), *args, **kwargs)</span>
-    <span class="c1">#</span>
-    <span class="c1"># def warning(self, msg, *args, **kwargs):</span>
-    <span class="c1">#     return self.logger.warning(self._string_magic(msg), *args, **kwargs)</span>
-    <span class="c1">#</span>
-    <span class="c1"># def error(self, msg, *args, **kwargs):</span>
-    <span class="c1">#     return self.logger.error(self._string_magic(msg), *args, **kwargs)</span>
-    <span class="c1">#</span>
-    <span class="c1"># def critical(self, msg, *args, **kwargs):</span>
-    <span class="c1">#     return self.logger.critical(self._string_magic(msg), *args, **kwargs)</span>
-    <span class="c1">#</span>
-    <span class="c1"># def exception(self, msg, *args, exc_info=True, **kwargs):</span>
-    <span class="c1">#     return self.logger.info(self._string_magic(msg), *args, exc_info=exc_info, **kwargs)</span>
 
-
-<span class="k">def</span> <span class="nf">__func</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">__func</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="n">log</span><span class="o">.</span><span class="n">trace</span><span class="p">()</span>
-    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;func called&#39;</span><span class="p">)</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;__func called&#39;</span><span class="p">)</span>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
@@ -521,7 +531,7 @@
     <span class="n">log</span><span class="o">.</span><span class="n">printer</span><span class="p">(</span><span class="s1">&#39;test filehandler message абракадабра&#39;</span><span class="p">)</span>
     <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;test warning абракадабра&#39;</span><span class="p">)</span>
     <span class="n">log</span><span class="o">.</span><span class="n">green</span><span class="p">(</span><span class="s1">&#39;test green абракадабра&#39;</span><span class="p">)</span>
-    <span class="n">__func</span><span class="p">()</span>
+    <span class="n">__func</span><span class="p">(</span><span class="s1">&#39;argument&#39;</span><span class="p">,</span> <span class="s1">&#39;arg&#39;</span><span class="p">,</span> <span class="s1">&#39;arg1&#39;</span><span class="p">,</span> <span class="n">named_arg</span><span class="o">=</span><span class="s1">&#39;test&#39;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
 </pre></div>
 
