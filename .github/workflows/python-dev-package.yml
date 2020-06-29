@@ -9,8 +9,7 @@ on:
             - master
             - develop
         # - release/*
-#        tags-ignore:
-#            - *
+        tags-ignore:
     pull_request:
         branches:
             - master
