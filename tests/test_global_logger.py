@@ -31,10 +31,10 @@ def logger_file(tmpdir_factory):
 
 
 def test_basic(logger_file):
-    """Basic Test.
-    :type logger_file: Log
     """
 
+    :type logger_file: Log
+    """
     def __func(arg, *args, **kwargs):
         logger_file.trace()
         logger_file.debug('func called')
