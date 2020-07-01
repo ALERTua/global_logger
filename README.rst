@@ -25,7 +25,7 @@ Based on Python built-in logger, expands it, and provides a global logger to you
 * Documentation:
     * https://alertua.github.io/global_logger
     * https://global-logger.readthedocs.io / https://global-logger.rtfd.io
-
+* PyPi modules: https://pypi.org/project/global-logger
 
 Features
 --------
