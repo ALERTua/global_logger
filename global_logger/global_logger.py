@@ -151,6 +151,7 @@ class Log(object):
         self.logger.addHandler(self._stderr_handler)
         self._stderr_handler.setFormatter(color_formatter)
 
+        self._filehandler = None
         if Log.logs_dir:
             self.log_file_full_path = Log.logs_dir / Log.log_session_filename
             self._filehandler = logging.FileHandler(str(self.log_file_full_path), encoding='UTF-8')
@@ -266,7 +267,7 @@ class Log(object):
         """
         Log.GLOBAL_LOG_LEVEL = value
         self.logger.setLevel(logging.DEBUG)
-        if Log.logs_dir:
+        if Log.logs_dir and self._filehandler:
             self._filehandler.setLevel(logging.DEBUG)
         self._stdout_handler.setLevel(value)
         self._stderr_handler.setLevel(logging.WARNING)
@@ -339,7 +340,7 @@ class Log(object):
             print(_colored_msg, end=print_end)
 
     def _file_printer(self, msg):
-        if not Log.logs_dir:
+        if not all((Log.logs_dir, self._filehandler)):
             return
 
         if not msg.endswith('\n'):

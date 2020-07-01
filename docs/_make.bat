@@ -36,3 +36,4 @@ goto end
 
 :end
 popd
+exit /b

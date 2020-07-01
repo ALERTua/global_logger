@@ -2,6 +2,6 @@
 
 __author__ = """Alexey Rubasheff"""
 __email__ = 'alexey.rubasheff@gmail.com'
-__version__ = '0.3.6'
+__version__ = '0.3.7'
 
 from .global_logger import Log   # noqa # pylint: disable=unused-import
