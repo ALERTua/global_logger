@@ -70,11 +70,12 @@ class Log(object):
     LOGGER_DATE_FORMAT = '%H:%M:%S'
     MAX_LOG_FILES = 50
     # DEFAULT_LOGS_DIR = Path(__file__).parent.parent.parent.resolve() / 'logs'
-    DEFAULT_LOGS_DIR = 'logs'
     loggers = {}
     auto_added_handlers = []  # type: List[logging.Handler]
     log_session_filename = None
-    logs_dir = DEFAULT_LOGS_DIR  # type: Path
+    DEFAULT_LOGS_DIR = 'logs'
+    # logs_dir = DEFAULT_LOGS_DIR  # type: Path
+    logs_dir = None  # type: Path
 
     @staticmethod
     def set_global_log_level(level):
@@ -107,7 +108,7 @@ class Log(object):
         Log.LOGGER_DATE_FORMAT_FULL = date_format_full or Log.LOGGER_DATE_FORMAT_FULL
         Log.LOGGER_DATE_FORMAT = date_format or Log.LOGGER_DATE_FORMAT
         Log.MAX_LOG_FILES = max_log_files or Log.MAX_LOG_FILES
-        Log.logs_dir = logs_dir or Log.logs_dir or Log.DEFAULT_LOGS_DIR
+        Log.logs_dir = Log.logs_dir or logs_dir  # or Log.logs_dir or Log.DEFAULT_LOGS_DIR
 
         self._dump_initial_data = dump_initial_data
         self.logger = logging.getLogger(self.name)
