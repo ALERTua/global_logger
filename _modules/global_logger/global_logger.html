@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>global_logger.global_logger &mdash; Global Logger 0.3.6 documentation</title>
+  <title>global_logger.global_logger &mdash; Global Logger 0.3.7 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                0.3.6
+                0.3.7
               </div>
             
           
@@ -310,6 +310,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_stderr_handler</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_stderr_handler</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">color_formatter</span><span class="p">)</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_filehandler</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">Log</span><span class="o">.</span><span class="n">logs_dir</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">log_file_full_path</span> <span class="o">=</span> <span class="n">Log</span><span class="o">.</span><span class="n">logs_dir</span> <span class="o">/</span> <span class="n">Log</span><span class="o">.</span><span class="n">log_session_filename</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_filehandler</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">FileHandler</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">log_file_full_path</span><span class="p">),</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;UTF-8&#39;</span><span class="p">)</span>
@@ -425,7 +426,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">Log</span><span class="o">.</span><span class="n">GLOBAL_LOG_LEVEL</span> <span class="o">=</span> <span class="n">value</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">Log</span><span class="o">.</span><span class="n">logs_dir</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">Log</span><span class="o">.</span><span class="n">logs_dir</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filehandler</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_filehandler</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_stdout_handler</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_stderr_handler</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
@@ -498,7 +499,7 @@
             <span class="nb">print</span><span class="p">(</span><span class="n">_colored_msg</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">print_end</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">_file_printer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">Log</span><span class="o">.</span><span class="n">logs_dir</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">((</span><span class="n">Log</span><span class="o">.</span><span class="n">logs_dir</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filehandler</span><span class="p">)):</span>
             <span class="k">return</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">msg</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">):</span>
