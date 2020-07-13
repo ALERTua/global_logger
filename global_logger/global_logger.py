@@ -16,7 +16,7 @@ from colorama import Fore
 from colorama.ansi import AnsiFore
 from colorlog import ColoredFormatter, default_log_colors
 from pathlib import Path
-from typing import List, TYPE_CHECKING
+from typing import List, TYPE_CHECKING, Union
 
 if TYPE_CHECKING:
     pass
@@ -151,7 +151,7 @@ class Log(object):
         self.logger.addHandler(self._stderr_handler)
         self._stderr_handler.setFormatter(color_formatter)
 
-        self._filehandler = None
+        self._filehandler = None  # type: Union[logging.FileHandler, None]
         if Log.logs_dir:
             self.log_file_full_path = Log.logs_dir / Log.log_session_filename
             self._filehandler = logging.FileHandler(str(self.log_file_full_path), encoding='UTF-8')
@@ -190,10 +190,9 @@ class Log(object):
         if not hasattr(self, '_filehandler'):
             return
 
-        if self._filehandler:
+        if self._filehandler and self._filehandler.stream and not self._filehandler.stream.closed:
             self._filehandler.flush()
             self._filehandler.close()
-            self._filehandler = None
 
     @property
     def verbose(self):
@@ -255,7 +254,7 @@ class Log(object):
         File output is always DEBUG.
         :return: int or None
         """
-        if hasattr(self, 'stdout_handler'):
+        if hasattr(self, '_stdout_handler'):
             return self._stdout_handler.level
 
     @level.setter
