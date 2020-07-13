@@ -25,8 +25,9 @@ def logger_file(tmpdir_factory):
     tmpdir = Path(str(tmpdir_factory.mktemp('tests_logs')))  # type: Path
     output = Log.get_logger(logs_dir=tmpdir)
     yield output
-    # noinspection PyProtectedMember
-    output._clean()
+    for logger in output.loggers.values():
+        # noinspection PyProtectedMember
+        logger._clean()
     [f.unlink() for f in tmpdir.glob('*.log')]
 
 
@@ -35,6 +36,7 @@ def test_basic(logger_file):
 
     :type logger_file: Log
     """
+
     def __func(arg, *args, **kwargs):
         logger_file.trace()
         logger_file.debug('func called')
@@ -54,3 +56,20 @@ def test_basic(logger_file):
 def test_instance_exception():
     with pytest.raises(ValueError):
         Log('something')
+
+
+def test_levels():
+    log = Log.get_logger(logs_dir=None)
+    assert log.level == log.LOGGER_LEVELS.INFO, "default logging level should be %s, but not %s" % (
+        log.LOGGER_LEVELS.INFO, log.level)
+
+    log.level = log.LOGGER_LEVELS.WARNING
+    assert log.level == log.LOGGER_LEVELS.WARNING, "failed changing logging level to %s: it is %s instead" % (
+        log.LOGGER_LEVELS.WARNING, log.level)
+
+    assert log.verbose is not True, "logging should not be verbose, but %s" % log.LOGGER_LEVELS.WARNING
+
+    log.verbose = True
+    assert log.verbose is True, "logging should be verbose after turninig it on, but not %s" % log.level
+    assert log.level == log.LOGGER_LEVELS.DEBUG, "logging should be %s after turning verbose on, but not %s" % (
+        log.LOGGER_LEVELS.DEBUG, log.level)
