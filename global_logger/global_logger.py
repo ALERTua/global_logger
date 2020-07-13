@@ -62,6 +62,7 @@ class Log(object):
     else:
         # noinspection PyProtectedMember
         LOGGER_LEVELS_DICT = logging._nameToLevel
+    # noinspection PyArgumentList
     LOGGER_LEVELS = Struct(**LOGGER_LEVELS_DICT)
     GLOBAL_LOG_LEVEL = logging.INFO
     LOGGER_MESSAGE_FORMAT = '%(asctime)s.%(msecs)03d %(lineno)3s:%(name)-22s %(levelname)-6s %(message)s'
