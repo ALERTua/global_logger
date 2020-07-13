@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>global_logger.global_logger &mdash; Global Logger 0.3.7 documentation</title>
+  <title>global_logger.global_logger &mdash; Global Logger 0.3.8 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                0.3.7
+                0.3.8
               </div>
             
           
@@ -175,7 +175,7 @@
 <span class="kn">from</span> <span class="nn">colorama.ansi</span> <span class="kn">import</span> <span class="n">AnsiFore</span>
 <span class="kn">from</span> <span class="nn">colorlog</span> <span class="kn">import</span> <span class="n">ColoredFormatter</span><span class="p">,</span> <span class="n">default_log_colors</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
     <span class="k">pass</span>
@@ -221,6 +221,7 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># noinspection PyProtectedMember</span>
         <span class="n">LOGGER_LEVELS_DICT</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">_nameToLevel</span>
+    <span class="c1"># noinspection PyArgumentList</span>
     <span class="n">LOGGER_LEVELS</span> <span class="o">=</span> <span class="n">Struct</span><span class="p">(</span><span class="o">**</span><span class="n">LOGGER_LEVELS_DICT</span><span class="p">)</span>
     <span class="n">GLOBAL_LOG_LEVEL</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span>
     <span class="n">LOGGER_MESSAGE_FORMAT</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1">.</span><span class="si">%(msecs)03d</span><span class="s1"> </span><span class="si">%(lineno)3s</span><span class="s1">:</span><span class="si">%(name)-22s</span><span class="s1"> </span><span class="si">%(levelname)-6s</span><span class="s1"> </span><span class="si">%(message)s</span><span class="s1">&#39;</span>
@@ -310,7 +311,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_stderr_handler</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_stderr_handler</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">color_formatter</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_filehandler</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_filehandler</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: Union[logging.FileHandler, None]</span>
         <span class="k">if</span> <span class="n">Log</span><span class="o">.</span><span class="n">logs_dir</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">log_file_full_path</span> <span class="o">=</span> <span class="n">Log</span><span class="o">.</span><span class="n">logs_dir</span> <span class="o">/</span> <span class="n">Log</span><span class="o">.</span><span class="n">log_session_filename</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_filehandler</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">FileHandler</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">log_file_full_path</span><span class="p">),</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;UTF-8&#39;</span><span class="p">)</span>
@@ -349,10 +350,9 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_filehandler&#39;</span><span class="p">):</span>
             <span class="k">return</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filehandler</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filehandler</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filehandler</span><span class="o">.</span><span class="n">stream</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filehandler</span><span class="o">.</span><span class="n">stream</span><span class="o">.</span><span class="n">closed</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_filehandler</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_filehandler</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_filehandler</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">verbose</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -414,7 +414,7 @@
 <span class="sd">        File output is always DEBUG.</span>
 <span class="sd">        :return: int or None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;stdout_handler&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_stdout_handler&#39;</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stdout_handler</span><span class="o">.</span><span class="n">level</span>
 
     <span class="nd">@level</span><span class="o">.</span><span class="n">setter</span>
