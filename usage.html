@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Usage &mdash; Global Logger 0.3.8 documentation</title>
+  <title>Usage &mdash; Global Logger 0.3.9 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.3.8
+                0.3.9
               </div>
             
           
@@ -164,6 +164,7 @@
 <h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot; Global Logger Examples &quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">global_logger</span> <span class="kn">import</span> <span class="n">Log</span>
 
 <span class="c1"># create and/or reuse a global logger, choosing its name dynamicaly</span>
@@ -173,11 +174,11 @@
 <span class="c1"># this forcec ALL loggers to lower their logging level to DEBUG</span>
 <span class="n">log</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">True</span>
 
-<span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;debug text: level: &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">log</span><span class="o">.</span><span class="n">LOGGER_LEVELS</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
-<span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;info text: level: &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">log</span><span class="o">.</span><span class="n">LOGGER_LEVELS</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
-<span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;warning text: level: &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">log</span><span class="o">.</span><span class="n">LOGGER_LEVELS</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
-<span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;error text: level: &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">log</span><span class="o">.</span><span class="n">LOGGER_LEVELS</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
-<span class="n">log</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="s2">&quot;critical text: level: &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">log</span><span class="o">.</span><span class="n">LOGGER_LEVELS</span><span class="o">.</span><span class="n">CRITICAL</span><span class="p">)</span>
+<span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;debug text: level: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">log</span><span class="o">.</span><span class="n">Levels</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+<span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;info text: level: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">log</span><span class="o">.</span><span class="n">Levels</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+<span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;warning text: level: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">log</span><span class="o">.</span><span class="n">Levels</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
+<span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;error text: level: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">log</span><span class="o">.</span><span class="n">Levels</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
+<span class="n">log</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="s2">&quot;critical text: level: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">log</span><span class="o">.</span><span class="n">Levels</span><span class="o">.</span><span class="n">CRITICAL</span><span class="p">)</span>
 <span class="c1"># 2020-06-28 14:18:42.004  14:source.examples DEBUG  debug text: level: &#39;10&#39;</span>
 <span class="c1"># 2020-06-28 14:18:42.004  15:source.examples INFO   info text: level: &#39;20&#39;</span>
 <span class="c1"># 2020-06-28 14:18:42.004  16:source.examples WARNING warning text: level: &#39;30&#39;</span>
@@ -197,7 +198,7 @@
 
 <span class="c1"># force ALL loggers to lower their logging level to WARNING</span>
 <span class="c1"># Note: file output will always remain on logging level DEBUG</span>
-<span class="n">log</span><span class="o">.</span><span class="n">level</span> <span class="o">=</span> <span class="n">log</span><span class="o">.</span><span class="n">LOGGER_LEVELS</span><span class="o">.</span><span class="n">WARNING</span>
+<span class="n">log</span><span class="o">.</span><span class="n">level</span> <span class="o">=</span> <span class="n">log</span><span class="o">.</span><span class="n">Levels</span><span class="o">.</span><span class="n">WARNING</span>
 
 
 <span class="c1"># log a function call including all the arguments</span>

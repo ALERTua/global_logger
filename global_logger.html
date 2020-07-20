@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>global_logger package &mdash; Global Logger 0.3.8 documentation</title>
+  <title>global_logger package &mdash; Global Logger 0.3.9 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.3.8
+                0.3.9
               </div>
             
           
@@ -177,13 +177,14 @@
 </div>
 <div class="section" id="module-global_logger.global_logger">
 <span id="global-logger-global-logger-module"></span><h2>global_logger.global_logger module<a class="headerlink" href="#module-global_logger.global_logger" title="Permalink to this headline">¶</a></h2>
+<p>Main Global Logger Module</p>
 <dl class="py class">
 <dt id="global_logger.global_logger.InfoFilter">
 <em class="property">class </em><code class="sig-prename descclassname">global_logger.global_logger.</code><code class="sig-name descname">InfoFilter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/global_logger/global_logger.html#InfoFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#global_logger.global_logger.InfoFilter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">logging.Filter</span></code></p>
 <dl class="py method">
 <dt id="global_logger.global_logger.InfoFilter.filter">
-<code class="sig-name descname">filter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">rec</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/global_logger/global_logger.html#InfoFilter.filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#global_logger.global_logger.InfoFilter.filter" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">filter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">record</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/global_logger/global_logger.html#InfoFilter.filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#global_logger.global_logger.InfoFilter.filter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine if the specified record is to be logged.</p>
 <p>Is the specified record to be logged? Returns 0 for no, nonzero for
 yes. If deemed appropriate, the record may be modified in-place.</p>
@@ -221,19 +222,56 @@ yes. If deemed appropriate, the record may be modified in-place.</p>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="global_logger.global_logger.Log.LOGGER_LEVELS">
-<code class="sig-name descname">LOGGER_LEVELS</code><em class="property"> = &lt;global_logger.global_logger.Struct object&gt;</em><a class="headerlink" href="#global_logger.global_logger.Log.LOGGER_LEVELS" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt id="global_logger.global_logger.Log.LOGGER_LEVELS_DICT">
-<code class="sig-name descname">LOGGER_LEVELS_DICT</code><em class="property"> = {'CRITICAL': 50, 'DEBUG': 10, 'ERROR': 40, 'FATAL': 50, 'INFO': 20, 'NOTSET': 0, 'WARN': 30, 'WARNING': 30}</em><a class="headerlink" href="#global_logger.global_logger.Log.LOGGER_LEVELS_DICT" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
 <dt id="global_logger.global_logger.Log.LOGGER_MESSAGE_FORMAT">
 <code class="sig-name descname">LOGGER_MESSAGE_FORMAT</code><em class="property"> = '%(asctime)s.%(msecs)03d %(lineno)3s:%(name)-22s %(levelname)-6s %(message)s'</em><a class="headerlink" href="#global_logger.global_logger.Log.LOGGER_MESSAGE_FORMAT" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="py class">
+<dt id="global_logger.global_logger.Log.Levels">
+<em class="property">class </em><code class="sig-name descname">Levels</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#global_logger.global_logger.Log.Levels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.IntEnum</span></code></p>
+<p>An enumeration.</p>
+<dl class="py attribute">
+<dt id="global_logger.global_logger.Log.Levels.CRITICAL">
+<code class="sig-name descname">CRITICAL</code><em class="property"> = 50</em><a class="headerlink" href="#global_logger.global_logger.Log.Levels.CRITICAL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="global_logger.global_logger.Log.Levels.DEBUG">
+<code class="sig-name descname">DEBUG</code><em class="property"> = 10</em><a class="headerlink" href="#global_logger.global_logger.Log.Levels.DEBUG" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="global_logger.global_logger.Log.Levels.ERROR">
+<code class="sig-name descname">ERROR</code><em class="property"> = 40</em><a class="headerlink" href="#global_logger.global_logger.Log.Levels.ERROR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="global_logger.global_logger.Log.Levels.FATAL">
+<code class="sig-name descname">FATAL</code><em class="property"> = 50</em><a class="headerlink" href="#global_logger.global_logger.Log.Levels.FATAL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="global_logger.global_logger.Log.Levels.INFO">
+<code class="sig-name descname">INFO</code><em class="property"> = 20</em><a class="headerlink" href="#global_logger.global_logger.Log.Levels.INFO" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="global_logger.global_logger.Log.Levels.NOTSET">
+<code class="sig-name descname">NOTSET</code><em class="property"> = 0</em><a class="headerlink" href="#global_logger.global_logger.Log.Levels.NOTSET" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="global_logger.global_logger.Log.Levels.WARN">
+<code class="sig-name descname">WARN</code><em class="property"> = 30</em><a class="headerlink" href="#global_logger.global_logger.Log.Levels.WARN" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="global_logger.global_logger.Log.Levels.WARNING">
+<code class="sig-name descname">WARNING</code><em class="property"> = 30</em><a class="headerlink" href="#global_logger.global_logger.Log.Levels.WARNING" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
 
 <dl class="py attribute">
 <dt id="global_logger.global_logger.Log.MAX_LOG_FILES">
@@ -242,7 +280,7 @@ yes. If deemed appropriate, the record may be modified in-place.</p>
 
 <dl class="py attribute">
 <dt id="global_logger.global_logger.Log.auto_added_handlers">
-<code class="sig-name descname">auto_added_handlers</code><em class="property"> = []</em><a class="headerlink" href="#global_logger.global_logger.Log.auto_added_handlers" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">auto_added_handlers</code><em class="property">: List<span class="p">[</span>logging.Handler<span class="p">]</span></em><em class="property"> = []</em><a class="headerlink" href="#global_logger.global_logger.Log.auto_added_handlers" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -296,7 +334,7 @@ File output is always DEBUG.
 
 <dl class="py attribute">
 <dt id="global_logger.global_logger.Log.logs_dir">
-<code class="sig-name descname">logs_dir</code><em class="property"> = None</em><a class="headerlink" href="#global_logger.global_logger.Log.logs_dir" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">logs_dir</code><em class="property">: Path</em><em class="property"> = None</em><a class="headerlink" href="#global_logger.global_logger.Log.logs_dir" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -343,12 +381,6 @@ Sets Logging Level for all loggers of this type
 <code class="sig-name descname">yellow</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">message</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/global_logger/global_logger.html#Log.yellow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#global_logger.global_logger.Log.yellow" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-</dd></dl>
-
-<dl class="py class">
-<dt id="global_logger.global_logger.Struct">
-<em class="property">class </em><code class="sig-prename descclassname">global_logger.global_logger.</code><code class="sig-name descname">Struct</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">entries</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/global_logger/global_logger.html#Struct"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#global_logger.global_logger.Struct" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 </dd></dl>
 
 <dl class="py function">
