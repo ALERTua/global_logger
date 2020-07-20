@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+""" Global Logger Examples """
 from global_logger import Log
 
 # create and/or reuse a global logger, choosing its name dynamicaly
@@ -9,11 +10,11 @@ log = Log.get_logger()
 # this forcec ALL loggers to lower their logging level to DEBUG
 log.verbose = True
 
-log.debug("debug text: level: '%s'" % log.LOGGER_LEVELS.DEBUG)
-log.info("info text: level: '%s'" % log.LOGGER_LEVELS.INFO)
-log.warning("warning text: level: '%s'" % log.LOGGER_LEVELS.WARNING)
-log.error("error text: level: '%s'" % log.LOGGER_LEVELS.ERROR)
-log.critical("critical text: level: '%s'" % log.LOGGER_LEVELS.CRITICAL)
+log.debug("debug text: level: %s" % log.Levels.DEBUG)
+log.info("info text: level: %s" % log.Levels.INFO)
+log.warning("warning text: level: %s" % log.Levels.WARNING)
+log.error("error text: level: %s" % log.Levels.ERROR)
+log.critical("critical text: level: %s" % log.Levels.CRITICAL)
 # 2020-06-28 14:18:42.004  14:source.examples DEBUG  debug text: level: '10'
 # 2020-06-28 14:18:42.004  15:source.examples INFO   info text: level: '20'
 # 2020-06-28 14:18:42.004  16:source.examples WARNING warning text: level: '30'
@@ -33,7 +34,7 @@ log = Log.get_logger(logs_dir='logs')
 
 # force ALL loggers to lower their logging level to WARNING
 # Note: file output will always remain on logging level DEBUG
-log.level = log.LOGGER_LEVELS.WARNING
+log.level = log.Levels.WARNING
 
 
 # log a function call including all the arguments
