@@ -6,3 +6,4 @@ colorama
 colorlog
 future
 win-unicode-console
+enum; python_version < '3'

@@ -19,4 +19,3 @@ rem for %%A in ("%cd%") do set "dir_name=%%~nA"
 rem set verbose=on
 rem set verbose=full
 if ["%verbose%"]==["full"] echo on
-

@@ -1,7 +1,9 @@
 # #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+""" Main Global Logger Module """
 from __future__ import print_function, unicode_literals
 
+import atexit
 import inspect
 import logging
 import os
@@ -10,29 +12,21 @@ import re
 import sys
 import time
 import traceback
-import atexit
+from enum import IntEnum
+from pathlib import Path
+from typing import List, Union
+
 import pendulum
 from colorama import Fore
 from colorama.ansi import AnsiFore
 from colorlog import ColoredFormatter, default_log_colors
-from pathlib import Path
-from typing import List, TYPE_CHECKING, Union
-
-if TYPE_CHECKING:
-    pass
 
 PYTHON2 = sys.version_info[0] < 3
 
-if PYTHON2:
-    pass
-else:
+if not PYTHON2:
     # noinspection PyShadowingBuiltins
-    buffer = memoryview
-
-
-class Struct(object):
-    def __init__(self, **entries):
-        self.__dict__.update(entries)
+    # pylint: disable=C0103
+    buffer = memoryview  # noqa
 
 
 def get_prev_function_name():
@@ -51,31 +45,33 @@ def clear_message(msg):
 
 
 class InfoFilter(logging.Filter):
-    def filter(self, rec):
-        return rec.levelno <= logging.INFO
+    def filter(self, record):
+        return record.levelno <= logging.INFO
 
 
+# pylint: disable=useless-object-inheritance,too-many-instance-attributes
 class Log(object):
+    # pylint: disable=protected-access
     if PYTHON2:
         # noinspection PyProtectedMember
-        LOGGER_LEVELS_DICT = {k: v for k, v in logging._levelNames.items() if not isinstance(k, int)}
+        # pylint: disable=protected-access,no-member
+        _LOGGER_LEVELS_DICT = {k: v for k, v in logging._levelNames.items() if not isinstance(k, int)}
     else:
         # noinspection PyProtectedMember
-        LOGGER_LEVELS_DICT = logging._nameToLevel
-    # noinspection PyArgumentList
-    LOGGER_LEVELS = Struct(**LOGGER_LEVELS_DICT)
-    GLOBAL_LOG_LEVEL = logging.INFO
+        # pylint: disable=protected-access
+        _LOGGER_LEVELS_DICT = logging._nameToLevel
+    # pylint: disable=unnecessary-comprehension
+    Levels = IntEnum('Levels', [(k, v) for k, v in _LOGGER_LEVELS_DICT.items()])
+    GLOBAL_LOG_LEVEL = Levels.INFO
     LOGGER_MESSAGE_FORMAT = '%(asctime)s.%(msecs)03d %(lineno)3s:%(name)-22s %(levelname)-6s %(message)s'
     LOGGER_DATE_FORMAT_FULL = '%Y-%m-%d %H:%M:%S'
     LOGGER_COLORED_MESSAGE_FORMAT = '%(log_color)s%(message)s'
     LOGGER_DATE_FORMAT = '%H:%M:%S'
     MAX_LOG_FILES = 50
-    # DEFAULT_LOGS_DIR = Path(__file__).parent.parent.parent.resolve() / 'logs'
     loggers = {}
     auto_added_handlers = []  # type: List[logging.Handler]
     log_session_filename = None
     DEFAULT_LOGS_DIR = 'logs'
-    # logs_dir = DEFAULT_LOGS_DIR  # type: Path
     logs_dir = None  # type: Path
 
     @staticmethod
@@ -93,6 +89,7 @@ class Log(object):
         for handler in Log.auto_added_handlers:
             handler.level = level
 
+    # pylint: disable=too-many-locals,too-many-arguments,too-many-statements
     def __init__(self, name, level=None, logs_dir=None, dump_initial_data=False, max_log_files=None,
                  message_format=None, date_format_full=None, date_format=None, direct=True):
         if direct:
@@ -100,9 +97,10 @@ class Log(object):
 
         level = level or Log.GLOBAL_LOG_LEVEL
 
+        # pylint: disable=invalid-envvar-default
         verbose = os.getenv('LOG_VERBOSE', False)
         if verbose:
-            level = logging.DEBUG
+            level = Log.Levels.DEBUG
 
         self.name = name
         Log.LOGGER_MESSAGE_FORMAT = message_format or Log.LOGGER_MESSAGE_FORMAT
@@ -129,6 +127,7 @@ class Log(object):
                 Log.logs_dir.mkdir()
 
             if Log.log_session_filename is None:
+                # pylint: disable=import-outside-toplevel
                 from pendulum.tz.zoneinfo.exceptions import InvalidZoneinfoFile
                 try:
                     now = pendulum.now()
@@ -162,6 +161,7 @@ class Log(object):
         self.level = level
         Log.loggers[self.name] = self
         if Log.logs_dir and self._dump_initial_data and new_log_file:
+            # pylint: disable=bare-except
             try:
                 _env_dump_str = "Python {sysver} @ {platf}\n{user}@{comp} @ {winver}".format(
                     sysver=sys.version, platf=platform.architecture(), winver=sys.getwindowsversion(),
@@ -197,7 +197,7 @@ class Log(object):
 
     @property
     def verbose(self):
-        return self.level == logging.DEBUG
+        return self.level == Log.Levels.DEBUG
 
     @verbose.setter
     def verbose(self, value):
@@ -205,10 +205,11 @@ class Log(object):
             return
 
         if value is True:
-            self.set_global_log_level(logging.DEBUG)
+            self.set_global_log_level(Log.Levels.DEBUG)
         else:
-            self.set_global_log_level(logging.INFO)
+            self.set_global_log_level(Log.Levels.INFO)
 
+    # pylint: disable=too-many-arguments
     @classmethod
     def get_logger(cls, name=None, level=None, logs_dir=None, dump_initial_data=False, max_log_files=None,
                    message_format=None, date_format_full=None, date_format=None):
@@ -244,7 +245,7 @@ class Log(object):
     @staticmethod
     def _add_autoadded_handlers():
         for handler in Log.auto_added_handlers:
-            for logger_name, logger in Log.loggers.items():
+            for _, logger in Log.loggers.items():
                 if handler not in logger.logger.handlers:
                     logger.logger.addHandler(handler)
 
@@ -258,6 +259,8 @@ class Log(object):
         if hasattr(self, '_stdout_handler'):
             return self._stdout_handler.level
 
+        return None
+
     @level.setter
     def level(self, value):
         """
@@ -266,11 +269,11 @@ class Log(object):
         :param value:
         """
         Log.GLOBAL_LOG_LEVEL = value
-        self.logger.setLevel(logging.DEBUG)
+        self.logger.setLevel(Log.Levels.DEBUG)
         if Log.logs_dir and self._filehandler:
-            self._filehandler.setLevel(logging.DEBUG)
+            self._filehandler.setLevel(Log.Levels.DEBUG)
         self._stdout_handler.setLevel(value)
-        self._stderr_handler.setLevel(logging.WARNING)
+        self._stderr_handler.setLevel(Log.Levels.WARNING)
 
     @property
     def _log_files(self):
@@ -283,6 +286,7 @@ class Log(object):
         log_files = sorted(list(Log.logs_dir.glob('*.log')), key=lambda f: f.stat().st_ctime,
                            reverse=True)
         if len(log_files) > Log.MAX_LOG_FILES:
+            # pylint: disable=bare-except
             try:
                 [_file.unlink() for _file in log_files[Log.MAX_LOG_FILES:]]
             except:  # noqa
@@ -358,9 +362,11 @@ class Log(object):
         args, _, _, values = inspect.getargvalues(frame)
         _params = [(i, values[i]) for i in args if 'self' not in i]
         # todo: trace args and kwargs
+        # pylint: disable=logging-not-lazy
         self.debug("%s.%s.%s%s" % (file_dir, file_name, func_name, _params))
 
 
+# pylint: disable=unused-argument
 def __func(arg, *args, **kwargs):
     log.trace()
     log.debug('__func called')
