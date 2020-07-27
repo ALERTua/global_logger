@@ -87,3 +87,13 @@ def test_levels():
 
     log.set_global_log_level(log.Levels.INFO)
     assert log.level == log.Levels.INFO, "logging should change to %s" % log.Levels.INFO
+
+
+def test_individual_logger():
+    log = Log.get_logger('test_individual_logger_global', logs_dir=None, level=Log.Levels.DEBUG)
+    individual_logger = Log.get_logger('test_individual_logger_individual', logs_dir=None, global_level=False,
+                                       level=Log.Levels.CRITICAL)
+    Log.set_global_log_level(Log.Levels.WARNING)
+    assert log.level == Log.Levels.WARNING, "log level should be %s after set_global_log_level" % Log.Levels.WARNING
+    assert individual_logger.level == Log.Levels.CRITICAL, \
+        "individual logger should ignore set_global_log_level and remain %s" % Log.Levels.CRITICAL
