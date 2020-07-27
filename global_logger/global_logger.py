@@ -103,7 +103,7 @@ class Log(object):
 
         # pylint: disable=invalid-envvar-default
         verbose = os.getenv('LOG_VERBOSE', False)
-        if verbose:
+        if global_level and verbose:
             level = Log.Levels.DEBUG
 
         self.name = name
