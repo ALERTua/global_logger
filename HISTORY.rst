@@ -3,6 +3,12 @@ History
 =======
 
 
+0.3.10 (2020-07-27)
+-------------------
+
+* Individual loggers that skip global logging level change
+
+
 0.3.9 (2020-07-20)
 ------------------
 
