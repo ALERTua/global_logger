@@ -3,10 +3,11 @@ History
 =======
 
 
-0.3.11 (2020-07-27)
+0.3.12 (2020-07-27)
 -------------------
 
 * Individual loggers that skip global logging level change
+* Pendulum module version bumped
 
 
 0.3.9 (2020-07-20)
