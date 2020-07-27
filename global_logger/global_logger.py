@@ -69,6 +69,7 @@ class Log(object):
     LOGGER_DATE_FORMAT = '%H:%M:%S'
     MAX_LOG_FILES = 50
     loggers = {}
+    individual_loggers = {}
     auto_added_handlers = []  # type: List[logging.Handler]
     log_session_filename = None
     DEFAULT_LOGS_DIR = 'logs'
@@ -84,14 +85,17 @@ class Log(object):
         """
         print("Changing global logger level to %s" % level)
         Log.GLOBAL_LOG_LEVEL = level
-        for logger in Log.loggers.values():
+        for logger_name, logger in Log.loggers.items():
+            if logger_name in Log.individual_loggers.keys():
+                continue
+
             logger.level = level
         for handler in Log.auto_added_handlers:
             handler.level = level
 
     # pylint: disable=too-many-locals,too-many-arguments,too-many-statements
-    def __init__(self, name, level=None, logs_dir=None, dump_initial_data=False, max_log_files=None,
-                 message_format=None, date_format_full=None, date_format=None, direct=True):
+    def __init__(self, name, level=None, global_level=True, logs_dir=None, dump_initial_data=False,  # noqa: C901
+                 max_log_files=None, message_format=None, date_format_full=None, date_format=None, direct=True):
         if direct:
             raise ValueError("You should create Global Logger via Log.get_logger() method.")
 
@@ -160,6 +164,8 @@ class Log(object):
 
         self.level = level
         Log.loggers[self.name] = self
+        if global_level is not True:
+            Log.individual_loggers[self.name] = self
         if Log.logs_dir and self._dump_initial_data and new_log_file:
             # pylint: disable=bare-except
             try:
@@ -211,8 +217,8 @@ class Log(object):
 
     # pylint: disable=too-many-arguments
     @classmethod
-    def get_logger(cls, name=None, level=None, logs_dir=None, dump_initial_data=False, max_log_files=None,
-                   message_format=None, date_format_full=None, date_format=None):
+    def get_logger(cls, name=None, level=None, global_level=True, logs_dir=None, dump_initial_data=False,
+                   max_log_files=None, message_format=None, date_format_full=None, date_format=None):
         """
         Main instantiating method for the class. Use it to instantiate global logger.
 
@@ -220,6 +226,9 @@ class Log(object):
         :type name: str
         :param level: Logging level for the current instance.
         :type level: int
+        :param global_level: Treat this level as a global (True) or as an individual (False)
+                            Individual loggers do not gain global logging level changes.
+        :type global_level: bool
         :param logs_dir: Path where the .log files would be created, if provided.
         :type logs_dir: Path or str or None
         :param dump_initial_data: Whether to fill the newly created .log file with initial user data.
@@ -236,16 +245,20 @@ class Log(object):
         :rtype: :class:`Log`
         """
         name = name or get_prev_function_name()
-        output = Log.loggers.get(name) or cls(name, level=level, logs_dir=logs_dir, dump_initial_data=dump_initial_data,
-                                              max_log_files=max_log_files, message_format=message_format,
-                                              date_format_full=date_format_full, date_format=date_format, direct=False)
+        output = Log.loggers.get(name) or cls(name, level=level, global_level=global_level, logs_dir=logs_dir,
+                                              dump_initial_data=dump_initial_data, max_log_files=max_log_files,
+                                              message_format=message_format, date_format_full=date_format_full,
+                                              date_format=date_format, direct=False)
         Log._add_autoadded_handlers()
         return output
 
     @staticmethod
     def _add_autoadded_handlers():
         for handler in Log.auto_added_handlers:
-            for _, logger in Log.loggers.items():
+            for logger_name, logger in Log.loggers.items():
+                if logger_name in Log.individual_loggers.keys():
+                    continue
+
                 if handler not in logger.logger.handlers:
                     logger.logger.addHandler(handler)
 

@@ -40,6 +40,7 @@ test_requirements = [
     "future",
     "zipp",
     "pytest",
+    "enum; python_version < '3'",
 ]
 
 setup(
@@ -73,6 +74,6 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/alertua/global_logger',
-    version='0.3.9',
+    version='0.3.10',
     zip_safe=False,
 )
