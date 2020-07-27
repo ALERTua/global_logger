@@ -40,6 +40,7 @@ test_requirements = [
     "future",
     "zipp",
     "pytest",
+    "enum; python_version < '3'",
 ]
 
 setup(
