@@ -74,6 +74,6 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/alertua/global_logger',
-    version='0.3.10',
+    version='0.3.11',
     zip_safe=False,
 )
