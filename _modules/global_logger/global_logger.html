@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>global_logger.global_logger &mdash; Global Logger 0.3.10 documentation</title>
+  <title>global_logger.global_logger &mdash; Global Logger 0.3.11 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                0.3.10
+                0.3.11
               </div>
             
           
@@ -262,7 +262,7 @@
 
         <span class="c1"># pylint: disable=invalid-envvar-default</span>
         <span class="n">verbose</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;LOG_VERBOSE&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">global_level</span> <span class="ow">and</span> <span class="n">verbose</span><span class="p">:</span>
             <span class="n">level</span> <span class="o">=</span> <span class="n">Log</span><span class="o">.</span><span class="n">Levels</span><span class="o">.</span><span class="n">DEBUG</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
