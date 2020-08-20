@@ -2,4 +2,3 @@ tox
 flake8
 pytest
 pre-commit
-pylint
