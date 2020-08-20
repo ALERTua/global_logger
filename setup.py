@@ -14,13 +14,13 @@ with open('HISTORY.rst') as history_file:
 
 cur_file_dir_path = os.path.dirname(os.path.abspath(__file__))
 
-requirements = [
-    "pendulum",
-    "pathlib",
-    "colorama",
-    "colorlog",
-    "future",
-]
+with open('global_logger/requirements.txt') as f:
+    install_requirements = [
+        line.strip()
+        for line in f.readlines()
+        if line.strip() and not line.startswith('#')
+    ]
+
 setup_requirements = []
 test_requirements = [
     "setuptools",
@@ -63,7 +63,7 @@ setup(
     description="Based on Python built-in logger, expands it, and provides a global logger to your system. "
                 "Easy on-screen and/or .log files output setup without pain for Python newcomers. "
                 "Python 2 and 3 compatible",
-    install_requires=requirements,
+    install_requires=install_requirements,
     license="MIT license",
     long_description='%s\n\n%s' % (readme, history),
     include_package_data=True,
@@ -74,6 +74,6 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/alertua/global_logger',
-    version='0.3.12',
+    version='0.3.13',
     zip_safe=False,
 )

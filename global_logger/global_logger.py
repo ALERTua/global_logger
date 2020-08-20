@@ -318,7 +318,7 @@ class Log(object):
         """
 
         :param message: a message to print: as a string or as a list of strings
-        :type message: str or list of str
+        :type message: str or list of str or unicode
         :param end: line ending symbol, defaults to \n
         :type end: str
         :param color: message color to use
