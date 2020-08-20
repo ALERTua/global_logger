@@ -223,7 +223,7 @@ class Log(object):
         Main instantiating method for the class. Use it to instantiate global logger.
 
         :param name: a unique logger name that is re-/used if already exists, defaults to the function path.
-        :type name: str
+        :type name: str or unicode
         :param level: Logging level for the current instance.
         :type level: int
         :param global_level: Treat this level as a global (True) or as an individual (False)
