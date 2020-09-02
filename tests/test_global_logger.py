@@ -163,10 +163,11 @@ def test_file_writing(logger_file):
     assert check_logger_file_contents(logger_file, unique_string)
 
 
+# noinspection PyUnusedLocal
 def test_handlers_quantity(logger_file):
-    logger1 = Log.get_logger(name='logger1')
-    logger2 = logger_file
-    logger3 = Log.get_logger(name='logger3')
+    logger1 = Log.get_logger(name='logger1')  # noqa: F841
+    logger2 = logger_file  # noqa: F841
+    logger3 = Log.get_logger(name='logger3')  # noqa: F841
     for logger in Log.loggers.values():
         filehandlers = [handler for handler in logger.logger.handlers if isinstance(handler, logging.FileHandler)]
         assert len(filehandlers) == 1
