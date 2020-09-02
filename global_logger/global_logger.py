@@ -160,7 +160,9 @@ class Log(object):
             self.log_file_full_path = Log.logs_dir / Log.log_session_filename
             self._filehandler = logging.FileHandler(str(self.log_file_full_path), encoding='UTF-8')
             self._filehandler.setFormatter(formatter)
-            self.logger.addHandler(self._filehandler)
+            self._filehandler.level = Log.Levels.DEBUG
+            Log._add_handler_to_all_loggers(self._filehandler)
+            # self.logger.addHandler(self._filehandler)
 
         self.level = level
         Log.loggers[self.name] = self
@@ -255,12 +257,16 @@ class Log(object):
     @staticmethod
     def _add_autoadded_handlers():
         for handler in Log.auto_added_handlers:
-            for logger_name, logger in Log.loggers.items():
-                if logger_name in Log.individual_loggers.keys():
-                    continue
+            Log._add_handler_to_all_loggers(handler)
 
-                if handler not in logger.logger.handlers:
-                    logger.logger.addHandler(handler)
+    @staticmethod
+    def _add_handler_to_all_loggers(handler):
+        for logger_name, logger in Log.loggers.items():
+            if logger_name in Log.individual_loggers.keys():
+                continue
+
+            if handler not in logger.logger.handlers:
+                logger.logger.addHandler(handler)
 
     @property
     def level(self):
@@ -341,8 +347,9 @@ class Log(object):
 
             # todo: emit to custom handlers
             for handler in Log.auto_added_handlers:
+                record = logging.LogRecord(self.name, self.level, '', 0, msg, (), None)
                 # noinspection PyTypeChecker
-                handler.emit(msg)
+                handler.emit(record)
 
             _cleared_message = msg
             if clear is True and isinstance(msg, (str, buffer)):

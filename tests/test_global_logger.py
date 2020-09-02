@@ -4,6 +4,8 @@
 """ Global Logger Tests """
 from __future__ import print_function, unicode_literals
 
+import random
+import string
 from pathlib import Path
 from typing import TYPE_CHECKING
 
@@ -97,3 +99,74 @@ def test_individual_logger():
     assert log.level == Log.Levels.WARNING, "log level should be %s after set_global_log_level" % Log.Levels.WARNING
     assert individual_logger.level == Log.Levels.CRITICAL, \
         "individual logger should ignore set_global_log_level and remain %s" % Log.Levels.CRITICAL
+
+
+def test_file_writing(logger_file):
+    def get_random_string(length):
+        letters = string.ascii_lowercase
+        result_str = ''.join(random.choice(letters) for i in range(length))
+        return result_str
+
+    def check_logger_file_contents(logger, text):
+        fle = logger.logs_dir / logger.log_session_filename
+        with fle.open('r') as f:
+            contents = f.read()
+            output = text in contents
+            if not output:
+                print("text: %s" % text)
+                print("contents: %s" % contents)
+            return output
+
+    unique_string = get_random_string(24)
+
+    unique_string += '1'
+    logger_file.debug("debug text абракадабра ™: level: '%s' unique_string: '%s'" %
+                      (logger_file.Levels.DEBUG, unique_string))
+    assert check_logger_file_contents(logger_file, unique_string)
+
+    unique_string += '1'
+    logger_file.info("info text абракадабра ™: level: '%s' unique_string: '%s'" %
+                     (logger_file.Levels.INFO, unique_string))
+    assert check_logger_file_contents(logger_file, unique_string)
+
+    unique_string += '1'
+    logger_file.warning("warning text абракадабра ™: level: '%s' unique_string: '%s'" %
+                        (logger_file.Levels.WARNING, unique_string))
+    assert check_logger_file_contents(logger_file, unique_string)
+
+    unique_string += '1'
+    logger_file.error("error text абракадабра ™: level: '%s' unique_string: '%s'" %
+                      (logger_file.Levels.ERROR, unique_string))
+    assert check_logger_file_contents(logger_file, unique_string)
+
+    unique_string += '1'
+    logger_file.critical("critical text абракадабра ™: level: '%s' unique_string: '%s'" %
+                         (logger_file.Levels.CRITICAL, unique_string))
+    assert check_logger_file_contents(logger_file, unique_string)
+
+    unique_string += '1'
+    logger_file.printer("test filehandler message абракадабра ™ unique_string: '%s'" % unique_string,
+                        color='blue', end='', clear=True)
+    assert check_logger_file_contents(logger_file, unique_string)
+
+    unique_string += '1'
+    logger_file.green("test green абракадабра ™ unique_string: '%s'" % unique_string, end='\t\t\t\t')
+    assert check_logger_file_contents(logger_file, unique_string)
+
+    unique_string += '1'
+    logger_file.yellow("test yellow абракадабра ™ unique_string: '%s'" % unique_string)
+    assert check_logger_file_contents(logger_file, unique_string)
+
+    unique_string += '1'
+    logger_file.red("red text unique_string: '%s'" % unique_string)
+    assert check_logger_file_contents(logger_file, unique_string)
+
+
+if __name__ == '__main__':
+    _logger_file = Log.get_logger('logger', logs_dir=Path(__file__).parent.parent / 'Logs')
+    test_basic(_logger_file)
+    test_instance_exception()
+    test_levels()
+    test_individual_logger()
+    test_file_writing(_logger_file)
+    print("")
