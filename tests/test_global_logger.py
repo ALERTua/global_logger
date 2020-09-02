@@ -4,6 +4,7 @@
 """ Global Logger Tests """
 from __future__ import print_function, unicode_literals
 
+import logging
 import random
 import string
 from pathlib import Path
@@ -22,14 +23,14 @@ def logger_screen():
     return Log.get_logger(logs_dir=None)
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def logger_file(tmpdir_factory):
     """
 
     :type tmpdir_factory: TempdirFactory
     """
     tmpdir = Path(str(tmpdir_factory.mktemp('tests_logs')))  # type: Path
-    output = Log.get_logger(logs_dir=tmpdir)
+    output = Log.get_logger(name='logger_file', logs_dir=tmpdir)
     yield output
     for logger in output.loggers.values():
         # noinspection PyProtectedMember
@@ -160,6 +161,16 @@ def test_file_writing(logger_file):
     unique_string += '1'
     logger_file.red("red text unique_string: '%s'" % unique_string)
     assert check_logger_file_contents(logger_file, unique_string)
+
+
+# noinspection PyUnusedLocal
+def test_handlers_quantity(logger_file):
+    logger1 = Log.get_logger(name='logger1')  # noqa: F841
+    logger2 = logger_file  # noqa: F841
+    logger3 = Log.get_logger(name='logger3')  # noqa: F841
+    for logger in Log.loggers.values():
+        filehandlers = [handler for handler in logger.logger.handlers if isinstance(handler, logging.FileHandler)]
+        assert len(filehandlers) == 1
 
 
 if __name__ == '__main__':

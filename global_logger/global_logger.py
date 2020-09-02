@@ -161,8 +161,9 @@ class Log(object):
             self._filehandler = logging.FileHandler(str(self.log_file_full_path), encoding='UTF-8')
             self._filehandler.setFormatter(formatter)
             self._filehandler.level = Log.Levels.DEBUG
-            Log._add_handler_to_all_loggers(self._filehandler)
-            # self.logger.addHandler(self._filehandler)
+            self._filehandler.name = 'global_filehandler'
+            self.logger.addHandler(self._filehandler)
+            Log.add_handler_to_all_loggers(self._filehandler)
 
         self.level = level
         Log.loggers[self.name] = self
@@ -251,21 +252,22 @@ class Log(object):
                                               dump_initial_data=dump_initial_data, max_log_files=max_log_files,
                                               message_format=message_format, date_format_full=date_format_full,
                                               date_format=date_format, direct=False)
+        Log.loggers[name] = output
         Log._add_autoadded_handlers()
         return output
 
     @staticmethod
     def _add_autoadded_handlers():
         for handler in Log.auto_added_handlers:
-            Log._add_handler_to_all_loggers(handler)
+            Log.add_handler_to_all_loggers(handler)
 
     @staticmethod
-    def _add_handler_to_all_loggers(handler):
+    def add_handler_to_all_loggers(handler):
         for logger_name, logger in Log.loggers.items():
             if logger_name in Log.individual_loggers.keys():
                 continue
 
-            if handler not in logger.logger.handlers:
+            if handler not in logger.logger.handlers and handler.name not in [h.name for h in logger.logger.handlers]:
                 logger.logger.addHandler(handler)
 
     @property
@@ -386,14 +388,14 @@ class Log(object):
         self.debug("%s.%s.%s%s" % (file_dir, file_name, func_name, _params))
 
 
-# pylint: disable=unused-argument
-def __func(arg, *args, **kwargs):
-    log.trace()
-    log.debug('__func called')
-
-
 if __name__ == '__main__':
-    log = Log.get_logger()
+    log = Log.get_logger(logs_dir='./logs', level=Log.Levels.DEBUG)
+
+    # pylint: disable=unused-argument
+    def __func(arg, *args, **kwargs):
+        log.trace()
+        log.debug('__func called')
+
     log.debug('test debug абракадабра')
     log.info('test info абракадабра')
     log.error('test error абракадабра')
