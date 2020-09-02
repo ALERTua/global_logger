@@ -3,6 +3,12 @@ History
 =======
 
 
+0.3.15 (2020-09-02)
+-------------------
+
+* FileHandler now adds to all previously existing loggers
+
+
 0.3.14 (2020-08-20)
 -------------------
 
