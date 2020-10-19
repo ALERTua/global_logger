@@ -3,6 +3,13 @@ History
 =======
 
 
+0.3.17 (2020-10-19)
+-------------------
+
+* Python 3.9 support
+* Screen Logger Message Format argument added
+
+
 0.3.16 (2020-09-02)
 -------------------
 

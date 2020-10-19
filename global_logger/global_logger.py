@@ -63,16 +63,16 @@ class Log(object):
     # pylint: disable=unnecessary-comprehension
     Levels = IntEnum('Levels', [(k, v) for k, v in _LOGGER_LEVELS_DICT.items()])
     GLOBAL_LOG_LEVEL = Levels.INFO
-    LOGGER_MESSAGE_FORMAT = '%(asctime)s.%(msecs)03d %(lineno)3s:%(name)-22s %(levelname)-6s %(message)s'
+    LOGGER_FILE_MESSAGE_FORMAT = '%(asctime)s.%(msecs)03d %(lineno)3s:%(name)-22s %(levelname)-6s %(message)s'
+    LOGGER_SCREEN_MESSAGE_FORMAT = '%(log_color)s%(message)s'
     LOGGER_DATE_FORMAT_FULL = '%Y-%m-%d %H:%M:%S'
-    LOGGER_COLORED_MESSAGE_FORMAT = '%(log_color)s%(message)s'
     LOGGER_DATE_FORMAT = '%H:%M:%S'
     MAX_LOG_FILES = 50
+    DEFAULT_LOGS_DIR = 'logs'
     loggers = {}
     individual_loggers = {}
     auto_added_handlers = []  # type: List[logging.Handler]
     log_session_filename = None
-    DEFAULT_LOGS_DIR = 'logs'
     logs_dir = None  # type: Path
 
     @staticmethod
@@ -95,7 +95,8 @@ class Log(object):
 
     # pylint: disable=too-many-locals,too-many-arguments,too-many-statements
     def __init__(self, name, level=None, global_level=True, logs_dir=None, dump_initial_data=False,  # noqa: C901
-                 max_log_files=None, message_format=None, date_format_full=None, date_format=None, direct=True):
+                 max_log_files=None, file_message_format=None, screen_message_format=None, date_format_full=None,
+                 date_format=None, direct=True):
         if direct:
             raise ValueError("You should create Global Logger via Log.get_logger() method.")
 
@@ -107,7 +108,8 @@ class Log(object):
             level = Log.Levels.DEBUG
 
         self.name = name
-        Log.LOGGER_MESSAGE_FORMAT = message_format or Log.LOGGER_MESSAGE_FORMAT
+        Log.LOGGER_FILE_MESSAGE_FORMAT = file_message_format or Log.LOGGER_FILE_MESSAGE_FORMAT
+        Log.LOGGER_SCREEN_MESSAGE_FORMAT = screen_message_format or Log.LOGGER_SCREEN_MESSAGE_FORMAT
         Log.LOGGER_DATE_FORMAT_FULL = date_format_full or Log.LOGGER_DATE_FORMAT_FULL
         Log.LOGGER_DATE_FORMAT = date_format or Log.LOGGER_DATE_FORMAT
         Log.MAX_LOG_FILES = max_log_files or Log.MAX_LOG_FILES
@@ -141,9 +143,8 @@ class Log(object):
                 self._clean_logs_folder()
                 new_log_file = True
 
-        formatter = logging.Formatter(Log.LOGGER_MESSAGE_FORMAT, datefmt=Log.LOGGER_DATE_FORMAT_FULL)
         # noinspection PyTypeChecker
-        color_formatter = ColoredFormatter(fmt=Log.LOGGER_COLORED_MESSAGE_FORMAT, datefmt=Log.LOGGER_DATE_FORMAT,
+        color_formatter = ColoredFormatter(fmt=Log.LOGGER_SCREEN_MESSAGE_FORMAT, datefmt=Log.LOGGER_DATE_FORMAT,
                                            reset=True, log_colors=default_log_colors)
 
         self._stdout_handler = logging.StreamHandler(sys.stdout)
@@ -159,6 +160,7 @@ class Log(object):
         if Log.logs_dir:
             self.log_file_full_path = Log.logs_dir / Log.log_session_filename
             self._filehandler = logging.FileHandler(str(self.log_file_full_path), encoding='UTF-8')
+            formatter = logging.Formatter(Log.LOGGER_FILE_MESSAGE_FORMAT, datefmt=Log.LOGGER_DATE_FORMAT_FULL)
             self._filehandler.setFormatter(formatter)
             self._filehandler.level = Log.Levels.DEBUG
             self._filehandler.name = 'global_filehandler'
@@ -221,7 +223,8 @@ class Log(object):
     # pylint: disable=too-many-arguments
     @classmethod
     def get_logger(cls, name=None, level=None, global_level=True, logs_dir=None, dump_initial_data=False,
-                   max_log_files=None, message_format=None, date_format_full=None, date_format=None):
+                   max_log_files=None, file_message_format=None, screen_message_format=None, date_format_full=None,
+                   date_format=None):
         """
         Main instantiating method for the class. Use it to instantiate global logger.
 
@@ -238,8 +241,10 @@ class Log(object):
         :type dump_initial_data: bool
         :param max_log_files: Maximum .log files to store.
         :type max_log_files: int
-        :param message_format: Logging message format.
-        :type message_format: str
+        :param screen_message_format: Screen Logging message format.
+        :type screen_message_format: str
+        :param file_message_format: File Logging message format.
+        :type file_message_format: str
         :param date_format_full: Logging full date format.
         :type date_format_full: str
         :param date_format: Logging on-screen date format.
@@ -250,8 +255,9 @@ class Log(object):
         name = name or get_prev_function_name()
         output = Log.loggers.get(name) or cls(name, level=level, global_level=global_level, logs_dir=logs_dir,
                                               dump_initial_data=dump_initial_data, max_log_files=max_log_files,
-                                              message_format=message_format, date_format_full=date_format_full,
-                                              date_format=date_format, direct=False)
+                                              file_message_format=file_message_format,
+                                              screen_message_format=screen_message_format,
+                                              date_format_full=date_format_full, date_format=date_format, direct=False)
         Log.loggers[name] = output
         Log._add_autoadded_handlers()
         return output
