@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>global_logger package &mdash; Global Logger 0.3.16 documentation</title>
+  <title>global_logger package &mdash; Global Logger 0.3.17 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.3.16
+                0.3.17
               </div>
             
           
@@ -194,7 +194,7 @@ yes. If deemed appropriate, the record may be modified in-place.</p>
 
 <dl class="py class">
 <dt id="global_logger.global_logger.Log">
-<em class="property">class </em><code class="sig-prename descclassname">global_logger.global_logger.</code><code class="sig-name descname">Log</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">level</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">global_level</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">logs_dir</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dump_initial_data</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">max_log_files</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">message_format</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">date_format_full</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">date_format</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">direct</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/global_logger/global_logger.html#Log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#global_logger.global_logger.Log" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">global_logger.global_logger.</code><code class="sig-name descname">Log</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">level</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">global_level</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">logs_dir</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dump_initial_data</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">max_log_files</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">file_message_format</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">screen_message_format</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">date_format_full</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">date_format</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">direct</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/global_logger/global_logger.html#Log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#global_logger.global_logger.Log" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py attribute">
 <dt id="global_logger.global_logger.Log.DEFAULT_LOGS_DIR">
@@ -204,11 +204,6 @@ yes. If deemed appropriate, the record may be modified in-place.</p>
 <dl class="py attribute">
 <dt id="global_logger.global_logger.Log.GLOBAL_LOG_LEVEL">
 <code class="sig-name descname">GLOBAL_LOG_LEVEL</code><em class="property"> = 20</em><a class="headerlink" href="#global_logger.global_logger.Log.GLOBAL_LOG_LEVEL" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt id="global_logger.global_logger.Log.LOGGER_COLORED_MESSAGE_FORMAT">
-<code class="sig-name descname">LOGGER_COLORED_MESSAGE_FORMAT</code><em class="property"> = '%(log_color)s%(message)s'</em><a class="headerlink" href="#global_logger.global_logger.Log.LOGGER_COLORED_MESSAGE_FORMAT" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -222,8 +217,13 @@ yes. If deemed appropriate, the record may be modified in-place.</p>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="global_logger.global_logger.Log.LOGGER_MESSAGE_FORMAT">
-<code class="sig-name descname">LOGGER_MESSAGE_FORMAT</code><em class="property"> = '%(asctime)s.%(msecs)03d %(lineno)3s:%(name)-22s %(levelname)-6s %(message)s'</em><a class="headerlink" href="#global_logger.global_logger.Log.LOGGER_MESSAGE_FORMAT" title="Permalink to this definition">¶</a></dt>
+<dt id="global_logger.global_logger.Log.LOGGER_FILE_MESSAGE_FORMAT">
+<code class="sig-name descname">LOGGER_FILE_MESSAGE_FORMAT</code><em class="property"> = '%(asctime)s.%(msecs)03d %(lineno)3s:%(name)-22s %(levelname)-6s %(message)s'</em><a class="headerlink" href="#global_logger.global_logger.Log.LOGGER_FILE_MESSAGE_FORMAT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="global_logger.global_logger.Log.LOGGER_SCREEN_MESSAGE_FORMAT">
+<code class="sig-name descname">LOGGER_SCREEN_MESSAGE_FORMAT</code><em class="property"> = '%(log_color)s%(message)s'</em><a class="headerlink" href="#global_logger.global_logger.Log.LOGGER_SCREEN_MESSAGE_FORMAT" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py class">
@@ -290,7 +290,7 @@ yes. If deemed appropriate, the record may be modified in-place.</p>
 
 <dl class="py method">
 <dt id="global_logger.global_logger.Log.get_logger">
-<em class="property">classmethod </em><code class="sig-name descname">get_logger</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">level</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">global_level</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">logs_dir</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dump_initial_data</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">max_log_files</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">message_format</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">date_format_full</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">date_format</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/global_logger/global_logger.html#Log.get_logger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#global_logger.global_logger.Log.get_logger" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">get_logger</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">level</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">global_level</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">logs_dir</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dump_initial_data</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">max_log_files</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">file_message_format</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">screen_message_format</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">date_format_full</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">date_format</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/global_logger/global_logger.html#Log.get_logger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#global_logger.global_logger.Log.get_logger" title="Permalink to this definition">¶</a></dt>
 <dd><p>Main instantiating method for the class. Use it to instantiate global logger.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -302,7 +302,8 @@ Individual loggers do not gain global logging level changes.</p></li>
 <li><p><strong>logs_dir</strong> (<em>Path</em><em> or </em><em>str</em><em> or </em><em>None</em>) – Path where the .log files would be created, if provided.</p></li>
 <li><p><strong>dump_initial_data</strong> (<em>bool</em>) – Whether to fill the newly created .log file with initial user data.</p></li>
 <li><p><strong>max_log_files</strong> (<em>int</em>) – Maximum .log files to store.</p></li>
-<li><p><strong>message_format</strong> (<em>str</em>) – Logging message format.</p></li>
+<li><p><strong>screen_message_format</strong> (<em>str</em>) – Screen Logging message format.</p></li>
+<li><p><strong>file_message_format</strong> (<em>str</em>) – File Logging message format.</p></li>
 <li><p><strong>date_format_full</strong> (<em>str</em>) – Logging full date format.</p></li>
 <li><p><strong>date_format</strong> (<em>str</em>) – Logging on-screen date format.</p></li>
 </ul>

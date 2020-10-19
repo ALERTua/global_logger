@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>global_logger.global_logger &mdash; Global Logger 0.3.16 documentation</title>
+  <title>global_logger.global_logger &mdash; Global Logger 0.3.17 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                0.3.16
+                0.3.17
               </div>
             
           
@@ -222,16 +222,16 @@
     <span class="c1"># pylint: disable=unnecessary-comprehension</span>
     <span class="n">Levels</span> <span class="o">=</span> <span class="n">IntEnum</span><span class="p">(</span><span class="s1">&#39;Levels&#39;</span><span class="p">,</span> <span class="p">[(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">_LOGGER_LEVELS_DICT</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span>
     <span class="n">GLOBAL_LOG_LEVEL</span> <span class="o">=</span> <span class="n">Levels</span><span class="o">.</span><span class="n">INFO</span>
-    <span class="n">LOGGER_MESSAGE_FORMAT</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1">.</span><span class="si">%(msecs)03d</span><span class="s1"> </span><span class="si">%(lineno)3s</span><span class="s1">:</span><span class="si">%(name)-22s</span><span class="s1"> </span><span class="si">%(levelname)-6s</span><span class="s1"> </span><span class="si">%(message)s</span><span class="s1">&#39;</span>
+    <span class="n">LOGGER_FILE_MESSAGE_FORMAT</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1">.</span><span class="si">%(msecs)03d</span><span class="s1"> </span><span class="si">%(lineno)3s</span><span class="s1">:</span><span class="si">%(name)-22s</span><span class="s1"> </span><span class="si">%(levelname)-6s</span><span class="s1"> </span><span class="si">%(message)s</span><span class="s1">&#39;</span>
+    <span class="n">LOGGER_SCREEN_MESSAGE_FORMAT</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%(log_color)s%(message)s</span><span class="s1">&#39;</span>
     <span class="n">LOGGER_DATE_FORMAT_FULL</span> <span class="o">=</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S&#39;</span>
-    <span class="n">LOGGER_COLORED_MESSAGE_FORMAT</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%(log_color)s%(message)s</span><span class="s1">&#39;</span>
     <span class="n">LOGGER_DATE_FORMAT</span> <span class="o">=</span> <span class="s1">&#39;%H:%M:%S&#39;</span>
     <span class="n">MAX_LOG_FILES</span> <span class="o">=</span> <span class="mi">50</span>
+    <span class="n">DEFAULT_LOGS_DIR</span> <span class="o">=</span> <span class="s1">&#39;logs&#39;</span>
     <span class="n">loggers</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">individual_loggers</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">auto_added_handlers</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># type: List[logging.Handler]</span>
     <span class="n">log_session_filename</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">DEFAULT_LOGS_DIR</span> <span class="o">=</span> <span class="s1">&#39;logs&#39;</span>
     <span class="n">logs_dir</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: Path</span>
 
 <div class="viewcode-block" id="Log.set_global_log_level"><a class="viewcode-back" href="../../global_logger.html#global_logger.global_logger.Log.set_global_log_level">[docs]</a>    <span class="nd">@staticmethod</span>
@@ -254,7 +254,8 @@
 
     <span class="c1"># pylint: disable=too-many-locals,too-many-arguments,too-many-statements</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">global_level</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">logs_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dump_initial_data</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="c1"># noqa: C901</span>
-                 <span class="n">max_log_files</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">message_format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">date_format_full</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">date_format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">direct</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+                 <span class="n">max_log_files</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file_message_format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">screen_message_format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">date_format_full</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">date_format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">direct</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">direct</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;You should create Global Logger via Log.get_logger() method.&quot;</span><span class="p">)</span>
 
@@ -266,7 +267,8 @@
             <span class="n">level</span> <span class="o">=</span> <span class="n">Log</span><span class="o">.</span><span class="n">Levels</span><span class="o">.</span><span class="n">DEBUG</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
-        <span class="n">Log</span><span class="o">.</span><span class="n">LOGGER_MESSAGE_FORMAT</span> <span class="o">=</span> <span class="n">message_format</span> <span class="ow">or</span> <span class="n">Log</span><span class="o">.</span><span class="n">LOGGER_MESSAGE_FORMAT</span>
+        <span class="n">Log</span><span class="o">.</span><span class="n">LOGGER_FILE_MESSAGE_FORMAT</span> <span class="o">=</span> <span class="n">file_message_format</span> <span class="ow">or</span> <span class="n">Log</span><span class="o">.</span><span class="n">LOGGER_FILE_MESSAGE_FORMAT</span>
+        <span class="n">Log</span><span class="o">.</span><span class="n">LOGGER_SCREEN_MESSAGE_FORMAT</span> <span class="o">=</span> <span class="n">screen_message_format</span> <span class="ow">or</span> <span class="n">Log</span><span class="o">.</span><span class="n">LOGGER_SCREEN_MESSAGE_FORMAT</span>
         <span class="n">Log</span><span class="o">.</span><span class="n">LOGGER_DATE_FORMAT_FULL</span> <span class="o">=</span> <span class="n">date_format_full</span> <span class="ow">or</span> <span class="n">Log</span><span class="o">.</span><span class="n">LOGGER_DATE_FORMAT_FULL</span>
         <span class="n">Log</span><span class="o">.</span><span class="n">LOGGER_DATE_FORMAT</span> <span class="o">=</span> <span class="n">date_format</span> <span class="ow">or</span> <span class="n">Log</span><span class="o">.</span><span class="n">LOGGER_DATE_FORMAT</span>
         <span class="n">Log</span><span class="o">.</span><span class="n">MAX_LOG_FILES</span> <span class="o">=</span> <span class="n">max_log_files</span> <span class="ow">or</span> <span class="n">Log</span><span class="o">.</span><span class="n">MAX_LOG_FILES</span>
@@ -300,9 +302,8 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">_clean_logs_folder</span><span class="p">()</span>
                 <span class="n">new_log_file</span> <span class="o">=</span> <span class="kc">True</span>
 
-        <span class="n">formatter</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="n">Log</span><span class="o">.</span><span class="n">LOGGER_MESSAGE_FORMAT</span><span class="p">,</span> <span class="n">datefmt</span><span class="o">=</span><span class="n">Log</span><span class="o">.</span><span class="n">LOGGER_DATE_FORMAT_FULL</span><span class="p">)</span>
         <span class="c1"># noinspection PyTypeChecker</span>
-        <span class="n">color_formatter</span> <span class="o">=</span> <span class="n">ColoredFormatter</span><span class="p">(</span><span class="n">fmt</span><span class="o">=</span><span class="n">Log</span><span class="o">.</span><span class="n">LOGGER_COLORED_MESSAGE_FORMAT</span><span class="p">,</span> <span class="n">datefmt</span><span class="o">=</span><span class="n">Log</span><span class="o">.</span><span class="n">LOGGER_DATE_FORMAT</span><span class="p">,</span>
+        <span class="n">color_formatter</span> <span class="o">=</span> <span class="n">ColoredFormatter</span><span class="p">(</span><span class="n">fmt</span><span class="o">=</span><span class="n">Log</span><span class="o">.</span><span class="n">LOGGER_SCREEN_MESSAGE_FORMAT</span><span class="p">,</span> <span class="n">datefmt</span><span class="o">=</span><span class="n">Log</span><span class="o">.</span><span class="n">LOGGER_DATE_FORMAT</span><span class="p">,</span>
                                            <span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">log_colors</span><span class="o">=</span><span class="n">default_log_colors</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_stdout_handler</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
@@ -318,6 +319,7 @@
         <span class="k">if</span> <span class="n">Log</span><span class="o">.</span><span class="n">logs_dir</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">log_file_full_path</span> <span class="o">=</span> <span class="n">Log</span><span class="o">.</span><span class="n">logs_dir</span> <span class="o">/</span> <span class="n">Log</span><span class="o">.</span><span class="n">log_session_filename</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_filehandler</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">FileHandler</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">log_file_full_path</span><span class="p">),</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;UTF-8&#39;</span><span class="p">)</span>
+            <span class="n">formatter</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="n">Log</span><span class="o">.</span><span class="n">LOGGER_FILE_MESSAGE_FORMAT</span><span class="p">,</span> <span class="n">datefmt</span><span class="o">=</span><span class="n">Log</span><span class="o">.</span><span class="n">LOGGER_DATE_FORMAT_FULL</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_filehandler</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_filehandler</span><span class="o">.</span><span class="n">level</span> <span class="o">=</span> <span class="n">Log</span><span class="o">.</span><span class="n">Levels</span><span class="o">.</span><span class="n">DEBUG</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_filehandler</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;global_filehandler&#39;</span>
@@ -380,7 +382,8 @@
     <span class="c1"># pylint: disable=too-many-arguments</span>
 <div class="viewcode-block" id="Log.get_logger"><a class="viewcode-back" href="../../global_logger.html#global_logger.global_logger.Log.get_logger">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">get_logger</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">global_level</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">logs_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dump_initial_data</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                   <span class="n">max_log_files</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">message_format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">date_format_full</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">date_format</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                   <span class="n">max_log_files</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file_message_format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">screen_message_format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">date_format_full</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                   <span class="n">date_format</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Main instantiating method for the class. Use it to instantiate global logger.</span>
 
@@ -397,8 +400,10 @@
 <span class="sd">        :type dump_initial_data: bool</span>
 <span class="sd">        :param max_log_files: Maximum .log files to store.</span>
 <span class="sd">        :type max_log_files: int</span>
-<span class="sd">        :param message_format: Logging message format.</span>
-<span class="sd">        :type message_format: str</span>
+<span class="sd">        :param screen_message_format: Screen Logging message format.</span>
+<span class="sd">        :type screen_message_format: str</span>
+<span class="sd">        :param file_message_format: File Logging message format.</span>
+<span class="sd">        :type file_message_format: str</span>
 <span class="sd">        :param date_format_full: Logging full date format.</span>
 <span class="sd">        :type date_format_full: str</span>
 <span class="sd">        :param date_format: Logging on-screen date format.</span>
@@ -409,8 +414,9 @@
         <span class="n">name</span> <span class="o">=</span> <span class="n">name</span> <span class="ow">or</span> <span class="n">get_prev_function_name</span><span class="p">()</span>
         <span class="n">output</span> <span class="o">=</span> <span class="n">Log</span><span class="o">.</span><span class="n">loggers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">level</span><span class="p">,</span> <span class="n">global_level</span><span class="o">=</span><span class="n">global_level</span><span class="p">,</span> <span class="n">logs_dir</span><span class="o">=</span><span class="n">logs_dir</span><span class="p">,</span>
                                               <span class="n">dump_initial_data</span><span class="o">=</span><span class="n">dump_initial_data</span><span class="p">,</span> <span class="n">max_log_files</span><span class="o">=</span><span class="n">max_log_files</span><span class="p">,</span>
-                                              <span class="n">message_format</span><span class="o">=</span><span class="n">message_format</span><span class="p">,</span> <span class="n">date_format_full</span><span class="o">=</span><span class="n">date_format_full</span><span class="p">,</span>
-                                              <span class="n">date_format</span><span class="o">=</span><span class="n">date_format</span><span class="p">,</span> <span class="n">direct</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                                              <span class="n">file_message_format</span><span class="o">=</span><span class="n">file_message_format</span><span class="p">,</span>
+                                              <span class="n">screen_message_format</span><span class="o">=</span><span class="n">screen_message_format</span><span class="p">,</span>
+                                              <span class="n">date_format_full</span><span class="o">=</span><span class="n">date_format_full</span><span class="p">,</span> <span class="n">date_format</span><span class="o">=</span><span class="n">date_format</span><span class="p">,</span> <span class="n">direct</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="n">Log</span><span class="o">.</span><span class="n">loggers</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">output</span>
         <span class="n">Log</span><span class="o">.</span><span class="n">_add_autoadded_handlers</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">output</span></div>
