@@ -92,16 +92,31 @@ def test_levels():
     assert log.level == log.Levels.INFO, "logging should change to %s" % log.Levels.INFO
 
 
-def test_individual_logger():
-    log = Log.get_logger('test_individual_logger_global', logs_dir=None, level=Log.Levels.DEBUG)
-    individual_logger = Log.get_logger('test_individual_logger_individual', logs_dir=None, global_level=False,
+# noinspection PyUnusedLocal
+def test_handlers_quantity(logger_file):
+    logger1 = Log.get_logger(name='logger1')  # noqa: F841
+    logger2 = logger_file  # noqa: F841
+    logger3 = Log.get_logger(name='logger3')  # noqa: F841
+    for logger in Log.loggers.values():
+        filehandlers = [handler for handler in logger.logger.handlers if isinstance(handler, logging.FileHandler)]
+        assert len(filehandlers) == 1
+
+
+# this one has to be before test_file_writing
+def test_individual_logger(logger_file):
+    individual_logger = Log.get_logger('test_individual_logger_individual', global_level=False,
                                        level=Log.Levels.CRITICAL)
+    individual_logger._filehandler.level = constant_level = 98
     Log.set_global_log_level(Log.Levels.WARNING)
-    assert log.level == Log.Levels.WARNING, "log level should be %s after set_global_log_level" % Log.Levels.WARNING
+    assert logger_file.level == Log.Levels.WARNING, \
+        "log level should be %s after set_global_log_level" % Log.Levels.WARNING
     assert individual_logger.level == Log.Levels.CRITICAL, \
         "individual logger should ignore set_global_log_level and remain %s" % Log.Levels.CRITICAL
+    assert individual_logger._filehandler.level == constant_level, \
+        "individual logger filehandler should ignore set_global_log_level and remain %s" % constant_level
 
 
+# test_individual_logger has to be before this one
 def test_file_writing(logger_file):
     def get_random_string(length):
         letters = string.ascii_lowercase
@@ -163,21 +178,10 @@ def test_file_writing(logger_file):
     assert check_logger_file_contents(logger_file, unique_string)
 
 
-# noinspection PyUnusedLocal
-def test_handlers_quantity(logger_file):
-    logger1 = Log.get_logger(name='logger1')  # noqa: F841
-    logger2 = logger_file  # noqa: F841
-    logger3 = Log.get_logger(name='logger3')  # noqa: F841
-    for logger in Log.loggers.values():
-        filehandlers = [handler for handler in logger.logger.handlers if isinstance(handler, logging.FileHandler)]
-        assert len(filehandlers) == 1
-
-
 if __name__ == '__main__':
     _logger_file = Log.get_logger('logger', logs_dir=Path(__file__).parent.parent / 'Logs')
     test_basic(_logger_file)
     test_instance_exception()
     test_levels()
-    test_individual_logger()
     test_file_writing(_logger_file)
     print("")

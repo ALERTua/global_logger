@@ -56,9 +56,7 @@ setup(
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.7',
-        # 'Programming Language :: Python :: 3.8',
-        # 'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.9',
     ],
     description="Based on Python built-in logger, expands it, and provides a global logger to your system. "
                 "Easy on-screen and/or .log files output setup without pain for Python newcomers. "
@@ -74,6 +72,6 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/alertua/global_logger',
-    version='0.3.16',
+    version='0.3.17',
     zip_safe=False,
 )
