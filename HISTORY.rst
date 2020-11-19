@@ -3,7 +3,7 @@ History
 =======
 
 
-0.3.18 (2020-11-19)
+0.3.20 (2020-11-19)
 -------------------
 
 * win_unicode_console version tweak
