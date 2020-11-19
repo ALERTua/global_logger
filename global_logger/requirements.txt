@@ -7,4 +7,4 @@ colorlog
 future
 win-unicode-console==0.4; platform_system == "Windows" and platform_version >= "10.0.18362"
 win-unicode-console>0.4; platform_system == "Windows" and platform_version < "10.0.18362"
-cenum; python_version < '3'
+enum; python_version < '3'
