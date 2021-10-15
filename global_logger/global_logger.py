@@ -7,7 +7,6 @@ import atexit
 import inspect
 import logging
 import os
-import platform
 import re
 import sys
 import time
@@ -125,7 +124,6 @@ class Log(object):
         self.critical = self.logger.critical
         self.exception = self.logger.exception
 
-        new_log_file = False
         if Log.logs_dir:
             Log.logs_dir = Path(Log.logs_dir)
             if not (Log.logs_dir.exists() and Log.logs_dir.is_dir()):
@@ -140,7 +138,6 @@ class Log(object):
                     now = pendulum.now(pendulum.UTC)  # travis-ci precaution
                 Log.log_session_filename = "%s.log" % now.strftime('%Y-%m-%d_%H-%M-%S')
                 self._clean_logs_folder()
-                new_log_file = True
 
         # noinspection PyTypeChecker
         color_formatter = ColoredFormatter(fmt=Log.LOGGER_SCREEN_MESSAGE_FORMAT, datefmt=Log.LOGGER_DATE_FORMAT,
