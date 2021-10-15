@@ -12,7 +12,6 @@ global\_logger.global\_logger module
    :undoc-members:
    :show-inheritance:
 
-
 Module contents
 ---------------
 

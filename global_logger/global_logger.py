@@ -94,7 +94,7 @@ class Log(object):
             handler.level = level
 
     # pylint: disable=too-many-locals,too-many-arguments,too-many-statements
-    def __init__(self, name, level=None, global_level=True, logs_dir=None, dump_initial_data=False,  # noqa: C901
+    def __init__(self, name, level=None, global_level=True, logs_dir=None,  # noqa: C901
                  max_log_files=None, file_message_format=None, screen_message_format=None, date_format_full=None,
                  date_format=None, direct=True):
         if direct:
@@ -115,7 +115,6 @@ class Log(object):
         Log.MAX_LOG_FILES = max_log_files or Log.MAX_LOG_FILES
         Log.logs_dir = Log.logs_dir or logs_dir  # or Log.logs_dir or Log.DEFAULT_LOGS_DIR
 
-        self._dump_initial_data = dump_initial_data
         self.logger = logging.getLogger(self.name)
         self.logger.propagate = False  # this fixes a recursion if other modules also use logging
 
@@ -171,16 +170,6 @@ class Log(object):
         Log.loggers[self.name] = self
         if global_level is not True:
             Log.individual_loggers[self.name] = self
-        if Log.logs_dir and self._dump_initial_data and new_log_file:
-            # pylint: disable=bare-except
-            try:
-                _env_dump_str = "Python {sysver} @ {platf}\n{user}@{comp} @ {winver}".format(
-                    sysver=sys.version, platf=platform.architecture(), winver=sys.getwindowsversion(),
-                    user=os.environ['USERNAME'], comp=os.environ['COMPUTERNAME'])
-                self.debug(_env_dump_str)
-            except:  # noqa
-                pass
-
         atexit.register(self._clean)
 
     def __str__(self):
@@ -222,9 +211,8 @@ class Log(object):
 
     # pylint: disable=too-many-arguments
     @classmethod
-    def get_logger(cls, name=None, level=None, global_level=True, logs_dir=None, dump_initial_data=False,
-                   max_log_files=None, file_message_format=None, screen_message_format=None, date_format_full=None,
-                   date_format=None):
+    def get_logger(cls, name=None, level=None, global_level=True, logs_dir=None, max_log_files=None,
+                   file_message_format=None, screen_message_format=None, date_format_full=None, date_format=None):
         """
         Main instantiating method for the class. Use it to instantiate global logger.
 
@@ -237,8 +225,6 @@ class Log(object):
         :type global_level: bool
         :param logs_dir: Path where the .log files would be created, if provided.
         :type logs_dir: Path or str or None
-        :param dump_initial_data: Whether to fill the newly created .log file with initial user data.
-        :type dump_initial_data: bool
         :param max_log_files: Maximum .log files to store.
         :type max_log_files: int
         :param screen_message_format: Screen Logging message format.
@@ -254,8 +240,7 @@ class Log(object):
         """
         name = name or get_prev_function_name()
         output = Log.loggers.get(name) or cls(name, level=level, global_level=global_level, logs_dir=logs_dir,
-                                              dump_initial_data=dump_initial_data, max_log_files=max_log_files,
-                                              file_message_format=file_message_format,
+                                              max_log_files=max_log_files, file_message_format=file_message_format,
                                               screen_message_format=screen_message_format,
                                               date_format_full=date_format_full, date_format=date_format, direct=False)
         Log.loggers[name] = output
