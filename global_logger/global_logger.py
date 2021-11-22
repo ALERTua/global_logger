@@ -286,6 +286,9 @@ class Log(object):
 
     @property
     def _log_files(self):
+        if not Log.logs_dir:
+            return []
+
         output = sorted(list(Log.logs_dir.glob('*.log')), key=lambda f: f.stat().st_ctime,
                         reverse=True)
         return output
