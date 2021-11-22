@@ -3,7 +3,6 @@
 # pylint: disable=redefined-outer-name
 """ Global Logger Tests """
 from __future__ import print_function, unicode_literals
-
 import logging
 import random
 import string
@@ -19,25 +18,51 @@ if TYPE_CHECKING:
 
 
 @pytest.fixture
-def logger_screen():
-    return Log.get_logger(logs_dir=None)
+def _logger():
+    def __logger(*args, **kwargs):
+        return Log.get_logger(*args, **kwargs)
+
+    yield __logger
+
+
+@pytest.fixture
+def logger(_logger):
+    yield _logger()
 
 
 @pytest.fixture(scope='function')
-def logger_file(tmpdir_factory):
-    """
+def _logger_file(_logger, tmpdir_factory):
+    created_loggers = []
+    created_tmpdirs = []
 
-    :type tmpdir_factory: TempdirFactory
-    """
-    tmpdir = Path(str(tmpdir_factory.mktemp('tests_logs')))  # type: Path
-    output = Log.get_logger(name='logger_file', logs_dir=tmpdir)
-    yield output
-    for logger in output.loggers.values():
-        # noinspection PyProtectedMember
-        # pylint: disable=protected-access
-        logger._clean()
-    # pylint: disable=expression-not-assigned
-    [f.unlink() for f in tmpdir.glob('*.log')]
+    def __logger_file(*args, **kwargs):
+        tempdir = Path(str(tmpdir_factory.mktemp('tests_logs')))  # type: Path
+        created_tmpdirs.append(tempdir)
+        output = _logger(*args, logs_dir=tempdir, **kwargs)
+        created_loggers.append(output)
+        return output
+
+    yield __logger_file
+
+    for created_logger in created_loggers:
+        for created_logger_logger in created_logger.loggers.values():
+            # noinspection PyProtectedMember
+            # pylint: disable=protected-access
+            created_logger_logger._clean()
+
+    for tmpdir in created_tmpdirs:
+        # pylint: disable=expression-not-assigned
+        [f.unlink() for f in tmpdir.glob('*.log')]
+
+
+@pytest.fixture
+def logger_file(_logger_file):
+    yield _logger_file()
+
+
+@pytest.fixture
+def logger_screen(_logger):
+    yield _logger(logs_dir=None)
 
 
 def test_basic(logger_file):
@@ -68,8 +93,8 @@ def test_instance_exception():
         Log('something')
 
 
-def test_levels():
-    log = Log.get_logger(logs_dir=None)
+def test_levels(logger, logger_screen):
+    log = logger_screen
     assert log.level == log.Levels.INFO, "default logging level should be %s, but not %s" % (
         log.Levels.INFO, log.level)
 
@@ -93,19 +118,18 @@ def test_levels():
 
 
 # noinspection PyUnusedLocal
-def test_handlers_quantity(logger_file):
-    logger1 = Log.get_logger(name='logger1')  # noqa: F841
+def test_handlers_quantity(_logger, logger_file):
+    logger1 = _logger(name='logger1')  # noqa: F841
     logger2 = logger_file  # noqa: F841
-    logger3 = Log.get_logger(name='logger3')  # noqa: F841
+    logger3 = _logger(name='logger3')  # noqa: F841
     for logger in Log.loggers.values():
         filehandlers = [handler for handler in logger.logger.handlers if isinstance(handler, logging.FileHandler)]
         assert len(filehandlers) == 1
 
 
 # this one has to be before test_file_writing
-def test_individual_logger(logger_file):
-    individual_logger = Log.get_logger('test_individual_logger_individual', global_level=False,
-                                       level=Log.Levels.CRITICAL)
+def test_individual_logger(_logger, logger_file):
+    individual_logger = _logger('test_individual_logger_individual', global_level=False, level=Log.Levels.CRITICAL)
     individual_logger._filehandler.level = constant_level = 98
     Log.set_global_log_level(Log.Levels.WARNING)
     assert logger_file.level == Log.Levels.WARNING, \
@@ -179,9 +203,9 @@ def test_file_writing(logger_file):
 
 
 if __name__ == '__main__':
-    _logger_file = Log.get_logger('logger', logs_dir=Path(__file__).parent.parent / 'Logs')
-    test_basic(_logger_file)
+    __logger_file = logger('logger', logs_dir=Path(__file__).parent.parent / 'Logs')
+    test_basic(__logger_file)
     test_instance_exception()
     test_levels()
-    test_file_writing(_logger_file)
+    test_file_writing(__logger_file)
     print("")
