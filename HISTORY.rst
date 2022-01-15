@@ -3,6 +3,11 @@ History
 =======
 
 
+0.3.28 (2022-15-01)
+-------------------
+
+* It is now possible to set the current global log_session_filename while instantiating the first Logger
+
 0.3.27 (2021-22-11)
 -------------------
 
