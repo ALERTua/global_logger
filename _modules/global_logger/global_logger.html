@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>global_logger.global_logger &mdash; Global Logger 0.3.28 documentation</title>
+  <title>global_logger.global_logger &mdash; Global Logger 0.3.29 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -27,7 +27,7 @@
             <a href="../../index.html" class="icon icon-home"> Global Logger
           </a>
               <div class="version">
-                0.3.28
+                0.3.29
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -170,7 +170,7 @@
     <span class="c1"># pylint: disable=too-many-locals,too-many-arguments,too-many-statements</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">global_level</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">logs_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">log_session_filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: C901</span>
                  <span class="n">max_log_files</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file_message_format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">screen_message_format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">date_format_full</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">date_format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">direct</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+                 <span class="n">date_format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">use_colors</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">direct</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">direct</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;You should create Global Logger via Log.get_logger() method.&quot;</span><span class="p">)</span>
 
@@ -182,6 +182,7 @@
             <span class="n">level</span> <span class="o">=</span> <span class="n">Log</span><span class="o">.</span><span class="n">Levels</span><span class="o">.</span><span class="n">DEBUG</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">use_colors</span> <span class="o">=</span> <span class="n">use_colors</span>
         <span class="n">Log</span><span class="o">.</span><span class="n">LOGGER_FILE_MESSAGE_FORMAT</span> <span class="o">=</span> <span class="n">file_message_format</span> <span class="ow">or</span> <span class="n">Log</span><span class="o">.</span><span class="n">LOGGER_FILE_MESSAGE_FORMAT</span>
         <span class="n">Log</span><span class="o">.</span><span class="n">LOGGER_SCREEN_MESSAGE_FORMAT</span> <span class="o">=</span> <span class="n">screen_message_format</span> <span class="ow">or</span> <span class="n">Log</span><span class="o">.</span><span class="n">LOGGER_SCREEN_MESSAGE_FORMAT</span>
         <span class="n">Log</span><span class="o">.</span><span class="n">LOGGER_DATE_FORMAT_FULL</span> <span class="o">=</span> <span class="n">date_format_full</span> <span class="ow">or</span> <span class="n">Log</span><span class="o">.</span><span class="n">LOGGER_DATE_FORMAT_FULL</span>
@@ -215,18 +216,19 @@
                 <span class="n">Log</span><span class="o">.</span><span class="n">log_session_filename</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">.log&quot;</span> <span class="o">%</span> <span class="n">now</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">_%H-%M-%S&#39;</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_clean_logs_folder</span><span class="p">()</span>
 
-        <span class="c1"># noinspection PyTypeChecker</span>
-        <span class="n">color_formatter</span> <span class="o">=</span> <span class="n">ColoredFormatter</span><span class="p">(</span><span class="n">fmt</span><span class="o">=</span><span class="n">Log</span><span class="o">.</span><span class="n">LOGGER_SCREEN_MESSAGE_FORMAT</span><span class="p">,</span> <span class="n">datefmt</span><span class="o">=</span><span class="n">Log</span><span class="o">.</span><span class="n">LOGGER_DATE_FORMAT</span><span class="p">,</span>
-                                           <span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">log_colors</span><span class="o">=</span><span class="n">default_log_colors</span><span class="p">)</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">_stdout_handler</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_stdout_handler</span><span class="o">.</span><span class="n">addFilter</span><span class="p">(</span><span class="n">InfoFilter</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_stdout_handler</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_stdout_handler</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">color_formatter</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_stderr_handler</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_stderr_handler</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_stderr_handler</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">color_formatter</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_colors</span><span class="p">:</span>
+            <span class="c1"># noinspection PyTypeChecker</span>
+            <span class="n">color_formatter</span> <span class="o">=</span> <span class="n">ColoredFormatter</span><span class="p">(</span><span class="n">fmt</span><span class="o">=</span><span class="n">Log</span><span class="o">.</span><span class="n">LOGGER_SCREEN_MESSAGE_FORMAT</span><span class="p">,</span> <span class="n">datefmt</span><span class="o">=</span><span class="n">Log</span><span class="o">.</span><span class="n">LOGGER_DATE_FORMAT</span><span class="p">,</span>
+                                               <span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">log_colors</span><span class="o">=</span><span class="n">default_log_colors</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_stdout_handler</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">color_formatter</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_stderr_handler</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">color_formatter</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_filehandler</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: Union[logging.FileHandler, None]</span>
         <span class="k">if</span> <span class="n">Log</span><span class="o">.</span><span class="n">logs_dir</span><span class="p">:</span>
@@ -286,7 +288,7 @@
 <div class="viewcode-block" id="Log.get_logger"><a class="viewcode-back" href="../../global_logger.html#global_logger.global_logger.Log.get_logger">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">get_logger</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">global_level</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">logs_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">log_session_filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                    <span class="n">max_log_files</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file_message_format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">screen_message_format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">date_format_full</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                   <span class="n">date_format</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                   <span class="n">date_format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">use_colors</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Main instantiating method for the class. Use it to instantiate global logger.</span>
 
@@ -311,13 +313,15 @@
 <span class="sd">        :type date_format_full: str</span>
 <span class="sd">        :param date_format: Logging on-screen date format.</span>
 <span class="sd">        :type date_format: str</span>
+<span class="sd">        :param use_colors: Use colored Stdout and Stderr output</span>
+<span class="sd">        :type use_colors: bool</span>
 <span class="sd">        :return: :class:`Log` instance to work with.</span>
 <span class="sd">        :rtype: :class:`Log`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">name</span> <span class="o">=</span> <span class="n">name</span> <span class="ow">or</span> <span class="n">get_prev_function_name</span><span class="p">()</span>
         <span class="n">output</span> <span class="o">=</span> <span class="n">Log</span><span class="o">.</span><span class="n">loggers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">level</span><span class="p">,</span> <span class="n">global_level</span><span class="o">=</span><span class="n">global_level</span><span class="p">,</span> <span class="n">logs_dir</span><span class="o">=</span><span class="n">logs_dir</span><span class="p">,</span>
                                               <span class="n">log_session_filename</span><span class="o">=</span><span class="n">log_session_filename</span><span class="p">,</span> <span class="n">max_log_files</span><span class="o">=</span><span class="n">max_log_files</span><span class="p">,</span>
-                                              <span class="n">file_message_format</span><span class="o">=</span><span class="n">file_message_format</span><span class="p">,</span>
+                                              <span class="n">file_message_format</span><span class="o">=</span><span class="n">file_message_format</span><span class="p">,</span> <span class="n">use_colors</span><span class="o">=</span><span class="n">use_colors</span><span class="p">,</span>
                                               <span class="n">screen_message_format</span><span class="o">=</span><span class="n">screen_message_format</span><span class="p">,</span>
                                               <span class="n">date_format_full</span><span class="o">=</span><span class="n">date_format_full</span><span class="p">,</span> <span class="n">date_format</span><span class="o">=</span><span class="n">date_format</span><span class="p">,</span> <span class="n">direct</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="n">Log</span><span class="o">.</span><span class="n">loggers</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">output</span>
@@ -408,7 +412,7 @@
         <span class="n">default_end</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
         <span class="n">end</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="s1">&#39;end&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span>
         <span class="n">color</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">))</span>
-        <span class="n">clear</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="s1">&#39;clear&#39;</span><span class="p">),</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="n">clear</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="s1">&#39;clear&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_colors</span><span class="p">)</span>
         <span class="n">print_end</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="s1">&#39;end&#39;</span><span class="p">),</span> <span class="n">default_end</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">message</span><span class="p">:</span>
             <span class="n">timestamp</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="k">if</span> <span class="n">end</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span> <span class="k">else</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> &#39;</span> <span class="o">%</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="s2">&quot;%H:%M:%S&quot;</span><span class="p">))</span>
@@ -431,6 +435,7 @@
             <span class="n">_colored_msg</span> <span class="o">=</span> <span class="n">_cleared_message</span>
             <span class="k">if</span> <span class="n">color</span><span class="p">:</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">AnsiFore</span><span class="p">):</span>
+                    <span class="c1"># noinspection PyUnresolvedReferences</span>
                     <span class="n">color</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">Fore</span><span class="p">,</span> <span class="n">color</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span> <span class="n">Fore</span><span class="o">.</span><span class="n">GREEN</span><span class="p">)</span>
                 <span class="n">_colored_msg</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s%s%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">_cleared_message</span><span class="p">,</span> <span class="n">Fore</span><span class="o">.</span><span class="n">RESET</span><span class="p">)</span>
 
