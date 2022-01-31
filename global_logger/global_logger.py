@@ -95,7 +95,7 @@ class Log(object):
     # pylint: disable=too-many-locals,too-many-arguments,too-many-statements
     def __init__(self, name, level=None, global_level=True, logs_dir=None, log_session_filename=None,  # noqa: C901
                  max_log_files=None, file_message_format=None, screen_message_format=None, date_format_full=None,
-                 date_format=None, direct=True):
+                 date_format=None, use_colors=True, direct=True):
         if direct:
             raise ValueError("You should create Global Logger via Log.get_logger() method.")
 
@@ -107,6 +107,7 @@ class Log(object):
             level = Log.Levels.DEBUG
 
         self.name = name
+        self.use_colors = use_colors
         Log.LOGGER_FILE_MESSAGE_FORMAT = file_message_format or Log.LOGGER_FILE_MESSAGE_FORMAT
         Log.LOGGER_SCREEN_MESSAGE_FORMAT = screen_message_format or Log.LOGGER_SCREEN_MESSAGE_FORMAT
         Log.LOGGER_DATE_FORMAT_FULL = date_format_full or Log.LOGGER_DATE_FORMAT_FULL
@@ -140,18 +141,19 @@ class Log(object):
                 Log.log_session_filename = "%s.log" % now.strftime('%Y-%m-%d_%H-%M-%S')
                 self._clean_logs_folder()
 
-        # noinspection PyTypeChecker
-        color_formatter = ColoredFormatter(fmt=Log.LOGGER_SCREEN_MESSAGE_FORMAT, datefmt=Log.LOGGER_DATE_FORMAT,
-                                           reset=True, log_colors=default_log_colors)
-
         self._stdout_handler = logging.StreamHandler(sys.stdout)
         self._stdout_handler.addFilter(InfoFilter())
         self.logger.addHandler(self._stdout_handler)
-        self._stdout_handler.setFormatter(color_formatter)
 
         self._stderr_handler = logging.StreamHandler(sys.stderr)
         self.logger.addHandler(self._stderr_handler)
-        self._stderr_handler.setFormatter(color_formatter)
+
+        if self.use_colors:
+            # noinspection PyTypeChecker
+            color_formatter = ColoredFormatter(fmt=Log.LOGGER_SCREEN_MESSAGE_FORMAT, datefmt=Log.LOGGER_DATE_FORMAT,
+                                               reset=True, log_colors=default_log_colors)
+            self._stdout_handler.setFormatter(color_formatter)
+            self._stderr_handler.setFormatter(color_formatter)
 
         self._filehandler = None  # type: Union[logging.FileHandler, None]
         if Log.logs_dir:
@@ -211,7 +213,7 @@ class Log(object):
     @classmethod
     def get_logger(cls, name=None, level=None, global_level=True, logs_dir=None, log_session_filename=None,
                    max_log_files=None, file_message_format=None, screen_message_format=None, date_format_full=None,
-                   date_format=None):
+                   date_format=None, use_colors=True):
         """
         Main instantiating method for the class. Use it to instantiate global logger.
 
@@ -236,13 +238,15 @@ class Log(object):
         :type date_format_full: str
         :param date_format: Logging on-screen date format.
         :type date_format: str
+        :param use_colors: Use colored Stdout and Stderr output
+        :type use_colors: bool
         :return: :class:`Log` instance to work with.
         :rtype: :class:`Log`
         """
         name = name or get_prev_function_name()
         output = Log.loggers.get(name) or cls(name, level=level, global_level=global_level, logs_dir=logs_dir,
                                               log_session_filename=log_session_filename, max_log_files=max_log_files,
-                                              file_message_format=file_message_format,
+                                              file_message_format=file_message_format, use_colors=use_colors,
                                               screen_message_format=screen_message_format,
                                               date_format_full=date_format_full, date_format=date_format, direct=False)
         Log.loggers[name] = output
@@ -333,7 +337,7 @@ class Log(object):
         default_end = '\n'
         end = kwargs.get(str('end'), None)
         color = kwargs.get(str('color'))
-        clear = kwargs.get(str('clear'), True)
+        clear = kwargs.get(str('clear'), self.use_colors)
         print_end = kwargs.get(str('end'), default_end)
         for msg in message:
             timestamp = '' if end == '' else '%s ' % time.strftime(str("%H:%M:%S"))
@@ -356,6 +360,7 @@ class Log(object):
             _colored_msg = _cleared_message
             if color:
                 if not isinstance(color, AnsiFore):
+                    # noinspection PyUnresolvedReferences
                     color = getattr(Fore, color.upper(), Fore.GREEN)
                 _colored_msg = '%s%s%s' % (color, _cleared_message, Fore.RESET)
 

@@ -3,6 +3,12 @@ History
 =======
 
 
+0.3.29 (2022-31-01)
+-------------------
+
+* It is now possible to toggle Logger screen colored output
+
+
 0.3.28 (2022-15-01)
 -------------------
 
