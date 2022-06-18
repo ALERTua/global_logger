@@ -373,8 +373,8 @@ class Log(object):
         if not msg.endswith('\n'):
             msg += '\n'
 
-        self._filehandler.stream.write(msg)
-        self._filehandler.flush()
+        record = logging.LogRecord(self.name, self.level, '', 0, msg, (), None)
+        self._filehandler.emit(record)
 
     def trace(self):
         frame = inspect.currentframe().f_back
