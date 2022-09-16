@@ -129,7 +129,7 @@ class Log(object):
         if Log.logs_dir:
             Log.logs_dir = Path(Log.logs_dir)
             if not (Log.logs_dir.exists() and Log.logs_dir.is_dir()):
-                Log.logs_dir.mkdir()
+                Log.logs_dir.mkdir(parents=True)
 
             if Log.log_session_filename is None:
                 # pylint: disable=import-outside-toplevel
