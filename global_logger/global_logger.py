@@ -13,7 +13,7 @@ import time
 import traceback
 from enum import IntEnum
 from pathlib import Path
-from typing import List, Union  # pylint: disable=unused-import
+from typing import List, Union  # noqa: F401
 
 import pendulum
 from colorama import Fore
