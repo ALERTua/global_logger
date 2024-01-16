@@ -40,6 +40,7 @@ def get_prev_function_name():
 
 
 def clear_message(msg):
+    # noinspection RegExpRedundantEscape
     return re.sub(r'\x1b(\[.*?[@-~]|\].*?(\x07|\x1b\\))', '', msg)
 
 
@@ -60,6 +61,7 @@ class Log(object):
         # pylint: disable=protected-access
         _LOGGER_LEVELS_DICT = logging._nameToLevel
     # pylint: disable=unnecessary-comprehension
+    # noinspection PyTypeChecker
     Levels = IntEnum('Levels', [(k, v) for k, v in _LOGGER_LEVELS_DICT.items()])
     GLOBAL_LOG_LEVEL = Levels.INFO
     LOGGER_FILE_MESSAGE_FORMAT = '%(asctime)s.%(msecs)03d %(lineno)3s:%(name)-22s %(levelname)-6s %(message)s'
@@ -132,12 +134,7 @@ class Log(object):
                 Log.logs_dir.mkdir(parents=True)
 
             if Log.log_session_filename is None:
-                # pylint: disable=import-outside-toplevel
-                from pendulum.tz.zoneinfo.exceptions import InvalidZoneinfoFile
-                try:
-                    now = pendulum.now()
-                except InvalidZoneinfoFile:
-                    now = pendulum.now(pendulum.UTC)  # travis-ci precaution
+                now = pendulum.now(tz=pendulum.local_timezone())
                 Log.log_session_filename = "%s.log" % now.strftime('%Y-%m-%d_%H-%M-%S')
                 self._clean_logs_folder()
 
@@ -264,7 +261,9 @@ class Log(object):
             if logger_name in Log.individual_loggers.keys():
                 continue
 
-            if handler not in logger.logger.handlers and handler.name not in [h.name for h in logger.logger.handlers]:
+            handler_name = handler.name or handler.__class__.__name__
+            handlers_names = [h.name or h.__class__.__name__ for h in logger.logger.handlers]
+            if handler not in logger.logger.handlers and handler_name not in handlers_names:
                 logger.logger.addHandler(handler)
 
     @property
