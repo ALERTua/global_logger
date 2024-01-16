@@ -56,7 +56,6 @@ setup(
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.9',
     ],
     description="Based on Python built-in logger, expands it, and provides a global logger to your system. "
                 "Easy on-screen and/or .log files output setup without pain for Python newcomers. "
