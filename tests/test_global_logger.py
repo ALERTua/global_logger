@@ -20,7 +20,8 @@ if TYPE_CHECKING:
 @pytest.fixture
 def _logger():
     def __logger(*args, **kwargs):
-        return Log.get_logger(*args, **kwargs)
+        ___logger = Log.get_logger(*args, **kwargs)
+        return ___logger
 
     yield __logger
 
@@ -120,8 +121,8 @@ def test_levels(logger, logger_screen):
 # noinspection PyUnusedLocal
 def test_handlers_quantity(_logger, logger_file):
     logger1 = _logger(name='logger1')  # noqa: F841
-    logger2 = logger_file  # noqa: F841
-    logger3 = _logger(name='logger3')  # noqa: F841
+    logger2 = _logger(name='logger2')  # noqa: F841
+    logger3 = logger_file  # noqa: F841
     for logger in Log.loggers.values():
         filehandlers = [handler for handler in logger.logger.handlers if isinstance(handler, logging.FileHandler)]
         assert len(filehandlers) == 1
@@ -200,6 +201,26 @@ def test_file_writing(logger_file):
     unique_string += '1'
     logger_file.red("red text unique_string: '%s'" % unique_string)
     assert check_logger_file_contents(logger_file, unique_string)
+
+
+# noinspection PyUnusedLocal
+def test_add_handler(_logger, logger_file):
+    class CustomHandler(logging.Handler):
+        pass
+
+    logger1 = _logger(name='logger1')  # noqa: F841
+    logger2 = logger_file  # noqa: F841
+    logger3 = _logger(name='logger3')  # noqa: F841
+    handler = CustomHandler()
+    logger1.logger.addHandler(handler)
+    assert handler not in logger2.logger.handlers, "Handler shouldn't be in a logger where it wasn't added"
+
+    Log.add_handler_to_all_loggers(handler)
+    for logger in Log.loggers.values():
+        if logger in logger.individual_loggers.values():
+            continue
+
+        assert handler in logger.logger.handlers, "%s must be in %s %s" % (handler, logger, logger.logger.handlers)
 
 
 if __name__ == '__main__':
