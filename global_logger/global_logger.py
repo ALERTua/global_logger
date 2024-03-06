@@ -134,7 +134,11 @@ class Log(object):
                 Log.logs_dir.mkdir(parents=True)
 
             if Log.log_session_filename is None:
-                now = pendulum.now(tz=pendulum.local_timezone())
+                try:
+                    tz = pendulum.local_timezone()
+                except:
+                    tz = pendulum.timezone('UTC')
+                now = pendulum.now(tz)
                 Log.log_session_filename = "%s.log" % now.strftime('%Y-%m-%d_%H-%M-%S')
                 self._clean_logs_folder()
 
