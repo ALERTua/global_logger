@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>global_logger.global_logger &mdash; Global Logger 0.3.32 documentation</title>
+  <title>global_logger.global_logger &mdash; Global Logger 0.3.33 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
 
@@ -14,7 +14,7 @@
   
         <script src="../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=c56908ff"></script>
+        <script src="../../_static/documentation_options.js?v=61118ce6"></script>
         <script src="../../_static/doctools.js?v=888ff710"></script>
         <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -34,7 +34,7 @@
             Global Logger
           </a>
               <div class="version">
-                0.3.32
+                0.3.33
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -129,6 +129,16 @@
 <span class="k">def</span> <span class="nf">clear_message</span><span class="p">(</span><span class="n">msg</span><span class="p">):</span>
     <span class="c1"># noinspection RegExpRedundantEscape</span>
     <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\x1b(\[.*?[@-~]|\].*?(\x07|\x1b</span><span class="se">\\</span><span class="s1">))&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="tz">
+<a class="viewcode-back" href="../../global_logger.html#global_logger.global_logger.tz">[docs]</a>
+<span class="k">def</span> <span class="nf">tz</span><span class="p">():</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pendulum</span><span class="o">.</span><span class="n">local_timezone</span><span class="p">()</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pendulum</span><span class="o">.</span><span class="n">UTC</span></div>
 
 
 
@@ -233,11 +243,7 @@
                 <span class="n">Log</span><span class="o">.</span><span class="n">logs_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">Log</span><span class="o">.</span><span class="n">log_session_filename</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">try</span><span class="p">:</span>
-                    <span class="n">tz</span> <span class="o">=</span> <span class="n">pendulum</span><span class="o">.</span><span class="n">local_timezone</span><span class="p">()</span>
-                <span class="k">except</span><span class="p">:</span>
-                    <span class="n">tz</span> <span class="o">=</span> <span class="n">pendulum</span><span class="o">.</span><span class="n">timezone</span><span class="p">(</span><span class="s1">&#39;UTC&#39;</span><span class="p">)</span>
-                <span class="n">now</span> <span class="o">=</span> <span class="n">pendulum</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">tz</span><span class="p">)</span>
+                <span class="n">now</span> <span class="o">=</span> <span class="n">pendulum</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">tz</span><span class="o">=</span><span class="n">tz</span><span class="p">())</span>
                 <span class="n">Log</span><span class="o">.</span><span class="n">log_session_filename</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">.log&quot;</span> <span class="o">%</span> <span class="n">now</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">_%H-%M-%S&#39;</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_clean_logs_folder</span><span class="p">()</span>
 
