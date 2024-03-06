@@ -44,6 +44,13 @@ def clear_message(msg):
     return re.sub(r'\x1b(\[.*?[@-~]|\].*?(\x07|\x1b\\))', '', msg)
 
 
+def tz():
+    try:
+        return pendulum.local_timezone()
+    except:
+        return pendulum.UTC
+
+
 class InfoFilter(logging.Filter):
     def filter(self, record):
         return record.levelno <= logging.INFO
@@ -134,11 +141,7 @@ class Log(object):
                 Log.logs_dir.mkdir(parents=True)
 
             if Log.log_session_filename is None:
-                try:
-                    tz = pendulum.local_timezone()
-                except:
-                    tz = pendulum.timezone('UTC')
-                now = pendulum.now(tz)
+                now = pendulum.now(tz=tz())
                 Log.log_session_filename = "%s.log" % now.strftime('%Y-%m-%d_%H-%M-%S')
                 self._clean_logs_folder()
 

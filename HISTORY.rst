@@ -2,7 +2,7 @@
 History
 =======
 
-0.3.32 (2024-06-03)
+0.3.33 (2024-06-03)
 -------------------
 
 * Precaution: fallback to UTC if local timezone raises an Exception
