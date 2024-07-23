@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>global_logger package &mdash; Global Logger 0.3.31 documentation</title>
+  <title>global_logger package &mdash; Global Logger 0.3.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
 
@@ -15,8 +15,8 @@
   
         <script src="_static/jquery.js?v=5d32c60e"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=f2918295"></script>
-        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/documentation_options.js?v=1e28cc32"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -37,7 +37,7 @@
             Global Logger
           </a>
               <div class="version">
-                0.3.31
+                0.3.4
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -60,6 +60,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#global_logger.global_logger.Log"><code class="docutils literal notranslate"><span class="pre">Log</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#global_logger.global_logger.clear_message"><code class="docutils literal notranslate"><span class="pre">clear_message()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#global_logger.global_logger.get_prev_function_name"><code class="docutils literal notranslate"><span class="pre">get_prev_function_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#global_logger.global_logger.tz"><code class="docutils literal notranslate"><span class="pre">tz()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-global_logger">Module contents</a></li>
@@ -155,7 +156,7 @@ If deemed appropriate, the record may be modified in-place.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="global_logger.global_logger.Log.Levels">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Levels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#global_logger.global_logger.Log.Levels" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Levels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names=&lt;not</span> <span class="pre">given&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start=1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary=None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#global_logger.global_logger.Log.Levels" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">IntEnum</span></code></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="global_logger.global_logger.Log.Levels.CRITICAL">
@@ -331,6 +332,11 @@ Sets Logging Level for all loggers of this type
 <dl class="py function">
 <dt class="sig sig-object py" id="global_logger.global_logger.get_prev_function_name">
 <span class="sig-prename descclassname"><span class="pre">global_logger.global_logger.</span></span><span class="sig-name descname"><span class="pre">get_prev_function_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/global_logger/global_logger.html#get_prev_function_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#global_logger.global_logger.get_prev_function_name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="global_logger.global_logger.tz">
+<span class="sig-prename descclassname"><span class="pre">global_logger.global_logger.</span></span><span class="sig-name descname"><span class="pre">tz</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/global_logger/global_logger.html#tz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#global_logger.global_logger.tz" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 </section>
