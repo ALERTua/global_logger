@@ -1,6 +1,7 @@
 # #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-""" Main Global Logger Module """
+"""Main Global Logger Module"""
+
 from __future__ import print_function, unicode_literals
 
 import atexit
@@ -32,16 +33,16 @@ def get_prev_function_name():
     stack = inspect.stack()
     stack1 = stack[2]
     filepath = stack1[1]  # 'source\\toolset\\decorators.py'
-    output = filepath.replace('/', '.').replace('\\', '.').replace('.py', '')
+    output = filepath.replace("/", ".").replace("\\", ".").replace(".py", "")
     module = stack1[3]  # 'measure' or '<module>'
-    if module != '<module>':
-        output = '%s.%s' % (output, module)
+    if module != "<module>":
+        output = "%s.%s" % (output, module)
     return output
 
 
 def clear_message(msg):
     # noinspection RegExpRedundantEscape
-    return re.sub(r'\x1b(\[.*?[@-~]|\].*?(\x07|\x1b\\))', '', msg)
+    return re.sub(r"\x1b(\[.*?[@-~]|\].*?(\x07|\x1b\\))", "", msg)
 
 
 def tz():
@@ -69,14 +70,14 @@ class Log(object):
         _LOGGER_LEVELS_DICT = logging._nameToLevel
     # pylint: disable=unnecessary-comprehension
     # noinspection PyTypeChecker
-    Levels = IntEnum('Levels', [(k, v) for k, v in _LOGGER_LEVELS_DICT.items()])
+    Levels = IntEnum("Levels", [(k, v) for k, v in _LOGGER_LEVELS_DICT.items()])
     GLOBAL_LOG_LEVEL = Levels.INFO
-    LOGGER_FILE_MESSAGE_FORMAT = '%(asctime)s.%(msecs)03d %(lineno)3s:%(name)-22s %(levelname)-6s %(message)s'
-    LOGGER_SCREEN_MESSAGE_FORMAT = '%(log_color)s%(message)s'
-    LOGGER_DATE_FORMAT_FULL = '%Y-%m-%d %H:%M:%S'
-    LOGGER_DATE_FORMAT = '%H:%M:%S'
+    LOGGER_FILE_MESSAGE_FORMAT = "%(asctime)s.%(msecs)03d %(lineno)3s:%(name)-22s %(levelname)-6s %(message)s"
+    LOGGER_SCREEN_MESSAGE_FORMAT = "%(log_color)s%(message)s"
+    LOGGER_DATE_FORMAT_FULL = "%Y-%m-%d %H:%M:%S"
+    LOGGER_DATE_FORMAT = "%H:%M:%S"
     MAX_LOG_FILES = 50
-    DEFAULT_LOGS_DIR = 'logs'
+    DEFAULT_LOGS_DIR = "logs"
     loggers = {}
     individual_loggers = {}
     auto_added_handlers = []  # type: List[logging.Handler]
@@ -102,16 +103,28 @@ class Log(object):
             handler.level = level
 
     # pylint: disable=too-many-locals,too-many-arguments,too-many-statements
-    def __init__(self, name, level=None, global_level=True, logs_dir=None, log_session_filename=None,  # noqa: C901
-                 max_log_files=None, file_message_format=None, screen_message_format=None, date_format_full=None,
-                 date_format=None, use_colors=True, direct=True):
+    def __init__(
+        self,
+        name,
+        level=None,
+        global_level=True,
+        logs_dir=None,
+        log_session_filename=None,  # noqa: C901
+        max_log_files=None,
+        file_message_format=None,
+        screen_message_format=None,
+        date_format_full=None,
+        date_format=None,
+        use_colors=True,
+        direct=True,
+    ):
         if direct:
             raise ValueError("You should create Global Logger via Log.get_logger() method.")
 
         level = level or Log.GLOBAL_LOG_LEVEL
 
         # pylint: disable=invalid-envvar-default
-        verbose = os.getenv('LOG_VERBOSE', False)
+        verbose = os.getenv("LOG_VERBOSE", False)
         if global_level and verbose:
             level = Log.Levels.DEBUG
 
@@ -142,7 +155,7 @@ class Log(object):
 
             if Log.log_session_filename is None:
                 now = pendulum.now(tz=tz())
-                Log.log_session_filename = "%s.log" % now.strftime('%Y-%m-%d_%H-%M-%S')
+                Log.log_session_filename = "%s.log" % now.strftime("%Y-%m-%d_%H-%M-%S")
                 self._clean_logs_folder()
 
         self._stdout_handler = logging.StreamHandler(sys.stdout)
@@ -154,19 +167,23 @@ class Log(object):
 
         if self.use_colors:
             # noinspection PyTypeChecker
-            color_formatter = ColoredFormatter(fmt=Log.LOGGER_SCREEN_MESSAGE_FORMAT, datefmt=Log.LOGGER_DATE_FORMAT,
-                                               reset=True, log_colors=default_log_colors)
+            color_formatter = ColoredFormatter(
+                fmt=Log.LOGGER_SCREEN_MESSAGE_FORMAT,
+                datefmt=Log.LOGGER_DATE_FORMAT,
+                reset=True,
+                log_colors=default_log_colors,
+            )
             self._stdout_handler.setFormatter(color_formatter)
             self._stderr_handler.setFormatter(color_formatter)
 
         self._filehandler = None  # type: Union[logging.FileHandler, None]
         if Log.logs_dir:
             self.log_file_full_path = Log.logs_dir / Log.log_session_filename
-            self._filehandler = logging.FileHandler(str(self.log_file_full_path), encoding='UTF-8')
+            self._filehandler = logging.FileHandler(str(self.log_file_full_path), encoding="UTF-8")
             formatter = logging.Formatter(Log.LOGGER_FILE_MESSAGE_FORMAT, datefmt=Log.LOGGER_DATE_FORMAT_FULL)
             self._filehandler.setFormatter(formatter)
             self._filehandler.level = Log.Levels.DEBUG
-            self._filehandler.name = 'global_filehandler'
+            self._filehandler.name = "global_filehandler"
             self.logger.addHandler(self._filehandler)
             Log.add_handler_to_all_loggers(self._filehandler)
 
@@ -192,7 +209,7 @@ class Log(object):
         self._clean()
 
     def _clean(self):
-        if not hasattr(self, '_filehandler'):
+        if not hasattr(self, "_filehandler"):
             return
 
         if self._filehandler and self._filehandler.stream and not self._filehandler.stream.closed:
@@ -215,9 +232,20 @@ class Log(object):
 
     # pylint: disable=too-many-arguments
     @classmethod
-    def get_logger(cls, name=None, level=None, global_level=True, logs_dir=None, log_session_filename=None,
-                   max_log_files=None, file_message_format=None, screen_message_format=None, date_format_full=None,
-                   date_format=None, use_colors=True):
+    def get_logger(
+        cls,
+        name=None,
+        level=None,
+        global_level=True,
+        logs_dir=None,
+        log_session_filename=None,
+        max_log_files=None,
+        file_message_format=None,
+        screen_message_format=None,
+        date_format_full=None,
+        date_format=None,
+        use_colors=True,
+    ):
         """
         Main instantiating method for the class. Use it to instantiate global logger.
 
@@ -248,11 +276,20 @@ class Log(object):
         :rtype: :class:`Log`
         """
         name = name or get_prev_function_name()
-        output = Log.loggers.get(name) or cls(name, level=level, global_level=global_level, logs_dir=logs_dir,
-                                              log_session_filename=log_session_filename, max_log_files=max_log_files,
-                                              file_message_format=file_message_format, use_colors=use_colors,
-                                              screen_message_format=screen_message_format,
-                                              date_format_full=date_format_full, date_format=date_format, direct=False)
+        output = Log.loggers.get(name) or cls(
+            name,
+            level=level,
+            global_level=global_level,
+            logs_dir=logs_dir,
+            log_session_filename=log_session_filename,
+            max_log_files=max_log_files,
+            file_message_format=file_message_format,
+            use_colors=use_colors,
+            screen_message_format=screen_message_format,
+            date_format_full=date_format_full,
+            date_format=date_format,
+            direct=False,
+        )
         Log.loggers[name] = output
         Log._add_autoadded_handlers()
         return output
@@ -280,7 +317,7 @@ class Log(object):
         File output is always DEBUG.
         :return: int or None
         """
-        if hasattr(self, '_stdout_handler'):
+        if hasattr(self, "_stdout_handler"):
             return self._stdout_handler.level
 
         return None
@@ -304,29 +341,27 @@ class Log(object):
         if not Log.logs_dir:
             return []
 
-        output = sorted(list(Log.logs_dir.glob('*.log')), key=lambda f: f.stat().st_ctime,
-                        reverse=True)
+        output = sorted(list(Log.logs_dir.glob("*.log")), key=lambda f: f.stat().st_ctime, reverse=True)
         return output
 
     @staticmethod
     def _clean_logs_folder():
-        log_files = sorted(list(Log.logs_dir.glob('*.log')), key=lambda f: f.stat().st_ctime,
-                           reverse=True)
+        log_files = sorted(list(Log.logs_dir.glob("*.log")), key=lambda f: f.stat().st_ctime, reverse=True)
         if len(log_files) > Log.MAX_LOG_FILES:
             # pylint: disable=bare-except
             try:
-                [_file.unlink() for _file in log_files[Log.MAX_LOG_FILES:]]
+                [_file.unlink() for _file in log_files[Log.MAX_LOG_FILES :]]
             except:  # noqa
                 pass
 
     def green(self, *message, **kwargs):
-        return self.printer(color='green', *message, **kwargs)
+        return self.printer(color="green", *message, **kwargs)
 
     def red(self, *message, **kwargs):
-        return self.printer(color='red', *message, **kwargs)
+        return self.printer(color="red", *message, **kwargs)
 
     def yellow(self, *message, **kwargs):
-        return self.printer(color='yellow', *message, **kwargs)
+        return self.printer(color="yellow", *message, **kwargs)
 
     def printer(self, *message, **kwargs):
         """
@@ -340,22 +375,22 @@ class Log(object):
         :param clear: Whether to clear message string from ANSI symbols, defaults to True
         :type clear: bool
         """
-        default_end = '\n'
-        end = kwargs.get(str('end'), None)
-        color = kwargs.get(str('color'))
-        clear = kwargs.get(str('clear'), self.use_colors)
-        print_end = kwargs.get(str('end'), default_end)
+        default_end = "\n"
+        end = kwargs.get(str("end"), None)
+        color = kwargs.get(str("color"))
+        clear = kwargs.get(str("clear"), self.use_colors)
+        print_end = kwargs.get(str("end"), default_end)
         for msg in message:
-            timestamp = '' if end == '' else '%s ' % time.strftime(str("%H:%M:%S"))
+            timestamp = "" if end == "" else "%s " % time.strftime(str("%H:%M:%S"))
 
             if Log.logs_dir:
-                _timestamped_message = '%s%s' % (timestamp, msg)
+                _timestamped_message = "%s%s" % (timestamp, msg)
                 _cleared_timestamped_message = clear_message(_timestamped_message)
                 self._file_printer(_cleared_timestamped_message)
 
             # todo: emit to custom handlers
             for handler in Log.auto_added_handlers:
-                record = logging.LogRecord(self.name, self.level, '', 0, msg, (), None)
+                record = logging.LogRecord(self.name, self.level, "", 0, msg, (), None)
                 # noinspection PyTypeChecker
                 handler.emit(record)
 
@@ -368,7 +403,7 @@ class Log(object):
                 if not isinstance(color, AnsiFore):
                     # noinspection PyUnresolvedReferences
                     color = getattr(Fore, color.upper(), Fore.GREEN)
-                _colored_msg = '%s%s%s' % (color, _cleared_message, Fore.RESET)
+                _colored_msg = "%s%s%s" % (color, _cleared_message, Fore.RESET)
 
             print(_colored_msg, end=print_end)
 
@@ -376,38 +411,38 @@ class Log(object):
         if not all((Log.logs_dir, self._filehandler)):
             return
 
-        if not msg.endswith('\n'):
-            msg += '\n'
+        if not msg.endswith("\n"):
+            msg += "\n"
 
-        record = logging.LogRecord(self.name, self.level, '', 0, msg, (), None)
+        record = logging.LogRecord(self.name, self.level, "", 0, msg, (), None)
         self._filehandler.emit(record)
 
     def trace(self):
         frame = inspect.currentframe().f_back
-        file_path = Path(frame.f_globals['__file__'])
+        file_path = Path(frame.f_globals["__file__"])
         file_name = file_path.stem
         file_dir = file_path.parent.stem
         func_name = traceback.extract_stack(None, 2)[0][2]
         args, _, _, values = inspect.getargvalues(frame)
-        _params = [(i, values[i]) for i in args if 'self' not in i]
+        _params = [(i, values[i]) for i in args if "self" not in i]
         # todo: trace args and kwargs
         # pylint: disable=logging-not-lazy
         self.debug("%s.%s.%s%s" % (file_dir, file_name, func_name, _params))
 
 
-if __name__ == '__main__':
-    log = Log.get_logger(logs_dir='./logs', level=Log.Levels.DEBUG)
+if __name__ == "__main__":
+    log = Log.get_logger(logs_dir="./logs", level=Log.Levels.DEBUG)
 
     # pylint: disable=unused-argument
     def __func(arg, *args, **kwargs):
         log.trace()
-        log.debug('__func called')
+        log.debug("__func called")
 
-    log.debug('test debug абракадабра')
-    log.info('test info абракадабра')
-    log.error('test error абракадабра')
-    log.printer('test filehandler message абракадабра')
-    log.warning('test warning абракадабра')
-    log.green('test green абракадабра')
-    __func('argument', 'arg', 'arg1', named_arg='test')
+    log.debug("test debug абракадабра")
+    log.info("test info абракадабра")
+    log.error("test error абракадабра")
+    log.printer("test filehandler message абракадабра")
+    log.warning("test warning абракадабра")
+    log.green("test green абракадабра")
+    __func("argument", "arg", "arg1", named_arg="test")
     print("")

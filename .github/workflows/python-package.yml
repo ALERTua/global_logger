@@ -4,10 +4,10 @@
 name: Package and PyPi Upload
 
 on:
+  workflow_dispatch:
   push:
     tags:
       - v*
-
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
@@ -16,7 +16,6 @@ concurrency:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:

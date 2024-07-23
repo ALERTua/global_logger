@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-""" Global Logger Examples """
+"""Global Logger Examples"""
+
 from global_logger import Log
 
 # create and/or reuse a global logger, choosing its name dynamicaly
@@ -22,15 +23,15 @@ log.critical("critical text: level: %s" % log.Levels.CRITICAL)
 # 2020-06-28 14:18:42.005  18:source.examples CRITICAL critical text: level: '50'
 
 # log text in purple color without a newline, clearing all the ANSI sylbols from the message
-log.printer('always printed text....', color='blue', end='', clear=True)
+log.printer("always printed text....", color="blue", end="", clear=True)
 # can also be simplified to:
-log.green('green text', clear=False)
-log.yellow('yellow text', end='\t\t\t\t')
-log.red('red text')
+log.green("green text", clear=False)
+log.yellow("yellow text", end="\t\t\t\t")
+log.red("red text")
 
 # create and/or reuses a global logger, choosing its name dynamicaly
 # with screen and .log files output at the relative folder 'logs' and the default logging level INFO
-log = Log.get_logger(logs_dir='logs')
+log = Log.get_logger(logs_dir="logs")
 
 # force ALL loggers to lower their logging level to WARNING
 # Note: file output will always remain on logging level DEBUG
