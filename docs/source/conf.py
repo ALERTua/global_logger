@@ -19,7 +19,6 @@
 #
 import sys
 import toml
-import os
 from pathlib import Path
 
 _root_path = Path(__file__).parent.parent.parent
@@ -66,11 +65,11 @@ author = "Alexey Rubasheff"
 # for |version| and |release|, also used in various other places throughout
 # the built documents.
 
-pyproject_path = Path(__file__).parent.parent.parent / 'pyproject.toml'
+pyproject_path = Path(__file__).parent.parent.parent / "pyproject.toml"
 # The short X.Y version.
 try:
     pyproject_data = toml.load(pyproject_path)
-    version = pyproject_data['tool']['poetry']['version']
+    version = pyproject_data["tool"]["poetry"]["version"]
     release = version
 except Exception as e:
     print(f"Warning: Could not read version from {pyproject_path}. Error: {e}")
