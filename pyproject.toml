@@ -58,6 +58,7 @@ wheel = { version = "==0.37.1", python = "^3.12" }
 ruff = { version = "^0.5.4", python = "^3.12" }
 sphinx = { version = '7.4.7', python = "^3.12" }
 sphinx_rtd_theme = { version = '^2.0.0', python = "^3.12" }
+toml = "^0.10.2"
 
 [[tool.poetry.source]]
 name = "pypi"
