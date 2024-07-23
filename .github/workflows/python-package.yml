@@ -2,6 +2,11 @@ name: Package and PyPi Upload
 
 on:
   workflow_dispatch:
+  push:
+    tags:
+      - v*
+    branches:
+      - master
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}

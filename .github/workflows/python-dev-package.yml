@@ -2,6 +2,11 @@ name: DEV Package and TestPyPi Upload
 
 on:
   workflow_dispatch:
+  push:
+    tags:
+      - v*
+    branches:
+      - develop
 
 #  push:
 #    branches:
