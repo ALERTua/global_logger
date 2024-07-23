@@ -46,7 +46,7 @@ win-unicode-console = [
 [tool.poetry.group.dev.dependencies]
 python = "^3.12"
 tox = [
-    { version = "==4.5.1", python = "^3.12" },
+    { version = "==4.5.1", python = "^3.9" },
     { version = "==3.28.0", python = "<3" }
 ]
 python-dotenv = [
