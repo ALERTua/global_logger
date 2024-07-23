@@ -3,9 +3,9 @@ name: DEV Package and TestPyPi Upload
 on:
   workflow_dispatch:
 
-  push:
-    branches:
-      - '**'
+#  push:
+#    branches:
+#      - '**'
   pull_request:
     branches:
       - '**'
