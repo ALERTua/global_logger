@@ -19,10 +19,11 @@ classifiers = [
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
 ]
 
 [tool.poetry.group.main.dependencies]
-python = ">=2.7.18,<3.0 || >=3.8,<3.13"
+python = ">=2.7.18,<3.0 || >=3.8,<4"
 pathlib = { version = "1.0.1", python = "<3.4" }
 enum34 = { version = "1.1.10", python = "<3.6" }
 future = { version = "1.0.0", python = "<3" }
