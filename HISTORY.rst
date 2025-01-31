@@ -2,6 +2,15 @@
 History
 =======
 
+0.4.3 (2025-01-31)
+-------------------
+
+* pendulum usage removed
+* poetry version bump
+* requirements bump
+* separate tox.ini for python2
+
+
 0.4.2 (2024-07-23)
 -------------------
 

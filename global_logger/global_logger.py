@@ -16,7 +16,7 @@ from enum import IntEnum
 from pathlib import Path
 from typing import List, Union  # noqa: F401
 
-import pendulum
+from datetime import datetime
 from colorama import Fore
 from colorama.ansi import AnsiFore
 from colorlog import ColoredFormatter, default_log_colors
@@ -45,11 +45,12 @@ def clear_message(msg):
     return re.sub(r"\x1b(\[.*?[@-~]|\].*?(\x07|\x1b\\))", "", msg)
 
 
-def tz():
-    try:
-        return pendulum.local_timezone()
-    except:
-        return pendulum.UTC
+def dt_now():
+    if PYTHON2:
+        return datetime.now()
+    else:
+        # noinspection PyArgumentList
+        return datetime.now(tz=datetime.now().astimezone().tzinfo)
 
 
 class InfoFilter(logging.Filter):
@@ -154,8 +155,7 @@ class Log(object):
                 Log.logs_dir.mkdir(parents=True)
 
             if Log.log_session_filename is None:
-                now = pendulum.now(tz=tz())
-                Log.log_session_filename = "%s.log" % now.strftime("%Y-%m-%d_%H-%M-%S")
+                Log.log_session_filename = "%s.log" % dt_now().strftime("%Y-%m-%d_%H-%M-%S")
                 self._clean_logs_folder()
 
         self._stdout_handler = logging.StreamHandler(sys.stdout)
