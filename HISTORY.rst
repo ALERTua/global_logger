@@ -2,6 +2,14 @@
 History
 =======
 
+0.4.4 (2025-04-14)
+-------------------
+
+* Added support for Python 3.13.
+* Added new `level` kwarg for the `printer` method to allow for more flexible logging configurations.
+* Removed __future__ unicode_literals import.
+
+
 0.4.3 (2025-01-31)
 -------------------
 
