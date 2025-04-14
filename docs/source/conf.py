@@ -69,10 +69,10 @@ pyproject_path = Path(__file__).parent.parent.parent / "pyproject.toml"
 # The short X.Y version.
 try:
     pyproject_data = toml.load(pyproject_path)
-    version = pyproject_data["tool"]["poetry"]["version"]
+    version = pyproject_data["project"]["version"]
     release = version
 except Exception as e:
-    print(f"Warning: Could not read version from {pyproject_path}. Error: {e}")
+    print("Warning: Could not read version from %s. Error: %s" % (pyproject_path, str(e)))
     sys.exit(1)
 
 

@@ -6,9 +6,7 @@ call %~dp0constants.cmd
 
 REM Command file for Sphinx documentation
 
-if "%SPHINXBUILD%" == "" (
-	set SPHINXBUILD=%venv_scripts%\sphinx-build
-)
+set SPHINXBUILD=sphinx-build
 set SOURCEDIR=source
 set BUILDDIR=build
 set SPHINXPROJ=global_logger
