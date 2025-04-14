@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """Main Global Logger Module"""
 
-from __future__ import print_function, unicode_literals
+from __future__ import print_function
 
 import atexit
 import inspect
@@ -179,7 +179,7 @@ class Log(object):
         self._filehandler = None  # type: Union[logging.FileHandler, None]
         if Log.logs_dir:
             self.log_file_full_path = Log.logs_dir / Log.log_session_filename
-            self._filehandler = logging.FileHandler(str(self.log_file_full_path), encoding="UTF-8")
+            self._filehandler = logging.FileHandler(self.log_file_full_path.__str__(), encoding="UTF-8")
             formatter = logging.Formatter(Log.LOGGER_FILE_MESSAGE_FORMAT, datefmt=Log.LOGGER_DATE_FORMAT_FULL)
             self._filehandler.setFormatter(formatter)
             self._filehandler.level = Log.Levels.DEBUG
@@ -374,23 +374,30 @@ class Log(object):
         :type color: AnsiFore
         :param clear: Whether to clear message string from ANSI symbols, defaults to True
         :type clear: bool
+        :param level: override logging level
+        :type level: int
+        :return: None
         """
         default_end = "\n"
-        end = kwargs.get(str("end"), None)
-        color = kwargs.get(str("color"))
-        clear = kwargs.get(str("clear"), self.use_colors)
-        print_end = kwargs.get(str("end"), default_end)
+        end = kwargs.get("end", None)
+        color = kwargs.get("color")
+        clear = kwargs.get("clear", self.use_colors)
+        print_end = kwargs.get("end", default_end)
+        level = kwargs.get("level", self.level)
         for msg in message:
-            timestamp = "" if end == "" else "%s " % time.strftime(str("%H:%M:%S"))
+            timestamp = "" if end == "" else "%s " % time.strftime("%H:%M:%S")
 
             if Log.logs_dir:
-                _timestamped_message = "%s%s" % (timestamp, msg)
+                try:
+                    _timestamped_message = "%s%s" % (timestamp, msg)
+                except:
+                    _timestamped_message = "%s%s" % (timestamp, msg.decode("utf-8"))
                 _cleared_timestamped_message = clear_message(_timestamped_message)
                 self._file_printer(_cleared_timestamped_message)
 
             # todo: emit to custom handlers
             for handler in Log.auto_added_handlers:
-                record = logging.LogRecord(self.name, self.level, "", 0, msg, (), None)
+                record = logging.LogRecord(self.name, level, "", 0, msg, (), None)
                 # noinspection PyTypeChecker
                 handler.emit(record)
 
@@ -403,7 +410,10 @@ class Log(object):
                 if not isinstance(color, AnsiFore):
                     # noinspection PyUnresolvedReferences
                     color = getattr(Fore, color.upper(), Fore.GREEN)
-                _colored_msg = "%s%s%s" % (color, _cleared_message, Fore.RESET)
+                try:
+                    _colored_msg = "%s%s%s" % (color, _cleared_message, Fore.RESET)
+                except:
+                    _colored_msg = "%s%s%s" % (color, _cleared_message.decode("utf-8"), Fore.RESET)
 
             print(_colored_msg, end=print_end)
 
