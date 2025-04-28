@@ -2,6 +2,12 @@
 History
 =======
 
+0.4.5 (2025-05-28)
+-------------------
+
+* win-unicode-console requirement version tweak
+
+
 0.4.4 (2025-04-14)
 -------------------
 
