@@ -358,6 +358,7 @@ description = "Cross-platform colored terminal text."
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,!=3.6.*,>=2.7"
 groups = ["main", "dev"]
+markers = "platform_version == \">=10.0.18362\" or platform_version == \"<10.0.18362\" or platform_system != \"Windows\" or python_full_version > \"3.0.0\""
 files = [
     {file = "colorama-0.4.6-py2.py3-none-any.whl", hash = "sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6"},
     {file = "colorama-0.4.6.tar.gz", hash = "sha256:08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44"},
@@ -370,7 +371,7 @@ description = "Log formatting with colors!"
 optional = false
 python-versions = "*"
 groups = ["main"]
-markers = "python_version < \"3\""
+markers = "(platform_version == \">=10.0.18362\" or platform_version == \"<10.0.18362\" or platform_system != \"Windows\") and python_version < \"3\""
 files = [
     {file = "colorlog-4.8.0-py2.py3-none-any.whl", hash = "sha256:3dd15cb27e8119a24c1a7b5c93f9f3b455855e0f73993b1c25921b2f646f1dcd"},
     {file = "colorlog-4.8.0.tar.gz", hash = "sha256:59b53160c60902c405cdec28d38356e09d40686659048893e026ecbd589516b1"},
@@ -405,7 +406,7 @@ description = "Updated configparser from Python 3.7 for Python 2.6+."
 optional = false
 python-versions = ">=2.6"
 groups = ["dev"]
-markers = "python_version < \"3\""
+markers = "(platform_version == \">=10.0.18362\" or platform_version == \"<10.0.18362\" or platform_system != \"Windows\") and python_version < \"3\""
 files = [
     {file = "configparser-4.0.2-py2.py3-none-any.whl", hash = "sha256:254c1d9c79f60c45dfde850850883d5aaa7f19a23f13561243a050d5a7c3fe4c"},
     {file = "configparser-4.0.2.tar.gz", hash = "sha256:c7d282687a5308319bf3d2e7706e575c635b0a470342641c93bea0ea3b5331df"},
@@ -422,7 +423,7 @@ description = "Backports and enhancements for the contextlib module"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 groups = ["dev"]
-markers = "python_version < \"3\""
+markers = "(platform_version == \">=10.0.18362\" or platform_version == \"<10.0.18362\" or platform_system != \"Windows\") and python_version < \"3\""
 files = [
     {file = "contextlib2-0.6.0.post1-py2.py3-none-any.whl", hash = "sha256:3355078a159fbb44ee60ea80abd0d87b80b78c248643b49aa6d94673b413609b"},
     {file = "contextlib2-0.6.0.post1.tar.gz", hash = "sha256:01f490098c18b19d2bd5bb5dc445b2054d2fa97f09a4280ba2c5f3c394c8162e"},
@@ -507,6 +508,7 @@ description = "Distribution utilities"
 optional = false
 python-versions = "*"
 groups = ["dev"]
+markers = "python_version >= \"3.7\" or (platform_version == \">=10.0.18362\" or platform_version == \"<10.0.18362\" or platform_system != \"Windows\") and python_version < \"3\""
 files = [
     {file = "distlib-0.3.8-py2.py3-none-any.whl", hash = "sha256:034db59a0b96f8ca18035f36290806a9a6e6bd9d1ff91e45a7f172eb17e51784"},
     {file = "distlib-0.3.8.tar.gz", hash = "sha256:1530ea13e350031b6312d8580ddb6b27a104275a31106523b8f123787f494f64"},
@@ -600,7 +602,7 @@ description = "Python 3.4 Enum backported to 3.3, 3.2, 3.1, 2.7, 2.6, 2.5, and 2
 optional = false
 python-versions = "*"
 groups = ["main"]
-markers = "python_version < \"3\""
+markers = "(platform_version == \">=10.0.18362\" or platform_version == \"<10.0.18362\" or platform_system != \"Windows\") and python_version < \"3\""
 files = [
     {file = "enum34-1.1.10-py2-none-any.whl", hash = "sha256:a98a201d6de3f2ab3db284e70a33b0f896fbf35f8086594e8c9e74b909058d53"},
     {file = "enum34-1.1.10-py3-none-any.whl", hash = "sha256:c3858660960c984d6ab0ebad691265180da2b43f07e061c0f8dca9ef3cffd328"},
@@ -630,7 +632,7 @@ description = "A platform independent file lock."
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
 groups = ["dev"]
-markers = "python_version < \"3\""
+markers = "(platform_version == \">=10.0.18362\" or platform_version == \"<10.0.18362\" or platform_system != \"Windows\") and python_version < \"3\""
 files = [
     {file = "filelock-3.2.1-py2.py3-none-any.whl", hash = "sha256:7f07b08d731907441ff40d0c5b81f9512cd968842e0b6264c8bd18a8ce877760"},
     {file = "filelock-3.2.1.tar.gz", hash = "sha256:9cdd29c411ab196cf4c35a1da684f7b9da723696cb356efa45bf5eb1ff313ee3"},
@@ -681,7 +683,7 @@ description = "Clean single-source support for Python 3 and 2"
 optional = false
 python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
 groups = ["main"]
-markers = "python_version < \"3\""
+markers = "(platform_version == \">=10.0.18362\" or platform_version == \"<10.0.18362\" or platform_system != \"Windows\") and python_version < \"3\""
 files = [
     {file = "future-1.0.0-py3-none-any.whl", hash = "sha256:929292d34f5872e70396626ef385ec22355a1fae8ad29e1a734c3e43f9fbc216"},
     {file = "future-1.0.0.tar.gz", hash = "sha256:bd2968309307861edae1458a4f8a4f3598c03be43b97521076aebf5d94c07b05"},
@@ -798,7 +800,7 @@ description = "Read metadata from Python packages"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
 groups = ["dev"]
-markers = "python_version < \"3\""
+markers = "(platform_version == \">=10.0.18362\" or platform_version == \"<10.0.18362\" or platform_system != \"Windows\") and python_version < \"3\""
 files = [
     {file = "importlib_metadata-2.1.3-py2.py3-none-any.whl", hash = "sha256:52e65a0856f9ba7ea8f2c4ced253fb6c88d1a8c352cb1e916cff4eb17d5a693d"},
     {file = "importlib_metadata-2.1.3.tar.gz", hash = "sha256:02a9f62b02e9b1cc43871809ef99947e8f5d94771392d666ada2cafc4cd09d4f"},
@@ -821,7 +823,7 @@ description = "Read resources from Python packages"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,>=2.7"
 groups = ["dev"]
-markers = "python_version < \"3\""
+markers = "(platform_version == \">=10.0.18362\" or platform_version == \"<10.0.18362\" or platform_system != \"Windows\") and python_version < \"3\""
 files = [
     {file = "importlib_resources-3.3.1-py2.py3-none-any.whl", hash = "sha256:42068585cc5e8c2bf0a17449817401102a5125cbfbb26bb0f43cde1568f6f2df"},
     {file = "importlib_resources-3.3.1.tar.gz", hash = "sha256:0ed250dbd291947d1a298e89f39afcc477d5a6624770503034b72588601bcc05"},
@@ -1169,7 +1171,7 @@ description = "Core utilities for Python packages"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 groups = ["dev"]
-markers = "python_version < \"3\""
+markers = "(platform_version == \">=10.0.18362\" or platform_version == \"<10.0.18362\" or platform_system != \"Windows\") and python_version < \"3\""
 files = [
     {file = "packaging-20.9-py2.py3-none-any.whl", hash = "sha256:67714da7f7bc052e064859c05c595155bd1ee9f69f76557e21f051443c20947a"},
     {file = "packaging-20.9.tar.gz", hash = "sha256:5b327ac1320dc863dca72f4514ecc086f31186744b84a230374cc1fd776feae5"},
@@ -1198,7 +1200,7 @@ description = "Object-oriented filesystem paths"
 optional = false
 python-versions = "*"
 groups = ["main"]
-markers = "python_version < \"3\""
+markers = "(platform_version == \">=10.0.18362\" or platform_version == \"<10.0.18362\" or platform_system != \"Windows\") and python_version < \"3\""
 files = [
     {file = "pathlib-1.0.1-py3-none-any.whl", hash = "sha256:f35f95ab8b0f59e6d354090350b44a80a80635d22efdedfa84c7ad1cf0a74147"},
     {file = "pathlib-1.0.1.tar.gz", hash = "sha256:6940718dfc3eff4258203ad5021090933e5c04707d5ca8cc9e73c94a7894ea9f"},
@@ -1211,7 +1213,7 @@ description = "Object-oriented filesystem paths"
 optional = false
 python-versions = "*"
 groups = ["dev"]
-markers = "python_version < \"3\""
+markers = "(platform_version == \">=10.0.18362\" or platform_version == \"<10.0.18362\" or platform_system != \"Windows\") and python_version < \"3\""
 files = [
     {file = "pathlib2-2.3.7.post1-py2.py3-none-any.whl", hash = "sha256:5266a0fd000452f1b3467d782f079a4343c63aaa119221fbdc4e39577489ca5b"},
     {file = "pathlib2-2.3.7.post1.tar.gz", hash = "sha256:9fe0edad898b83c0c3e199c842b27ed216645d2e177757b2dd67384d4113c641"},
@@ -1267,7 +1269,7 @@ description = "A small Python module for determining appropriate platform-specif
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 groups = ["dev"]
-markers = "python_version < \"3\""
+markers = "(platform_version == \">=10.0.18362\" or platform_version == \"<10.0.18362\" or platform_system != \"Windows\") and python_version < \"3\""
 files = [
     {file = "platformdirs-2.0.2-py2.py3-none-any.whl", hash = "sha256:0b9547541f599d3d242078ae60b927b3e453f0ad52f58b4d4bc3be86aed3ec41"},
     {file = "platformdirs-2.0.2.tar.gz", hash = "sha256:3b00d081227d9037bbbca521a5787796b5ef5000faea1e43fd76f1d44b06fcfa"},
@@ -1298,7 +1300,7 @@ description = "plugin and hook calling mechanisms for python"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 groups = ["dev"]
-markers = "python_version < \"3\""
+markers = "(platform_version == \">=10.0.18362\" or platform_version == \"<10.0.18362\" or platform_system != \"Windows\") and python_version < \"3\""
 files = [
     {file = "pluggy-0.13.1-py2.py3-none-any.whl", hash = "sha256:966c145cd83c96502c3c3868f50408687b38434af77734af1e9ca461a4081d2d"},
     {file = "pluggy-0.13.1.tar.gz", hash = "sha256:15b2acde666561e1298d71b523007ed7364de07029219b604cf808bfa1c765b0"},
@@ -1420,7 +1422,7 @@ description = "library with cross-python path, ini-parsing, io, code, log facili
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 groups = ["dev"]
-markers = "python_version < \"3\""
+markers = "(platform_version == \">=10.0.18362\" or platform_version == \"<10.0.18362\" or platform_system != \"Windows\") and python_version < \"3\""
 files = [
     {file = "py-1.11.0-py2.py3-none-any.whl", hash = "sha256:607c53218732647dff4acdfcd50cb62615cedf612e72d1724fb1a0cc6405b378"},
     {file = "py-1.11.0.tar.gz", hash = "sha256:51c75c4126074b472f746a24399ad32f6053d1b34b68d2fa41e558e6f4a98719"},
@@ -1462,7 +1464,7 @@ description = "Python parsing module"
 optional = false
 python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
 groups = ["dev"]
-markers = "python_version < \"3\""
+markers = "(platform_version == \">=10.0.18362\" or platform_version == \"<10.0.18362\" or platform_system != \"Windows\") and python_version < \"3\""
 files = [
     {file = "pyparsing-2.4.7-py2.py3-none-any.whl", hash = "sha256:ef9d7589ef3c200abe66653d3f1ab1033c3c419ae9b9bdb1240a85b024efc88b"},
     {file = "pyparsing-2.4.7.tar.gz", hash = "sha256:c203ec8783bf771a155b207279b9bccb8dea02d8f0c9e5f8ead507bc3246ecc1"},
@@ -1531,7 +1533,7 @@ description = "Read key-value pairs from a .env file and set them as environment
 optional = false
 python-versions = "*"
 groups = ["dev"]
-markers = "python_version < \"3\""
+markers = "(platform_version == \">=10.0.18362\" or platform_version == \"<10.0.18362\" or platform_system != \"Windows\") and python_version < \"3\""
 files = [
     {file = "python-dotenv-0.18.0.tar.gz", hash = "sha256:effaac3c1e58d89b3ccb4d04a40dc7ad6e0275fda25fd75ae9d323e2465e202d"},
     {file = "python_dotenv-0.18.0-py2.py3-none-any.whl", hash = "sha256:dd8fe852847f4fbfadabf6183ddd4c824a9651f02d51714fa075c95561959c7d"},
@@ -1816,7 +1818,7 @@ description = "scandir, a better directory iterator and faster os.walk()"
 optional = false
 python-versions = "*"
 groups = ["dev"]
-markers = "python_version < \"3\""
+markers = "(platform_version == \">=10.0.18362\" or platform_version == \"<10.0.18362\" or platform_system != \"Windows\") and python_version < \"3\""
 files = [
     {file = "scandir-1.10.0-cp27-cp27m-win32.whl", hash = "sha256:92c85ac42f41ffdc35b6da57ed991575bdbe69db895507af88b9f499b701c188"},
     {file = "scandir-1.10.0-cp27-cp27m-win_amd64.whl", hash = "sha256:cb925555f43060a1745d0a321cca94bcea927c50114b623d73179189a4e100ac"},
@@ -1868,7 +1870,7 @@ description = "Backport functools.singledispatch from Python 3.4 to Python 2.6-3
 optional = false
 python-versions = ">=2.6"
 groups = ["dev"]
-markers = "python_version < \"3\""
+markers = "(platform_version == \">=10.0.18362\" or platform_version == \"<10.0.18362\" or platform_system != \"Windows\") and python_version < \"3\""
 files = [
     {file = "singledispatch-3.7.0-py2.py3-none-any.whl", hash = "sha256:bc77afa97c8a22596d6d4fc20f1b7bdd2b86edc2a65a4262bdd7cc3cc19aa989"},
     {file = "singledispatch-3.7.0.tar.gz", hash = "sha256:c1a4d5c1da310c3fd8fccfb8d4e1cb7df076148fd5d858a819e37fffe44f3092"},
@@ -1888,7 +1890,7 @@ description = "Python 2 and 3 compatibility utilities"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
 groups = ["dev"]
-markers = "python_version < \"3\""
+markers = "(platform_version == \">=10.0.18362\" or platform_version == \"<10.0.18362\" or platform_system != \"Windows\") and python_version < \"3\""
 files = [
     {file = "six-1.16.0-py2.py3-none-any.whl", hash = "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"},
     {file = "six-1.16.0.tar.gz", hash = "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"},
@@ -2106,6 +2108,7 @@ description = "Python Library for Tom's Obvious, Minimal Language"
 optional = false
 python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
 groups = ["dev"]
+markers = "platform_version == \">=10.0.18362\" or platform_version == \"<10.0.18362\" or platform_system != \"Windows\" or python_full_version > \"3.0.0\""
 files = [
     {file = "toml-0.10.2-py2.py3-none-any.whl", hash = "sha256:806143ae5bfb6a3c6e736a764057db0e6a0e05e338b5630894a5f779cabb4f9b"},
     {file = "toml-0.10.2.tar.gz", hash = "sha256:b3bda1d108d5dd99f4a20d24d9c348e91c4db7ab1b749200bded2f839ccbe68f"},
@@ -2174,7 +2177,7 @@ description = "tox is a generic virtualenv management and test command line tool
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
 groups = ["dev"]
-markers = "python_version < \"3\""
+markers = "(platform_version == \">=10.0.18362\" or platform_version == \"<10.0.18362\" or platform_system != \"Windows\") and python_version < \"3\""
 files = [
     {file = "tox-3.28.0-py2.py3-none-any.whl", hash = "sha256:57b5ab7e8bb3074edc3c0c0b4b192a4f3799d3723b2c5b76f1fa9f2d40316eea"},
     {file = "tox-3.28.0.tar.gz", hash = "sha256:d0d28f3fe6d6d7195c27f8b054c3e99d5451952b54abdae673b71609a581f640"},
@@ -2244,7 +2247,7 @@ description = "Type Hints for Python"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, <3.5"
 groups = ["dev"]
-markers = "python_version < \"3\""
+markers = "(platform_version == \">=10.0.18362\" or platform_version == \"<10.0.18362\" or platform_system != \"Windows\") and python_version < \"3\""
 files = [
     {file = "typing-3.10.0.0-py2-none-any.whl", hash = "sha256:c7219ef20c5fbf413b4567092adfc46fa6203cb8454eda33c3fc1afe1398a308"},
     {file = "typing-3.10.0.0-py3-none-any.whl", hash = "sha256:12fbdfbe7d6cca1a42e485229afcb0b0c8259258cfb919b8a5e2a5c953742f89"},
@@ -2290,7 +2293,7 @@ description = "Virtual Python Environment builder"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
 groups = ["dev"]
-markers = "python_version < \"3\""
+markers = "(platform_version == \">=10.0.18362\" or platform_version == \"<10.0.18362\" or platform_system != \"Windows\") and python_version < \"3\""
 files = [
     {file = "virtualenv-20.15.1-py2.py3-none-any.whl", hash = "sha256:b30aefac647e86af6d82bfc944c556f8f1a9c90427b2fb4e3bfbf338cb82becf"},
     {file = "virtualenv-20.15.1.tar.gz", hash = "sha256:288171134a2ff3bfb1a2f54f119e77cd1b81c29fc1265a2356f3e8d14c7d58c4"},
@@ -2349,12 +2352,24 @@ test = ["pytest (>=6.0.0)", "setuptools (>=65)"]
 
 [[package]]
 name = "win-unicode-console"
+version = "0.4"
+description = "Enable Unicode input and display when running Python from Windows console."
+optional = false
+python-versions = "*"
+groups = ["main"]
+markers = "platform_system == \"Windows\" and platform_version >= \"10.0.18362\" and python_version < \"3\""
+files = [
+    {file = "win_unicode_console-0.4.zip", hash = "sha256:7c7c6ec4365bb64672ac09bc439c9415da7c40705a431eb20538b3d94b09bbac"},
+]
+
+[[package]]
+name = "win-unicode-console"
 version = "0.5"
 description = "Enable Unicode input and display when running Python from Windows console."
 optional = false
 python-versions = "*"
 groups = ["main"]
-markers = "platform_system == \"Windows\""
+markers = "platform_system == \"Windows\" and (platform_version < \"10.0.18362\" or python_version >= \"3.5\")"
 files = [
     {file = "win_unicode_console-0.5.zip", hash = "sha256:d4142d4d56d46f449d6f00536a73625a871cba040f0bc1a2e305a04578f07d1e"},
 ]
@@ -2453,7 +2468,7 @@ description = "Backport of pathlib-compatible object wrapper for zip files"
 optional = false
 python-versions = ">=2.7"
 groups = ["dev"]
-markers = "python_version < \"3\""
+markers = "(platform_version == \">=10.0.18362\" or platform_version == \"<10.0.18362\" or platform_system != \"Windows\") and python_version < \"3\""
 files = [
     {file = "zipp-1.2.0-py2.py3-none-any.whl", hash = "sha256:e0d9e63797e483a30d27e09fffd308c59a700d365ec34e93cc100844168bf921"},
     {file = "zipp-1.2.0.tar.gz", hash = "sha256:c70410551488251b0fee67b460fb9a536af8d6f9f008ad10ac51f615b6a521b1"},
@@ -2583,4 +2598,4 @@ cffi = ["cffi (>=1.11)"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=2.7.18,<3.0 || >=3.8,<4"
-content-hash = "a5c8ea61e1334dc1051bf2ee78952a6e6398997e6f9d4d65706951941e244989"
+content-hash = "7ad5e3faf32a462b704b156b279220d5e8945500a4393059cb1317c05f4acb07"
