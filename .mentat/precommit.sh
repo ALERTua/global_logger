@@ -4,10 +4,10 @@
 export PATH="$HOME/.local/bin:$PATH"
 
 # Format code with ruff
-ruff format .
+poetry run ruff format .
 
 # Fix linting issues with ruff
-ruff check --fix .
+poetry run ruff check --fix .
 
 # Validate pyproject.toml
 poetry check
