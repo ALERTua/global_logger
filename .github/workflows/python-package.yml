@@ -7,6 +7,12 @@ on:
       - v*
     branches:
       - master
+    paths-ignore:
+      - ".github/"
+      - "tests/"
+      - ".pre-commit-config.yaml"
+      - "**/*.rst"
+      - "**/*.md"
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
