@@ -41,7 +41,7 @@ jobs:
         run: poetry install --with=dev
 
       - name: Run tests
-        run: python3 -m tox -e py3,lint
+        run: poetry run tox -e py3,lint
 
   py2:
     runs-on: ubuntu-latest
