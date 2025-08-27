@@ -41,7 +41,7 @@ jobs:
         run: poetry install --with=dev
 
       - name: Run tests
-        run: poetry run tox -e py3,lint
+        run: python3 -m tox -e py3,lint
 
   py2:
     runs-on: ubuntu-latest
@@ -62,7 +62,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --no-deps -r requirements.txt
-          python -m pip install tox
+          python -m pip install pytest
 
       - name: Run tests
-        run: python -m tox -c tox2.ini -e py2,lint
+        run: python -m pytest
