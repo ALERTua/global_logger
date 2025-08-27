@@ -33,12 +33,11 @@ colorama = [
 ]
 colorlog = [
     {version = "<5", python = "<3.5"},
-    {version = "6.8.2", python = ">=3.5"}
+    {version = "==6.8.2", python = ">=3.5"}
 ]
 win-unicode-console = [
     {version = "^0.5", markers = "platform_system == 'Windows'", python = ">=3.5"},
-    {version = "==0.4", markers = "platform_system == 'Windows' and platform_version >= '10.0.18362'", python = "<3.5"},
-    {version = ">0.4", markers = "platform_system == 'Windows' and platform_version < '10.0.18362'", python = "<3.5"},
+    {version = "==0.4", markers = "platform_system == 'Windows'", python = "<3.5"},
 ]
 
 [tool.poetry.group.dev.dependencies]
