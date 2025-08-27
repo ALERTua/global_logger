@@ -2,7 +2,7 @@
 History
 =======
 
-0.4.6 (2025-08-27)
+0.4.7 (2025-08-27)
 -------------------
 
 * Removed support for Windows 10 below 18362

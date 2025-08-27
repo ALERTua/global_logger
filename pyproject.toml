@@ -1,6 +1,6 @@
 [project]
 name = "global-logger"
-version = "0.4.6"
+version = "0.4.7"
 description = "Based on Python built-in logger, expands it, and provides a global logger to your system. Easy on-screen and/or .log files output setup without pain for Python newcomers. Python 2 and 3 compatible"
 authors = [{name = "Alexey Rubasheff", email = "alexey.rubasheff@gmail.com>"}]
 #authors = ["Alexey Rubasheff <alexey.rubasheff@gmail.com>"]
