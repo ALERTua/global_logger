@@ -14,25 +14,19 @@ on:
       - "**/*.rst"
       - "**/*.md"
 
-#  push:
-#    branches:
-#      - '**'
-  pull_request:
-    branches:
-      - '**'
-
-
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
   cancel-in-progress: true
 
-
 jobs:
   build:
+    if: |
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && github.ref == 'refs/heads/develop' && startsWith(github.event.head_commit.message, 'v'))
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Build and publish to pypi
         uses: JRubics/poetry-publish@v2.0
         with:
