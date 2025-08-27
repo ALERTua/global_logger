@@ -6,6 +6,7 @@ History
 -------------------
 
 * Removed support for Windows 10 below 18362
+* Removed Python 3.8 support
 
 
 0.4.5 (2025-05-28)
