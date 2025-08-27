@@ -7,6 +7,12 @@ on:
       - v*
     branches:
       - develop
+    paths-ignore:
+      - ".github/"
+      - "tests/"
+      - ".pre-commit-config.yaml"
+      - "**/*.rst"
+      - "**/*.md"
 
 #  push:
 #    branches:
